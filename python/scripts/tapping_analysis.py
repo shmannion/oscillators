@@ -106,9 +106,9 @@ def get_pair_correlations(condition:str, pair:int, lags:list=[-1, 0, 1], freq:in
     candidate2 = pd.DataFrame(columns=[1,2,3,4])
     
     if pair < 10:
-        filePath = f'data/{freq}/{condition}/pair_0{pair}'
+        filePath = f'../data/{freq}/{condition}/pair_0{pair}'
     else:
-        filePath = f'data/{freq}/{condition}/pair_{pair}'
+        filePath = f'../data/{freq}/{condition}/pair_{pair}'
     
     for i in range(1,5): # create dataframe of tap times for each candidate
         try:        
