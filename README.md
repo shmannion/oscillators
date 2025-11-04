@@ -9,9 +9,10 @@ When created, an overleaf document containing a write up of this work will be ad
 
 # Directory Structure
   project\_root/
+  │ 
   ├── include/                # C++ headers
   │   ├── oscillators.h
-  │   └── ... 
+  │   └── py\_oscillators.h   # Python headers
   │ 
   ├── src/                    # C++ source code
   │   ├── core/
@@ -36,9 +37,10 @@ When created, an overleaf document containing a write up of this work will be ad
   │   │   ├── analysis.py
   │   │   └── simulation.py
   │   │
-  │   └── oscillators.so      # Visible C++ extension
+  │   └── oscillators.so      # C++ extension (what is imported to Python)
   │
   ├── Makefile
+  │ 
   └── README.md
   
 # LATERBASE (To-do, or for now, a list of desired features)
