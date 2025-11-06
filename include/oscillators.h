@@ -12,6 +12,8 @@
 //
 using namespace std;
 
+const double PI = 3.1415926536;
+
 class System{
 private:
   //distribution variables  
@@ -32,11 +34,19 @@ private:
   vector<vector<double>> theta; //Vector of vectors - phases over time, one for each oscillator
   vector<double> omega;
 
-  vector<vector<double>> timeStamps;
-
   double tMax;
   double dt;
 
+  vector<vector<double>> timestamps;
+  set<string> validTimestampMethods = {"default", "amplitude", "phase"};
+  string timestampMethod;
+  int amplitudeStampStart = 1;
+
+  vector<int> actionOscillators;
+  vector<vector<double>> eventTimes;
+  vector<vector<double>> interEventTimes;
+
+  
   vector<int> lags; //
 
   int nSimulations; //
@@ -49,40 +59,51 @@ public:
   
   int N; //number of oscillators
   
-  //-----------------------------------------------------------------
-  void set_noise_distribution(string dist); //initialisation
-
-  void set_omega_distribution(string dist);
-
-  void set_theta_distribution(string dist);
-
-  void set_noise_distribution(string dist, vector<double> params);
+  //--------------------------------------------------------------------------------------------------------------------
+  // system initialisation functions - sys_initialisation.cpp
+  //--------------------------------------------------------------------------------------------------------------------
   
-  void set_omega_distribution(string dist, vector<double> params);
+  void set_noise_distribution(string dist);                         
 
-  void set_theta_distribution(string dist, vector<double> params);
+  void set_omega_distribution(string dist);                          
+
+  void set_theta_distribution(string dist);                         
+
+  void set_noise_distribution(string dist, vector<double> params);      
   
-  double draw_noise_value();
+  void set_omega_distribution(string dist, vector<double> params);  
 
-  double draw_omega_value();
+  void set_theta_distribution(string dist, vector<double> params);  
   
-  double draw_theta_value();
+  double draw_noise_value();                                         
 
-  double draw_normal_rnd_value(vector<double> params);
-
-  double draw_uniform_rnd_value(vector<double> params);
+  double draw_omega_value();                                        
   
-  //-----------------------------------------------------------------
+  double draw_theta_value();                                        
+
+  double draw_normal_rnd_value(vector<double> params);              
+
+  double draw_uniform_rnd_value(vector<double> params);             
   
-  void initialise_omega(); //initialisation
+  void set_action_oscillators(vector<int>);                         
+  
+  void initialise_omega();                                          
 
-  void initialise_theta(); //initialisation
+  void initialise_theta();                                          
 
-  void set_coupling(vector<vector<double>>);
+  void set_coupling(vector<vector<double>>);                         
 
-  //void re_initialise();
+  void set_amplitude_stamp_start(int s);
 
-  //-----------------------------------------------------------------
+  void set_default_distributions();                                 
+
+  void initialise_system();
+
+  void initialise_default_system();
+  
+  //--------------------------------------------------------------------------------------------------------------------
+  // integration functions sys_integration.cpp
+  //--------------------------------------------------------------------------------------------------------------------
   
   void set_time_step(double t); //integration
 
@@ -91,22 +112,33 @@ public:
   vector<double> dtheta_dt();
 
   void eulers_method();
-
-  //-----------------------------------------------------------------
   
+  double interpolate(double x1, double y1, double x2, double y2);
+
+  double interpolate_phase(double x1, double y1, double x2, double y2);
+
+  //--------------------------------------------------------------------------------------------------------------------
+  // time series construction functions sys_time_series.cpp
+  //--------------------------------------------------------------------------------------------------------------------
+
+
+  void construct_timestamps(); //time_series
   
+  void construct_timestamps(string method); //time_series
 
-  void set_action_oscillators(vector<int>);
+  void construct_timestamps_from_amplitudes();
 
-  void construct_time_stamps(string method); //time_series
-
-  void construct_time_stamps_from_amplitudes();
-
-  void construct_time_stamps_from_phases();
+  void construct_timestamps_from_phases();
   
-  //void construct_inter_event_times(); //time_series
+  void set_timestamp_method(string method);
+  
+  void set_timestamp_method();
+  
+  void get_event_times();
 
-  //-----------------------------------------------------------------
+  void get_inter_event_times(); //time_series
+
+  //--------------------------------------------------------------------------------------------------------------------
   
   //void set_lags(); //analysis
 
@@ -116,25 +148,26 @@ public:
 
   //vector<double> get_correlations(); //analysis
 
-  //-----------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   
   //void set_n_simulations();
   
   //void set_n_simulations(int n);
 
 
-  //-----------------------------------------------------------------
-  
-  //-----------------------------------------------------------------
-  
-  //-----------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------
   
   
-};
+  
+  
+};//end class
 
-double interpolate(double x1, double y1, double x2, double y2);
+//--------------------------------------------------------------------------------------------------------------------
+// important non-member functions
+//--------------------------------------------------------------------------------------------------------------------
 
-double interpolate_phase(double x1, double y1, double x2, double y2);
-
-
+//--------------------------------------------------------------------------------------------------------------------
+vector<vector<double>> kuramoto_model(int N, string settings, vector<vector<double>> K);
 #endif

@@ -1,7 +1,5 @@
 #include "oscillators.h"
 
-const double PI = 3.1415926536;
-
 void System::set_noise_distribution(string dist){
   if(dist == "default"){
     noiseDist = "normal";
@@ -37,8 +35,8 @@ void System::set_noise_distribution(string dist, vector<double> params){
   if(validNoiseDistributions.find(dist) == validNoiseDistributions.end()){
     cerr << "Selected noise distribution is not defined" << endl;
   }else{
-  noiseDist = dist;
-  noiseParams = params;
+    noiseDist = dist;
+    noiseParams = params;
   }
 }
 
@@ -46,8 +44,8 @@ void System::set_omega_distribution(string dist, vector<double> params){
   if(validOmegaDistributions.find(dist) == validOmegaDistributions.end()){
     cerr << "Selected omega distribution is not defined" << endl;
   }else{
-  omegaDist = dist;
-  omegaParams = params;
+    omegaDist = dist;
+    omegaParams = params;
   }
 }
 
@@ -55,13 +53,32 @@ void System::set_theta_distribution(string dist, vector<double> params){
   if(validThetaDistributions.find(dist) == validThetaDistributions.end()){
     cerr << "Selected theta distribution is not defined" << endl;
   }else{
-  thetaDist = dist;
-  thetaParams = params;
+    thetaDist = dist;
+    thetaParams = params;
+  }
+}
+
+void System::set_default_distributions(){
+  set_noise_distribution("default");
+  set_omega_distribution("default");
+  set_theta_distribution("default");
+}
+
+void System::set_timestamp_method(string method){
+  if(validTimestampMethods.find(method) == validTimestampMethods.end()){
+    cerr << "selected timestamp method is not defined" << endl;
+
+  }else{
+    if(method == "default"){
+      timestampMethod = "amplitude";
+    }else{
+      timestampMethod = method;
+    }
   }
 }
 
 double System::draw_noise_value(){
-  double x;
+  double x = 0;
   if(noiseDist == "normal"){
     x = draw_normal_rnd_value(noiseParams);
   }//else if another
@@ -69,7 +86,7 @@ double System::draw_noise_value(){
 }
 
 double System::draw_omega_value(){
-  double x;
+  double x = 0;
   if(noiseDist == "normal"){
     x = draw_normal_rnd_value(noiseParams);
   }//else if another
@@ -78,7 +95,7 @@ double System::draw_omega_value(){
 }
 
 double System::draw_theta_value(){
-  double x;
+  double x = 0;
   if(noiseDist == "normal"){
     x = draw_normal_rnd_value(thetaParams);
   }else if(thetaDist == "uniform"){
@@ -120,4 +137,28 @@ void System::initialise_theta(){
 
 void System::set_coupling(vector<vector<double>> coupling){
   K = coupling;
+}
+
+void System::set_amplitude_stamp_start(int s){
+  amplitudeStampStart = s;
+}
+
+void System::set_action_oscillators(vector<int> labels){
+  actionOscillators = labels;
+}
+
+void System::initialise_system(){
+  initialise_default_system();
+}
+
+//void System::initialise_system(){
+//
+//}
+
+void System::initialise_default_system(){
+  set_default_distributions();
+  initialise_omega();
+  initialise_theta();
+  set_max_time(12);
+  set_time_step(1e-3);
 }
