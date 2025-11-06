@@ -1,6 +1,6 @@
 #include "oscillators.h"
 
-void System::set_noise_distribution(string dist){
+void Oscillators::set_noise_distribution(string dist){
   if(dist == "default"){
     noiseDist = "normal";
     noiseParams = {0,0.4335};
@@ -10,7 +10,7 @@ void System::set_noise_distribution(string dist){
   }
 }
 
-void System::set_omega_distribution(string dist){
+void Oscillators::set_omega_distribution(string dist){
   if(dist == "default"){
     omegaDist = "normal";
     omegaParams = {12.57, 1.26};
@@ -20,7 +20,7 @@ void System::set_omega_distribution(string dist){
   }
 }
 
-void System::set_theta_distribution(string dist){
+void Oscillators::set_theta_distribution(string dist){
   if(dist == "default"){
     thetaDist = "uniform";
     thetaParams = {0, 2*PI};
@@ -31,7 +31,7 @@ void System::set_theta_distribution(string dist){
 }
 
 
-void System::set_noise_distribution(string dist, vector<double> params){
+void Oscillators::set_noise_distribution(string dist, vector<double> params){
   if(validNoiseDistributions.find(dist) == validNoiseDistributions.end()){
     cerr << "Selected noise distribution is not defined" << endl;
   }else{
@@ -40,7 +40,7 @@ void System::set_noise_distribution(string dist, vector<double> params){
   }
 }
 
-void System::set_omega_distribution(string dist, vector<double> params){
+void Oscillators::set_omega_distribution(string dist, vector<double> params){
   if(validOmegaDistributions.find(dist) == validOmegaDistributions.end()){
     cerr << "Selected omega distribution is not defined" << endl;
   }else{
@@ -49,7 +49,7 @@ void System::set_omega_distribution(string dist, vector<double> params){
   }
 }
 
-void System::set_theta_distribution(string dist, vector<double> params){
+void Oscillators::set_theta_distribution(string dist, vector<double> params){
   if(validThetaDistributions.find(dist) == validThetaDistributions.end()){
     cerr << "Selected theta distribution is not defined" << endl;
   }else{
@@ -58,13 +58,13 @@ void System::set_theta_distribution(string dist, vector<double> params){
   }
 }
 
-void System::set_default_distributions(){
+void Oscillators::set_default_distributions(){
   set_noise_distribution("default");
   set_omega_distribution("default");
   set_theta_distribution("default");
 }
 
-void System::set_timestamp_method(string method){
+void Oscillators::set_timestamp_method(string method){
   if(validTimestampMethods.find(method) == validTimestampMethods.end()){
     cerr << "selected timestamp method is not defined" << endl;
 
@@ -77,7 +77,7 @@ void System::set_timestamp_method(string method){
   }
 }
 
-double System::draw_noise_value(){
+double Oscillators::draw_noise_value(){
   double x = 0;
   if(noiseDist == "normal"){
     x = draw_normal_rnd_value(noiseParams);
@@ -85,16 +85,16 @@ double System::draw_noise_value(){
   return x;
 }
 
-double System::draw_omega_value(){
+double Oscillators::draw_omega_value(){
   double x = 0;
   if(noiseDist == "normal"){
-    x = draw_normal_rnd_value(noiseParams);
+    x = draw_normal_rnd_value(omegaParams);
   }//else if another
   return x;
 
 }
 
-double System::draw_theta_value(){
+double Oscillators::draw_theta_value(){
   double x = 0;
   if(noiseDist == "normal"){
     x = draw_normal_rnd_value(thetaParams);
@@ -104,14 +104,14 @@ double System::draw_theta_value(){
   return x;
 }
 
-double System::draw_normal_rnd_value(vector<double> params){
+double Oscillators::draw_normal_rnd_value(vector<double> params){
   mt19937 gen(random_device{}());
   normal_distribution<double> n{params[0], params[1]};
   double sample = n(gen);
   return sample;
 }
 
-double System::draw_uniform_rnd_value(vector<double> params){
+double Oscillators::draw_uniform_rnd_value(vector<double> params){
   mt19937 gen(random_device{}());
   uniform_real_distribution<double> u(params[0], params[1]);
   double sample = u(gen);
@@ -119,46 +119,53 @@ double System::draw_uniform_rnd_value(vector<double> params){
 }
 
 
-void System::initialise_omega(){
+void Oscillators::initialise_omega(){
   double sample;
+  cout << "N is " << N << endl;
   while(omega.size() < N){
     sample = draw_omega_value();
     omega.push_back(sample);
+    cout << "omega has size " << omega.size() << endl;
   }
 }
 
-void System::initialise_theta(){
-  double sample;
-  for(int i = 0; i != N; ++i){
-    sample = draw_theta_value();
-    theta.push_back({sample});
+void Oscillators::initialise_theta(){
+  //double sample;
+  while(theta.size() < N){
+    double sample = 1;//draw_theta_value();
+    vector<double> theta0 = {sample};
+    theta.push_back(theta0);
+    cout << "theta has size " << theta.size();
   }
 }
 
-void System::set_coupling(vector<vector<double>> coupling){
+void Oscillators::set_coupling(vector<vector<double>> coupling){
   K = coupling;
 }
 
-void System::set_amplitude_stamp_start(int s){
+void Oscillators::set_amplitude_stamp_start(int s){
   amplitudeStampStart = s;
 }
 
-void System::set_action_oscillators(vector<int> labels){
+void Oscillators::set_action_oscillators(vector<int> labels){
   actionOscillators = labels;
 }
 
-void System::initialise_system(){
+void Oscillators::initialise_system(){
   initialise_default_system();
 }
 
-//void System::initialise_system(){
+//void Oscillators::initialise_system(){
 //
 //}
 
-void System::initialise_default_system(){
+void Oscillators::initialise_default_system(){
+  cout << "N is " << N << endl;
   set_default_distributions();
   initialise_omega();
   initialise_theta();
+  cout << "theta has size " << theta.size();
+  set_timestamp_method("amplitude");
   set_max_time(12);
-  set_time_step(1e-3);
+  set_time_step(0.001);
 }

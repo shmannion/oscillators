@@ -1,6 +1,6 @@
 #include "oscillators.h"
 
-//vector<double> System::construct_time_stamps(vector<double> theta, double maxTime, double dt, int neglectTransient){
+//vector<double> Oscillators::construct_time_stamps(vector<double> theta, double maxTime, double dt, int neglectTransient){
 //  vector<double> timePoints;
 //  int start = 0;
 //  if(neglectTransient != 0){
@@ -38,7 +38,7 @@
 //  return tapTimes;
 //}
 //
-//vector<double> System::inter_event_times(vector<double> timeStamps){
+//vector<double> Oscillators::inter_event_times(vector<double> timeStamps){
 //  vector<double> interEventTimes;
 //  for(int i = 1; i != timeStamps.size(); ++i){
 //    interEventTimes.push_back(timeStamps[i] - timeStamps[i-1]);
@@ -46,11 +46,11 @@
 //  return interEventTimes;
 //}
 //
-//vector<double> System::apply_lag(){
+//vector<double> Oscillators::apply_lag(){
 //
 //}
 //
-//double System::pearson_correlation_coefficient(vector<double> xIn, vector<double> yIn, int lag){
+//double Oscillators::pearson_correlation_coefficient(vector<double> xIn, vector<double> yIn, int lag){
 //  double rho;
 //  vector<double> x;
 //  double xSum = 0;

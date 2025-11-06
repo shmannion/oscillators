@@ -14,7 +14,7 @@ using namespace std;
 
 const double PI = 3.1415926536;
 
-class System{
+class Oscillators{
 private:
   //distribution variables  
   string noiseDist = "normal"; //default noise distribution
@@ -54,10 +54,12 @@ private:
 public:
   //comments are source files in which function is written, function description comments go 
   //in source files. Uncomment functions as they are written
+  int N;
 
-  System(int N) {}
+  Oscillators(int N) : N(N) {}
+  //Oscillators(int N) {}
   
-  int N; //number of oscillators
+  //int N; //number of oscillators
   
   //--------------------------------------------------------------------------------------------------------------------
   // system initialisation functions - sys_initialisation.cpp
@@ -134,12 +136,16 @@ public:
   
   void set_timestamp_method();
   
-  void get_event_times();
+  void construct_event_times();
 
-  void get_inter_event_times(); //time_series
+  void construct_inter_event_times(); //time_series
 
   //--------------------------------------------------------------------------------------------------------------------
-  
+  //getter methods sys_getter_methods.cpp
+  //--------------------------------------------------------------------------------------------------------------------
+  vector<vector<double>> get_inter_event_times();
+  //--------------------------------------------------------------------------------------------------------------------
+
   //void set_lags(); //analysis
 
   //void set_lags(vector<int> lags); //analysis
@@ -167,7 +173,17 @@ public:
 //--------------------------------------------------------------------------------------------------------------------
 // important non-member functions
 //--------------------------------------------------------------------------------------------------------------------
+vector<vector<double>> kuramoto_model(int N, string settings, vector<int> actionOscillaoros, vector<vector<double>> K);
 
-//--------------------------------------------------------------------------------------------------------------------
-vector<vector<double>> kuramoto_model(int N, string settings, vector<vector<double>> K);
+
+
+
+
+
+
+
+
+
+
+
 #endif
