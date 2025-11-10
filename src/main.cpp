@@ -1,4 +1,5 @@
 #include "oscillators.h"
+#include "py_wrappers.h"
 using namespace std;
 
 int main(){
