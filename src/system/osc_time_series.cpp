@@ -4,7 +4,7 @@ double Oscillators::interpolate(double x1, double y1, double x2, double y2){
   double t1 = dt * x1;
   double t2 = dt * x2;
   double m = (y2 - y1)/(t2 - t1);
-  double intercept = (m * x1 - y1)/m;
+  double intercept = (m * t1 - y1)/m;
   return intercept;
 }
 
@@ -59,10 +59,10 @@ void Oscillators::construct_timestamps_from_amplitudes(){
       amp1 = sin(theta[i][j]);
       amp2 = sin(theta[i][j+1]);
       product = amp1 * amp2;
-      cout << 0.001 * double(j) << ", " << amp1 << "a" << i << endl;
+      cout << 0.001 * double(j) << ", " << amp1 << ", a" << i << endl;
       if(product < 0){ //negative product in the amplitude implies the oscillators amp 
-        cout << "there is a crossing " << endl;
         intercept = interpolate(double(j), amp1, double(j+1), amp2); //has crossed the x axis.
+        cout << "intercept is " << intercept << ", int" << i << endl;
         timestamps[i].push_back(intercept);
       }
     }
@@ -79,17 +79,11 @@ void Oscillators::construct_event_times(){
     cout << "event times checkpoint " << 2+i << endl;
     if(timestampMethod == "amplitude"){
       for(int j = amplitudeStampStart; j != timestamps[actionOscillators[i]].size(); ++j){
-        cout << "event times inner loop checkpoint " << j << endl;
         if(j % 2 == amplitudeStampStart){
-          cout << "if statement goes " << endl;
-          cout << "i is " << i << ", timestamps has size " << timestamps.size() << endl;
-          cout << "action oscillator is " << actionOscillators[i] << endl;
-          cout << "the oscillators timestamp size is " << timestamps[actionOscillators[i]].size() << endl;
           eventTimes[i].push_back(timestamps[actionOscillators[i]][j]);
         }//endif
       }//endfor
     }else if(timestampMethod == "phase"){
-      cout << "event times inner loop checkpoint" << endl;
       for(int j = 0; j != timestamps[actionOscillators[i]].size(); ++j){
         eventTimes[i].push_back(timestamps[actionOscillators[i]][j]);
       }//endfor
@@ -98,12 +92,11 @@ void Oscillators::construct_event_times(){
 }
 
 void Oscillators::construct_inter_event_times(){
-  cout << "event times has size " << eventTimes.size() << endl;
   for(int i = 0; i != eventTimes.size(); ++i){
     interEventTimes.push_back({});
-    cout << "event times " << i << " has size " << eventTimes[i].size() << endl;
     for(int j = 1; j != eventTimes[i].size(); ++j){
       interEventTimes[i].push_back(eventTimes[i][j] - eventTimes[i][j-1]);
+      cout << interEventTimes[i].back() << ", ieTimes" << i << endl;
     }//endfor
   }//endfor
 }

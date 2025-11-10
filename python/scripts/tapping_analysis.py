@@ -1,8 +1,11 @@
+import sys
+import os
 import mido
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))    
+import oscillators as osc
 
 np.set_printoptions(legacy='1.25')
 
@@ -160,6 +163,38 @@ def get_correlation_means(data:dict):
         print(means)
     return summary
 
+def bhattacharyya_coefficient(p, q):
+    """
+    Compute the Bhattacharyya coefficient between two discrete distributions or vectors.
+
+    Parameters
+    ----------
+    p, q : array-like
+        Non-negative arrays of the same length.
+        They don’t need to be normalized; the function will normalize them.
+
+    Returns
+    -------
+    bc : float
+        Bhattacharyya coefficient in [0, 1].
+        1 = identical, 0 = no overlap.
+    """
+    p = np.asarray(p, dtype=float)
+    q = np.asarray(q, dtype=float)
+    
+    # Check for valid input
+    if np.any(p < 0) or np.any(q < 0):
+        raise ValueError("Inputs must be non-negative.")
+    
+    # Normalize to sum to 1 (make them behave like distributions)
+    p /= np.sum(p)
+    q /= np.sum(q)
+    
+    # Compute Bhattacharyya coefficient
+    bc = np.sum(np.sqrt(p * q))
+    return bc
+
+
 if __name__ == "__main__":
     """
     #TODO:
@@ -171,26 +206,27 @@ if __name__ == "__main__":
     Compare
     """
 
-    #if len(sys.argv) < 2:
-    #    print("Usage: python midi_to_tap_times.py <midi_file> [note_number]")
-    #    sys.exit(1)
-
+    if len(sys.argv) < 2:
+        print("Usage: python midi_to_tap_times.py <midi_file> [note_number]")
+        midiPath = 'data/6_1_other.mid'
+    
     #midiPath = sys.argv[1]
-    ##file1 = mido.MidiFile('data/6_1_other.mid') for msg in file1: print(msg)
-    #tapTimes = midi_to_tap_times(midiPath)
-    #print("Detected tap times (seconds):")
-    #for t in tapTimes:
-    #    print(f"{t:.3f}")
+    midiPath = '../data/120/leader_follower_1/pair_01_c1_t1.mid'
+    #file1 = mido.MidiFile('data/6_1_other.mid') for msg in file1: print(msg)
+    tapTimes = midi_to_tap_times(midiPath)
+    print("Detected tap times (seconds):")
+    for t in tapTimes:
+        print(f"{t:.3f}")
 
-    #print(f"\nTotal taps: {len(tapTimes)}")
+    print(f"\nTotal taps: {len(tapTimes)}")
 
-    #interEventTimes = get_inter_event_times(tapTimes)
-    #for i in interEventTimes:
-    #    print(i)
+    interEventTimes = get_inter_event_times(tapTimes)
+    
+
     results = {}
     lags = [-1, 0, 1]    
     for i in range(1,17): 
-        results[i] = get_pair_correlations('leader_follower_2', i, neglect=1)
+        results[i] = get_pair_correlations('leader_follower_1', i, neglect=1)
     
     means = {}
     for i in range(1, 17):
@@ -198,12 +234,39 @@ if __name__ == "__main__":
         for lag in [-1, 0, 1]:
             means[i][lag] = results[i][lag].mean()
 
+    
+    K = []
+    i1 = 0.6*5.5
+    e1 = 0.1*1.7
+    i2 = 0.1*1.5
+    e2 = 0.6*5.5
+
+
+    K.append([0,i1,e1,0])
+    K.append([i1,0,0,0])
+    K.append([0,0,0,i2])
+    K.append([0,e2,i2,0])
+    
+    x = osc.kuramoto_model(4, "default", [0,2], K)
+    modelTimes1 = pd.Series(x[0])
+    modelTimes2 = pd.Series(x[1])
+    df1 = pd.DataFrame(modelTimes1)
+    df2 = pd.DataFrame(modelTimes2)
+    modelResults = []
+    lags = [-1, 0, 1]
+
+    for lag in lags:
+        modelResults.append(get_correlations(df1, df2, lag))
+
+
     summary = get_correlation_means(results)
 
     print(summary)
     yVals = [summary[i][0] for i in lags]
     yErr = [summary[i][2] for i in lags]
     plt.bar(lags, yVals, yerr=yErr, capsize=5)
+    plt.plot(lags, modelResults)
     plt.show()
     
+    print(x[0]) 
 

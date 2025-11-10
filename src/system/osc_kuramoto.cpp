@@ -10,9 +10,7 @@ vector<vector<double>> kuramoto_model(int N, string settings, vector<int> action
   S.eulers_method();
   S.construct_timestamps();
   S.construct_event_times();
-  cout << "Checkpoint 1" << endl;
   S.construct_inter_event_times();
   vector<vector<double>> x = S.get_inter_event_times();
-  cout << "Checkpoint 8" << endl;
   return x;
 }

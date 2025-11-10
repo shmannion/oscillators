@@ -16,7 +16,6 @@ vector<double> Oscillators::dtheta_dt(){
   for(int i = 0; i != N; ++i){
     noise = draw_noise_value();
     dtheta = omega[i] + noise;
-    cout << "omega and noise is " << dtheta << endl;
     for(int j = 0; j != N; ++j){
       dtheta += K[i][j] * sin(theta[j].back() - theta[i].back());
     }
@@ -30,7 +29,7 @@ void Oscillators::eulers_method(){
   while(currentTime < tMax){
     vector<double> dthetaDt = dtheta_dt();
     for(int i = 0; i != theta.size(); ++i){
-      cout << currentTime << ", " << dthetaDt[i] << "dt" << i << endl; 
+      cout << currentTime << ", " << dthetaDt[i] << ", dt" << i << endl; 
       theta[i].push_back(theta[i].back() + (dthetaDt[i] * dt));
     }
     currentTime += dt;

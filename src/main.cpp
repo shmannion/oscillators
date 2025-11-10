@@ -12,4 +12,9 @@ int main(){
   K.push_back({0,1.3,7.8,0});
   cout << "checkpoint 1" << endl;
   vector<vector<double>> x = kuramoto_model(4, settings, actors, K);
+  for(int i = 0; i != x.size(); ++i){
+    for(int j = 0; j != x[i].size(); ++j){
+      cout << x[i][j] << endl;
+    }
+  }
 }

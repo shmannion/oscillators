@@ -166,6 +166,6 @@ void Oscillators::initialise_default_system(){
   initialise_theta();
   cout << "theta has size " << theta.size();
   set_timestamp_method("amplitude");
-  set_max_time(12);
+  set_max_time(20);
   set_time_step(0.001);
 }
