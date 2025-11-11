@@ -44,8 +44,8 @@ $(OBJ_DIR)/%.o: src/%.cpp
 
 # === Copy .so to python/ ===
 copy_so: $(TARGET_SO)
-	mkdir -p $(PYTHON_DIR)
-	cp $(TARGET_SO) $(PYTHON_DIR)/
+	mkdir -p $(PYTHON_DIR)/oscillators
+	cp $(TARGET_SO) $(PYTHON_DIR)/oscillators
 
 # === Build standalone test program ===
 $(TEST_MAIN): $(TEST_OBJ) $(filter-out $(OBJ_DIR)/py/%.o,$(OBJ_PY))
