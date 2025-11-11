@@ -1,17 +1,30 @@
 #pragma once
 #include <Python.h>
+#include "oscillators.h"
 #include <vector>
 
 using namespace std;
 
+
 //----------------------------------------------------------------------------------------------------------------------
-// Helper functions py_helper.cpp for converting python objects
+// module definition
 //----------------------------------------------------------------------------------------------------------------------
-PyObject* matrix_to_pylist(const vector<vector<double>> &mat);
-bool py_to_matrix(PyObject* obj, vector<vector<double>> &mat);
+PyMODINIT_FUNC PyInit_oscillators(void);
 
+//----------------------------------------------------------------------------------------------------------------------
+// wrapper for oscillators class
+//----------------------------------------------------------------------------------------------------------------------
+typedef struct{
+  PyObject_HEAD
+  Oscillators* cpp_obj;
+  //public attributes here
 
-
+} PyOscillators;
+//----------------------------------------------------------------------------------------------------------------------
+// class constructor/destructor
+//----------------------------------------------------------------------------------------------------------------------
+static PyObject* PyOscillators_new(PyTypeObject* type, PyObject* args, PyObject* kwds);
+static void PyOscillators_dealloc(PyOscillators* self);
 //----------------------------------------------------------------------------------------------------------------------
 // wrapper functions
 //----------------------------------------------------------------------------------------------------------------------
@@ -21,10 +34,16 @@ PyObject* py_kuramoto_model(PyObject* self, PyObject* args);
 //----------------------------------------------------------------------------------------------------------------------
 // methods table
 //----------------------------------------------------------------------------------------------------------------------
-extern PyMethodDef oscillatorFunctions[];
-
+extern PyMethodDef PyOscillatorsFunctions[];
+extern PyMethodDef PyOscillatorsMethods[];
+extern PyMemberDef PyOscillatorsMembers[];
+extern PyGetSetDef PyOscillatorsGetSet[];
 //----------------------------------------------------------------------------------------------------------------------
 // module initialisation
 //----------------------------------------------------------------------------------------------------------------------
-PyMODINIT_FUNC PyInit_oscillators(void);
 
+//----------------------------------------------------------------------------------------------------------------------
+// Helper functions py_helper.cpp for converting python objects
+//----------------------------------------------------------------------------------------------------------------------
+PyObject* matrix_to_pylist(const vector<vector<double>> &mat);
+bool py_to_matrix(PyObject* obj, vector<vector<double>> &mat);
