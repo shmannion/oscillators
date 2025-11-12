@@ -10,6 +10,25 @@ void Oscillators::set_noise_distribution(string dist){
   }
 }
 
+void Oscillators::set_noise_distribution(string dist, vector<double> params){
+  if(validNoiseDistributions.find(dist) == validNoiseDistributions.end()){
+    cerr << "Selected noise distribution is not defined" << endl;
+  }else{
+    noiseDist = dist;
+    noiseParams = params;
+  }
+}
+
+string Oscillators::get_noise_distribution(){
+  string dist = noiseDist;
+  return dist;
+}
+
+vector<double> Oscillators::get_noise_params(){
+  vector<double> params = noiseParams;
+  return params;
+}
+
 void Oscillators::set_omega_distribution(string dist){
   if(dist == "default"){
     omegaDist = "normal";
@@ -17,26 +36,6 @@ void Oscillators::set_omega_distribution(string dist){
   }else if(dist == "normal"){
     omegaDist = "normal";
     omegaParams = {12.57, 1.26};
-  }
-}
-
-void Oscillators::set_theta_distribution(string dist){
-  if(dist == "default"){
-    thetaDist = "uniform";
-    thetaParams = {0, 2*PI};
-  }else if(dist == "uniform"){
-    thetaDist = "uniform";
-    thetaParams = {0, 2*PI};
-  }
-}
-
-
-void Oscillators::set_noise_distribution(string dist, vector<double> params){
-  if(validNoiseDistributions.find(dist) == validNoiseDistributions.end()){
-    cerr << "Selected noise distribution is not defined" << endl;
-  }else{
-    noiseDist = dist;
-    noiseParams = params;
   }
 }
 
@@ -49,6 +48,26 @@ void Oscillators::set_omega_distribution(string dist, vector<double> params){
   }
 }
 
+string Oscillators::get_omega_distribution(){
+  string dist = omegaDist;
+  return dist;
+}
+
+vector<double> Oscillators::get_omega_params(){
+  vector<double> params = omegaParams;
+  return params;
+}
+
+void Oscillators::set_theta_distribution(string dist){
+  if(dist == "default"){
+    thetaDist = "uniform";
+    thetaParams = {0, 2*PI};
+  }else if(dist == "uniform"){
+    thetaDist = "uniform";
+    thetaParams = {0, 2*PI};
+  }
+}
+
 void Oscillators::set_theta_distribution(string dist, vector<double> params){
   if(validThetaDistributions.find(dist) == validThetaDistributions.end()){
     cerr << "Selected theta distribution is not defined" << endl;
@@ -56,6 +75,16 @@ void Oscillators::set_theta_distribution(string dist, vector<double> params){
     thetaDist = dist;
     thetaParams = params;
   }
+}
+
+string Oscillators::get_theta_distribution(){
+  string dist = thetaDist;
+  return dist;
+}
+
+vector<double> Oscillators::get_theta_params(){
+  vector<double> params = thetaParams;
+  return params;
 }
 
 void Oscillators::set_default_distributions(){
@@ -143,12 +172,22 @@ void Oscillators::set_coupling(vector<vector<double>> coupling){
   K = coupling;
 }
 
+vector<vector<double>> Oscillators::get_coupling(){
+  vector<vector<double>> coupling = K;
+  return coupling;
+}
+
 void Oscillators::set_amplitude_stamp_start(int s){
   amplitudeStampStart = s;
 }
 
 void Oscillators::set_action_oscillators(vector<int> labels){
   actionOscillators = labels;
+}
+
+vector<int> Oscillators::get_action_oscillators(){
+  vector<int> labels = actionOscillators;
+  return labels;
 }
 
 void Oscillators::initialise_system(){

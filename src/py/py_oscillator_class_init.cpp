@@ -1,8 +1,10 @@
 #include <Python.h>
-#include "oscillators.h"
 #include "py_wrappers.h"
-
-static PyObject* PyOscillators_new(PyTypeObject* type, PyObject* args, PyObject* kwds) {
+#include "oscillators.h"
+//--------------------------------------------------------------------------------------------------------------------
+// Constructor
+//--------------------------------------------------------------------------------------------------------------------
+PyObject* PyOscillators_new(PyTypeObject* type, PyObject* args, PyObject* kwds) {
   int n;
   if (!PyArg_ParseTuple(args, "i", &n))
       return nullptr;
@@ -15,33 +17,19 @@ static PyObject* PyOscillators_new(PyTypeObject* type, PyObject* args, PyObject*
   return (PyObject*)self;
 }
 
-// --- 3. Destructor (__dealloc__) ---
-static void PyOscillators_dealloc(PyOscillators* self) {
+//--------------------------------------------------------------------------------------------------------------------
+// Destructor
+//--------------------------------------------------------------------------------------------------------------------
+
+void PyOscillators_dealloc(PyOscillators* self) {
   delete self->cpp_obj;
   Py_TYPE(self)->tp_free((PyObject*)self);
 }
-// --- 4. Method wrappers ---
-//static PyObject* PyOscillators_set_coupling(PyOscillatorSystem* self, PyObject* args) {
-//    double k;
-//    if (!PyArg_ParseTuple(args, "d", &k))
-//        return nullptr;
-//    self->cpp_obj->set_coupling(k);
-//    Py_RETURN_NONE;
-//}
-//
-//static PyObject* PyOscillatorSystem_compute_energy(PyOscillatorSystem* self, PyObject* Py_UNUSED(ignored)) {
-//    double energy = self->cpp_obj->compute_energy();
-//    return Py_BuildValue("d", energy);
-//}
-//
-//// --- 5. Method table ---
-//static PyMethodDef PyOscillatorSystem_methods[] = {
-//    {"set_coupling", (PyCFunction)PyOscillatorSystem_set_coupling, METH_VARARGS, "Set the coupling constant"},
-//    {"compute_energy", (PyCFunction)PyOscillatorSystem_compute_energy, METH_NOARGS, "Compute system energy"},
-//    {NULL, NULL, 0, NULL}
-//};
 
-// --- 6. Python type object ---
+//--------------------------------------------------------------------------------------------------------------------
+// Python type object
+//--------------------------------------------------------------------------------------------------------------------
+
 PyTypeObject PyOscillatorsType = {
     PyVarObject_HEAD_INIT(NULL, 0)
     .tp_name = "oscillators.Oscillators",
@@ -55,6 +43,10 @@ PyTypeObject PyOscillatorsType = {
     .tp_getset  = PyOscillatorsGetSet,
 };
 
+//--------------------------------------------------------------------------------------------------------------------
+// Module definition (?)
+//--------------------------------------------------------------------------------------------------------------------
+
 static PyModuleDef oscillatorsModule = { //removed struct from this line after static, in case this breaks something
     PyModuleDef_HEAD_INIT,
     "oscillators",
@@ -62,6 +54,10 @@ static PyModuleDef oscillatorsModule = { //removed struct from this line after s
     -1,
     PyOscillatorsFunctions
 };
+
+//--------------------------------------------------------------------------------------------------------------------
+// Module initialisation
+//--------------------------------------------------------------------------------------------------------------------
 
 PyMODINIT_FUNC PyInit_oscillators(void) {
   if (PyType_Ready(&PyOscillatorsType) < 0){
