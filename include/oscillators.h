@@ -15,41 +15,42 @@ using namespace std;
 const double PI = 3.1415926536;
 
 class Oscillators{
+  
 private:
   //distribution variables  
-  string noiseDist = "normal"; //default noise distribution
-  string omegaDist = "normal"; //default natural frequency distribution
-  string thetaDist = "uniform"; //default distribution of initial phases
+  string noiseDist = "normal"; //default noise distribution 
+  string omegaDist = "normal"; //default natural frequency distribution 
+  string thetaDist = "uniform"; //default distribution of initial phases 
   
   set<string> validNoiseDistributions = {"default", "normal", "uniform"};
   set<string> validOmegaDistributions = {"default", "normal", "uniform"};
   set<string> validThetaDistributions = {"default", "normal", "uniform"};
 
-  vector<double> noiseParams; //The parameters for the distribution of noise
-  vector<double> omegaParams; //The parameters for the distribution of natural frequencies
-  vector<double> thetaParams;
+  vector<double> noiseParams; //The parameters for the distribution of noise 
+  vector<double> omegaParams; //The parameters for the distribution of natural frequencies 
+  vector<double> thetaParams; 
 
-  vector<vector<double>> K; //The coupling coefficients for the model
+  vector<vector<double>> K; //The coupling coefficients for the model 
 
-  vector<vector<double>> theta; //Vector of vectors - phases over time, one for each oscillator
-  vector<double> omega;
+  vector<vector<double>> theta; //Vector of vectors - phases over time, one for each oscillator /needs get/set
+  vector<double> omega; 
 
-  double tMax;
-  double dt;
+  double tMax; //needs get/set
+  double dt = 0.001; //needs get/set
 
-  vector<vector<double>> timestamps;
+  vector<vector<double>> timestamps; //needs get/set /
   set<string> validTimestampMethods = {"default", "amplitude", "phase"};
-  string timestampMethod;
-  int amplitudeStampStart = 1;
+  string timestampMethod; //needs get/set
+  int amplitudeStampStart = 1; //needs get/set
 
-  vector<int> actionOscillators;
-  vector<vector<double>> eventTimes;
-  vector<vector<double>> interEventTimes;
+  vector<int> actionOscillators; 
+  vector<vector<double>> eventTimes; //needs get/set 
+  vector<vector<double>> interEventTimes; //needs get/set (has c get)
 
   
-  vector<int> lags; //
+  vector<int> lags; // unsure
 
-  int nSimulations; //
+  int nSimulations; //needs get/set
 
 public:
   //comments are source files in which function is written, function description comments go 
@@ -65,85 +66,101 @@ public:
   // system initialisation functions - sys_initialisation.cpp
   //--------------------------------------------------------------------------------------------------------------------
   
-  void set_noise_distribution(string dist);                         
-
-  void set_omega_distribution(string dist);                          
-
-  void set_theta_distribution(string dist);                         
-
-  void set_noise_distribution(string dist, vector<double> params);      
+  void set_noise_distribution(string dist); //unexposed
   
-  void set_omega_distribution(string dist, vector<double> params);  
+  string get_noise_distribution(); //unexposed
 
-  void set_theta_distribution(string dist, vector<double> params);  
+  vector<double> get_noise_params(); //unexposed
   
-  double draw_noise_value();                                         
+  void set_omega_distribution(string dist); //unexposed
 
-  double draw_omega_value();                                        
+  string get_omega_distribution(); //unexposed
   
-  double draw_theta_value();                                        
-
-  double draw_normal_rnd_value(vector<double> params);              
-
-  double draw_uniform_rnd_value(vector<double> params);             
+  vector<double> get_omega_params(); //unexposed
   
-  void set_action_oscillators(vector<int>);                         
+  void set_theta_distribution(string dist); //unexposed
   
-  void initialise_omega();                                          
+  string get_theta_distribution(); //unexposed
+  
+  vector<double> get_theta_params(); //unexposed
 
-  void initialise_theta();                                          
+  void set_noise_distribution(string dist, vector<double> params); //exposed      
+  
+  void set_omega_distribution(string dist, vector<double> params); //exposed
 
-  void set_coupling(vector<vector<double>>);                         
+  void set_theta_distribution(string dist, vector<double> params); //exposed
+  
+  double draw_noise_value(); //unexposed 
 
-  void set_amplitude_stamp_start(int s);
+  double draw_omega_value(); //unexposed                                       
+  
+  double draw_theta_value(); //unexposed                            
 
-  void set_default_distributions();                                 
+  double draw_normal_rnd_value(vector<double> params); //unexposed             
 
-  void initialise_system();
+  double draw_uniform_rnd_value(vector<double> params); //unexposed  
+  
+  void set_action_oscillators(vector<int>); //exposed 
+  
+  vector<int> get_action_oscillators(); //exposed 
+  
+  void initialise_omega(); //unexposed         
 
-  void initialise_default_system();
+  void initialise_theta(); //unexposed                              
+
+  void set_coupling(vector<vector<double>>);  //exposed                       
+
+  vector<vector<double>> get_coupling();
+
+  void set_amplitude_stamp_start(int s); //to be exposed
+
+  void set_default_distributions(); //to be exposed            
+
+  void initialise_system(); //to be exposed (but edit to take string?)
+
+  void initialise_default_system(); //to be exposed
   
   //--------------------------------------------------------------------------------------------------------------------
   // integration functions sys_integration.cpp
   //--------------------------------------------------------------------------------------------------------------------
   
-  void set_time_step(double t); //integration
+  void set_time_step(double t); //to be exposed
 
-  void set_max_time(double t); //integration
+  void set_max_time(double t); //to be exposed
   
-  vector<double> dtheta_dt();
+  vector<double> dtheta_dt(); //unexposed
 
-  void eulers_method();
+  void eulers_method(); //to be exposed
   
-  double interpolate(double x1, double y1, double x2, double y2);
+  double interpolate(double x1, double y1, double x2, double y2); //unexposed
 
-  double interpolate_phase(double x1, double y1, double x2, double y2);
+  double interpolate_phase(double x1, double y1, double x2, double y2); //unexposed
 
   //--------------------------------------------------------------------------------------------------------------------
   // time series construction functions sys_time_series.cpp
   //--------------------------------------------------------------------------------------------------------------------
 
 
-  void construct_timestamps(); //time_series
+  void construct_timestamps(); //unexposed
   
-  void construct_timestamps(string method); //time_series
+  void construct_timestamps(string method); //to be exposed 
 
-  void construct_timestamps_from_amplitudes();
+  void construct_timestamps_from_amplitudes(); //unexposed
 
-  void construct_timestamps_from_phases();
+  void construct_timestamps_from_phases(); //unexposed
   
-  void set_timestamp_method(string method);
+  void set_timestamp_method(string method); //to be exposed
   
-  void set_timestamp_method();
+  void set_timestamp_method(); //unexposed
   
-  void construct_event_times();
+  void construct_event_times(); //unexposed
 
-  void construct_inter_event_times(); //time_series
+  void construct_inter_event_times(); //unexposed
 
   //--------------------------------------------------------------------------------------------------------------------
   //getter methods sys_getter_methods.cpp
   //--------------------------------------------------------------------------------------------------------------------
-  vector<vector<double>> get_inter_event_times();
+  vector<vector<double>> get_inter_event_times(); //to be exposed/just give intereventTimes a getset
   //--------------------------------------------------------------------------------------------------------------------
 
   //void set_lags(); //analysis

@@ -1,6 +1,5 @@
 #pragma once
 #include <Python.h>
-#include "oscillators.h"
 #include <vector>
 
 using namespace std;
@@ -14,17 +13,18 @@ PyMODINIT_FUNC PyInit_oscillators(void);
 //----------------------------------------------------------------------------------------------------------------------
 // wrapper for oscillators class
 //----------------------------------------------------------------------------------------------------------------------
-typedef struct{
+class Oscillators;
+struct PyOscillators{
   PyObject_HEAD
   Oscillators* cpp_obj;
   //public attributes here
 
-} PyOscillators;
+};
 //----------------------------------------------------------------------------------------------------------------------
 // class constructor/destructor
 //----------------------------------------------------------------------------------------------------------------------
-static PyObject* PyOscillators_new(PyTypeObject* type, PyObject* args, PyObject* kwds);
-static void PyOscillators_dealloc(PyOscillators* self);
+PyObject* PyOscillators_new(PyTypeObject* type, PyObject* args, PyObject* kwds);
+void PyOscillators_dealloc(PyOscillators* self);
 //----------------------------------------------------------------------------------------------------------------------
 // wrapper functions
 //----------------------------------------------------------------------------------------------------------------------
