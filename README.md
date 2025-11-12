@@ -6,7 +6,7 @@ model being run, desired method of numerical integration, and available data.
 
 # Write up
 When created, an overleaf document containing a write up of this work will be added here.
-
+slight edit
 # Directory Structure
   project\_root/
   │ 
