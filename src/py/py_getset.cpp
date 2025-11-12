@@ -233,6 +233,30 @@ static int PyOscillators_set_action_oscillators(PyOscillators* self, PyObject* v
 
 
 //---------------------------------------------------------------------------------------------------------------------
+//amplitude start stamp
+static PyObject* PyOscillators_get_amplitude_stamp_start(PyOscillators* self, void*) {
+  return PyLong_FromLong(self->cpp_obj->get_amplitude_stamp_start());
+}
+
+// Setter: validates Python int, then calls C++ setter
+static int PyOscillators_set_amplitude_stamp_start(PyOscillators* self, PyObject* value, void*) {
+  if (!PyLong_Check(value)) {
+    PyErr_SetString(PyExc_TypeError, "amplitude_stamp_start must be an integer");
+    return -1;
+  }
+
+  int s = static_cast<int>(PyLong_AsLong(value));
+
+  try {
+    self->cpp_obj->set_amplitude_stamp_start(s);
+  } catch (const exception& e) {
+    PyErr_SetString(PyExc_RuntimeError, e.what());
+    return -1;
+  }
+
+  return 0;
+}
+//---------------------------------------------------------------------------------------------------------------------
 //getset table
 //---------------------------------------------------------------------------------------------------------------------
 
@@ -247,6 +271,8 @@ PyGetSetDef PyOscillatorsGetSet[] = {
    "Coupling matrix (list of lists of floats)", NULL},
   {"action_oscillators", (getter)PyOscillators_get_action_oscillators, (setter)PyOscillators_set_action_oscillators,
    "List of active oscillator indices", NULL},
+  {"amplitude_timestamp_start", (getter)PyOscillators_get_amplitude_stamp_start, (setter)PyOscillators_set_amplitude_stamp_start,
+   "Set the x-axis crossing that represents the first tapping event (int)" },
   {NULL}
 };
 

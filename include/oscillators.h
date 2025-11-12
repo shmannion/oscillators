@@ -112,14 +112,19 @@ public:
 
   vector<vector<double>> get_coupling();
 
-  void set_amplitude_stamp_start(int s); //to be exposed
+  void set_amplitude_stamp_start(int s); //exposed
 
-  void set_default_distributions(); //to be exposed            
-
-  void initialise_system(); //to be exposed (but edit to take string?)
-
-  void initialise_default_system(); //to be exposed
+  int get_amplitude_stamp_start(); //exposed
   
+  void set_default_distributions(); //exposed            
+
+  void initialise_system(string method); //exposed
+
+  void initialise_default_system(); 
+  
+  void initialise_custom_system(); 
+  
+  void re_initialise_system(string method); //exposed
   //--------------------------------------------------------------------------------------------------------------------
   // integration functions sys_integration.cpp
   //--------------------------------------------------------------------------------------------------------------------
