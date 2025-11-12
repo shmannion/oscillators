@@ -181,6 +181,10 @@ void Oscillators::set_amplitude_stamp_start(int s){
   amplitudeStampStart = s;
 }
 
+int Oscillators::get_amplitude_stamp_start(){
+  return amplitudeStampStart;
+}
+
 void Oscillators::set_action_oscillators(vector<int> labels){
   actionOscillators = labels;
 }
@@ -190,13 +194,18 @@ vector<int> Oscillators::get_action_oscillators(){
   return labels;
 }
 
-void Oscillators::initialise_system(){
-  initialise_default_system();
+void Oscillators::initialise_system(string method){
+  if(method == "default"){
+    initialise_default_system();
+  }else if(method == "custom"){
+    initialise_custom_system();
+  }
 }
 
-//void Oscillators::initialise_system(){
-//
-//}
+void Oscillators::initialise_custom_system(){
+  initialise_omega();
+  initialise_theta();
+}
 
 void Oscillators::initialise_default_system(){
   cout << "N is " << N << endl;
@@ -207,4 +216,16 @@ void Oscillators::initialise_default_system(){
   set_timestamp_method("amplitude");
   set_max_time(20);
   set_time_step(0.001);
+}
+
+void Oscillators::re_initialise_system(string method){
+  theta = {};
+  timestamps = {};
+  eventTimes = {};
+  interEventTimes = {};
+  initialise_theta();
+  if(method == "full"){
+    omega = {};
+    initialise_omega();
+  }
 }

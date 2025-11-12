@@ -70,7 +70,7 @@ PyMODINIT_FUNC PyInit_oscillators(void) {
   }
   
   Py_INCREF(&PyOscillatorsType);
-  PyModule_AddObject(m, "Oscillator", (PyObject*)&PyOscillatorsType);
+  PyModule_AddObject(m, "Oscillators", (PyObject*)&PyOscillatorsType);
   return m;
 }
 
