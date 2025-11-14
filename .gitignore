@@ -5,5 +5,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.swp
+*.DS_Store
+*.png
 test/
 python/data/

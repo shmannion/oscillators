@@ -85,19 +85,25 @@ class OscillatorsPythonAddons:
         """
 
         # First, determine number of time steps from the first simulation
+        common_length = len(results[1][0])
+        for i in range(1, len(results)):
+            for j in range(0, len(results[i])):
+                if len(results[i][j]) < common_length:
+                    common_length = len(results[i][j])
+
         first_sim = next(iter(results))
         osc_matrices = results[first_sim]
 
         # Each oscillator has a time series of equal length
-        T = len(osc_matrices[0])   # number of time steps
+        T = common_length   # number of time steps
 
-        df = pd.DataFrame()
-
+        data = {}
         for sim_i, osc_list in results.items():
             for osc_j, series in enumerate(osc_list, start=1):
-                colname = f"simulation_{sim_i}_oscillator_{osc_j}"
-                df[colname] = series
+                data[f"simulation_{sim_i}_oscillator_{osc_j}"] = series[0:T]
 
+        df = pd.DataFrame.from_dict(data)
+        
         # Ensure rows correspond to time steps exactly
         df.index = range(T)
 

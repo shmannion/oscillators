@@ -109,6 +109,37 @@ static int PyOscillators_set_omega_distribution(PyOscillators* self, PyObject* v
   return 0;
 }
 
+static PyObject* PyOscillators_get_omega(PyOscillators* self, void*) {
+  const vector<double>& params = self->cpp_obj->get_omega();
+
+  PyObject* py_params = PyList_New(params.size());
+  for (size_t i = 0; i < params.size(); ++i) {
+    PyList_SetItem(py_params, i, PyFloat_FromDouble(params[i]));
+  }
+
+  return py_params;
+}
+
+static int PyOscillators_set_omega(PyOscillators* self, PyObject* value, void*) {
+  if (!PyList_Check(value)){
+    PyErr_SetString(PyExc_TypeError, "omega values must be list of floats");
+    return -1;
+  }
+
+  vector<double> params;
+  Py_ssize_t len = PyList_Size(value);
+  params.reserve(len);
+  for (Py_ssize_t i = 0; i < len; ++i) {
+    PyObject* item = PyList_GetItem(value, i);
+    if (!PyFloat_Check(item)) {
+      PyErr_SetString(PyExc_TypeError, "All parameters must be floats");
+      return -1;
+    }
+    params.push_back(PyFloat_AsDouble(item));
+  }
+  self->cpp_obj->set_omega(params);
+  return 0;
+}
 //---------------------------------------------------------------------------------------------------------------------
 //theta dist
 
@@ -396,6 +427,8 @@ PyGetSetDef PyOscillatorsGetSet[] = {
    "Noise distribution (name, (params))", NULL},
   {"omega_distribution", (getter)PyOscillators_get_omega_distribution, (setter)PyOscillators_set_omega_distribution, 
    "Omega distribution (name, (params))", NULL},
+  {"omega", (getter)PyOscillators_get_omega, (setter)PyOscillators_set_omega, 
+   "Omega distribution (hard set values)", NULL},
   {"theta_distribution", (getter)PyOscillators_get_theta_distribution, (setter)PyOscillators_set_theta_distribution, 
    "Theta distribution (name, (params))", NULL},
   {"coupling", (getter)PyOscillators_get_coupling, (setter)PyOscillators_set_coupling, 

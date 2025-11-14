@@ -160,6 +160,17 @@ void Oscillators::initialise_omega(){
   }
 }
 
+void Oscillators::set_omega(vector<double> g){
+  omega = {};
+  for(int i = 0; i != g.size(); ++i){
+    omega.push_back(g[i]);
+  }
+}
+
+vector<double> Oscillators::get_omega(){
+  return omega;
+}
+
 void Oscillators::initialise_theta(){
   //double sample;
   while(theta.size() < N){

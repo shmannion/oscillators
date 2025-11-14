@@ -90,6 +90,10 @@ public:
   
   void set_omega_distribution(string dist, vector<double> params); //exposed
 
+  void set_omega(vector<double> g);
+  
+  vector<double> get_omega();
+
   void set_theta_distribution(string dist, vector<double> params); //exposed
   
   double draw_noise_value(); //unexposed 
