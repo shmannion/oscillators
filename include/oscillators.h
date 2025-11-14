@@ -126,7 +126,7 @@ public:
   
   void initialise_custom_system(); 
   
-  void re_initialise_system(string method); //exposed
+  void reinitialise_system(string method); //exposed
   
   int get_n_simulations();
   

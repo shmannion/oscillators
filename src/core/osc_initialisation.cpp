@@ -218,7 +218,7 @@ void Oscillators::initialise_default_system(){
   set_time_step(0.001);
 }
 
-void Oscillators::re_initialise_system(string method){
+void Oscillators::reinitialise_system(string method){
   theta = {};
   timestamps = {};
   eventTimes = {};

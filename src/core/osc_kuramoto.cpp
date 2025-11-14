@@ -24,21 +24,21 @@ void Oscillators::kuramoto_simulations(int n, string output){
       while(currentSim < n + 1){
         kuramoto_model(); 
         simulationResults[currentSim] = theta;
-        re_initialise_system("default");
+        reinitialise_system("default");
         currentSim += 1;
       }//endwhile
     }else if(output == "timestamps"){
       while(currentSim < n + 1){
         kuramoto_model(); 
         simulationResults[currentSim] = eventTimes;
-        re_initialise_system("default");
+        reinitialise_system("default");
         currentSim += 1;
       }//endwhile
     }else if(output == "interEventTimes"){
       while(currentSim < n + 1){
         kuramoto_model(); 
         simulationResults[currentSim] = interEventTimes;
-        re_initialise_system("default");
+        reinitialise_system("default");
         currentSim += 1;
       }//endwhile
     }//end elseif
