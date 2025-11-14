@@ -1,12 +1,30 @@
 #include "py_wrappers.h"
 #include "oscillators.h"
+
+//---------------------------------------------------------------------------------------------------------------------
+//public attribute get set
+//---------------------------------------------------------------------------------------------------------------------
+//noise dist
+static PyObject* PyOscillators_get_N(PyOscillators* self, void*) {
+  return PyLong_FromLong(self->cpp_obj->N);
+}
+
+static int PyOscillators_set_N(PyOscillators* self, PyObject* value, void*) {
+  if (!PyLong_Check(value)) {
+    PyErr_SetString(PyExc_TypeError, "N must be an integer");
+    return -1;
+  }
+  self->cpp_obj->N = PyLong_AsLong(value);
+  return 0;
+}
+
 //---------------------------------------------------------------------------------------------------------------------
 //distribution get set
 //---------------------------------------------------------------------------------------------------------------------
 //noise dist
 static PyObject* PyOscillators_get_noise_distribution(PyOscillators* self, void*) {
-  const std::string& dist = self->cpp_obj->get_noise_distribution();
-  const std::vector<double>& params = self->cpp_obj->get_noise_params();
+  const string& dist = self->cpp_obj->get_noise_distribution();
+  const vector<double>& params = self->cpp_obj->get_noise_params();
 
   PyObject* py_params = PyList_New(params.size());
   for (size_t i = 0; i < params.size(); ++i) {
@@ -31,7 +49,7 @@ static int PyOscillators_set_noise_distribution(PyOscillators* self, PyObject* v
     return -1;
   }
 
-  std::vector<double> params;
+  vector<double> params;
   Py_ssize_t len = PyList_Size(paramsObj);
   params.reserve(len);
   for (Py_ssize_t i = 0; i < len; ++i) {
@@ -43,15 +61,15 @@ static int PyOscillators_set_noise_distribution(PyOscillators* self, PyObject* v
     params.push_back(PyFloat_AsDouble(item));
   }
 
-  self->cpp_obj->set_noise_distribution(std::string(dist), params);
+  self->cpp_obj->set_noise_distribution(string(dist), params);
   return 0;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 //omega dist
 static PyObject* PyOscillators_get_omega_distribution(PyOscillators* self, void*) {
-  const std::string& dist = self->cpp_obj->get_omega_distribution();
-  const std::vector<double>& params = self->cpp_obj->get_omega_params();
+  const string& dist = self->cpp_obj->get_omega_distribution();
+  const vector<double>& params = self->cpp_obj->get_omega_params();
 
   PyObject* py_params = PyList_New(params.size());
   for (size_t i = 0; i < params.size(); ++i) {
@@ -76,7 +94,7 @@ static int PyOscillators_set_omega_distribution(PyOscillators* self, PyObject* v
     return -1;
   }
 
-  std::vector<double> params;
+  vector<double> params;
   Py_ssize_t len = PyList_Size(paramsObj);
   params.reserve(len);
   for (Py_ssize_t i = 0; i < len; ++i) {
@@ -87,7 +105,7 @@ static int PyOscillators_set_omega_distribution(PyOscillators* self, PyObject* v
     }
     params.push_back(PyFloat_AsDouble(item));
   }
-  self->cpp_obj->set_omega_distribution(std::string(dist), params);
+  self->cpp_obj->set_omega_distribution(string(dist), params);
   return 0;
 }
 
@@ -95,8 +113,8 @@ static int PyOscillators_set_omega_distribution(PyOscillators* self, PyObject* v
 //theta dist
 
 static PyObject* PyOscillators_get_theta_distribution(PyOscillators* self, void*) {
-  const std::string& dist = self->cpp_obj->get_theta_distribution();
-  const std::vector<double>& params = self->cpp_obj->get_theta_params();
+  const string& dist = self->cpp_obj->get_theta_distribution();
+  const vector<double>& params = self->cpp_obj->get_theta_params();
 
   PyObject* py_params = PyList_New(params.size());
   for (size_t i = 0; i < params.size(); ++i) {
@@ -121,7 +139,7 @@ static int PyOscillators_set_theta_distribution(PyOscillators* self, PyObject* v
     return -1;
   }
 
-  std::vector<double> params;
+  vector<double> params;
   Py_ssize_t len = PyList_Size(paramsObj);
   params.reserve(len);
   for (Py_ssize_t i = 0; i < len; ++i) {
@@ -133,7 +151,7 @@ static int PyOscillators_set_theta_distribution(PyOscillators* self, PyObject* v
     params.push_back(PyFloat_AsDouble(item));
   }
 
-  self->cpp_obj->set_theta_distribution(std::string(dist), params);
+  self->cpp_obj->set_theta_distribution(string(dist), params);
   return 0;
 }
 
@@ -144,11 +162,11 @@ static int PyOscillators_set_theta_distribution(PyOscillators* self, PyObject* v
 //coupling
 
 static PyObject* PyOscillators_get_coupling(PyOscillators* self, void*) {
-  const std::vector<std::vector<double>>& K = self->cpp_obj->get_coupling();
+  const vector<vector<double>>& K = self->cpp_obj->get_coupling();
 
   PyObject* outer_list = PyList_New(K.size());
   for (size_t i = 0; i < K.size(); ++i) {
-    const std::vector<double>& inner = K[i];
+    const vector<double>& inner = K[i];
     PyObject* inner_list = PyList_New(inner.size());
     for (size_t j = 0; j < inner.size(); ++j) {
       PyList_SetItem(inner_list, j, PyFloat_FromDouble(inner[j]));
@@ -165,7 +183,7 @@ static int PyOscillators_set_coupling(PyOscillators* self, PyObject* value, void
     return -1;
   }
 
-  std::vector<std::vector<double>> K;
+  vector<vector<double>> K;
   Py_ssize_t outer_size = PyList_Size(value);
   K.reserve(outer_size);
 
@@ -177,7 +195,7 @@ static int PyOscillators_set_coupling(PyOscillators* self, PyObject* value, void
     }
 
     Py_ssize_t inner_size = PyList_Size(inner_obj);
-    std::vector<double> inner;
+    vector<double> inner;
     inner.reserve(inner_size);
 
     for (Py_ssize_t j = 0; j < inner_size; ++j) {
@@ -198,7 +216,7 @@ static int PyOscillators_set_coupling(PyOscillators* self, PyObject* value, void
 //---------------------------------------------------------------------------------------------------------------------
 //action oscillators
 static PyObject* PyOscillators_get_action_oscillators(PyOscillators* self, void*) {
-  const std::vector<int>& a = self->cpp_obj->get_action_oscillators();
+  const vector<int>& a = self->cpp_obj->get_action_oscillators();
 
   PyObject* list = PyList_New(a.size());
   for (size_t i = 0; i < a.size(); ++i) {
@@ -214,7 +232,7 @@ static int PyOscillators_set_action_oscillators(PyOscillators* self, PyObject* v
     return -1;
   }
 
-  std::vector<int> a;
+  vector<int> a;
   Py_ssize_t size = PyList_Size(value);
   a.reserve(size);
 
@@ -256,11 +274,124 @@ static int PyOscillators_set_amplitude_stamp_start(PyOscillators* self, PyObject
 
   return 0;
 }
+
+//---------------------------------------------------------------------------------------------------------------------
+//setting dt 
+
+static PyObject* PyOscillators_get_time_step(PyOscillators* self, void*) {
+  return PyLong_FromDouble(self->cpp_obj->get_time_step());
+}
+
+// Setter: validates Python int, then calls C++ setter
+static int PyOscillators_set_time_step(PyOscillators* self, PyObject* value, void*) {
+  if (!PyFloat_Check(value)) {
+    PyErr_SetString(PyExc_TypeError, "dt must be a float");
+    return -1;
+  }
+
+  double t = PyFloat_AsDouble(value);
+
+  try {
+    self->cpp_obj->set_time_step(t);
+  } catch (const exception& e) {
+    PyErr_SetString(PyExc_RuntimeError, e.what());
+    return -1;
+  }
+
+  return 0;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+//setting tmax
+
+static PyObject* PyOscillators_get_tmax(PyOscillators* self, void*) {
+  return PyFloat_FromDouble(self->cpp_obj->get_max_time());
+}
+
+// Setter: validates Python int, then calls C++ setter
+static int PyOscillators_set_tmax(PyOscillators* self, PyObject* value, void*) {
+  if (!PyFloat_Check(value)) {
+    PyErr_SetString(PyExc_TypeError, "tmax must be a float");
+    return -1;
+  }
+
+  double t = PyFloat_AsDouble(value);
+
+  try {
+    self->cpp_obj->set_max_time(t);
+  } catch (const exception& e) {
+    PyErr_SetString(PyExc_RuntimeError, e.what());
+    return -1;
+  }
+
+  return 0;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+//method to generate timestamps
+static PyObject* PyOscillators_get_timestamp_method(PyOscillators* self, void*) {
+  return PyUnicode_FromString(self->cpp_obj->get_timestamp_method().c_str());
+}
+
+// Setter for timestamp_method
+static int PyOscillators_set_timestamp_method(PyOscillators* self, PyObject* value, void*) {
+  if (!PyUnicode_Check(value)) {
+    PyErr_SetString(PyExc_TypeError, "timestamp_method must be a string");
+    return -1;
+  }
+
+  PyObject* temp_bytes = PyUnicode_AsEncodedString(value, "utf-8", "strict");
+  if (!temp_bytes) {
+    return -1;
+  }
+
+  const char* cstr = PyBytes_AS_STRING(temp_bytes);
+  self->cpp_obj->set_timestamp_method(string(cstr));
+  Py_DECREF(temp_bytes);
+
+  return 0;
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------
+//get inter_event times
+static PyObject* PyOscillators_get_inter_event_times(PyOscillators* self, void*) {
+  const vector<vector<double>>& times = self->cpp_obj->get_inter_event_times();
+
+  PyObject* outer_list = PyList_New(times.size());
+  for (size_t i = 0; i < times.size(); ++i) {
+    const vector<double>& inner = times[i];
+    PyObject* inner_list = PyList_New(inner.size());
+    for (size_t j = 0; j < inner.size(); ++j) {
+      PyList_SetItem(inner_list, j, PyFloat_FromDouble(inner[j]));
+    }
+    PyList_SetItem(outer_list, i, inner_list);
+  }
+
+  return outer_list;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+//get simulation results
+
+static PyObject* PyOscillators_get_simulation_results(PyOscillators* self, void*) {
+  try {
+    const auto& r = self->cpp_obj->get_simulation_results();
+    return map_to_pydict(r);
+  }
+  catch (const exception& e) {
+    PyErr_SetString(PyExc_RuntimeError, e.what());
+    return nullptr;
+  }
+}
+
+
 //---------------------------------------------------------------------------------------------------------------------
 //getset table
 //---------------------------------------------------------------------------------------------------------------------
 
 PyGetSetDef PyOscillatorsGetSet[] = {
+  {"N", (getter)PyOscillators_get_N, (setter)PyOscillators_set_N,"Number of oscillators", NULL},
   {"noise_distribution", (getter)PyOscillators_get_noise_distribution, (setter)PyOscillators_set_noise_distribution, 
    "Noise distribution (name, (params))", NULL},
   {"omega_distribution", (getter)PyOscillators_get_omega_distribution, (setter)PyOscillators_set_omega_distribution, 
@@ -272,7 +403,17 @@ PyGetSetDef PyOscillatorsGetSet[] = {
   {"action_oscillators", (getter)PyOscillators_get_action_oscillators, (setter)PyOscillators_set_action_oscillators,
    "List of active oscillator indices", NULL},
   {"amplitude_timestamp_start", (getter)PyOscillators_get_amplitude_stamp_start, (setter)PyOscillators_set_amplitude_stamp_start,
-   "Set the x-axis crossing that represents the first tapping event (int)" },
+   "Set the x-axis crossing that represents the first tapping event (int)", NULL},
+  {"dt", (getter)PyOscillators_get_time_step, (setter)PyOscillators_set_time_step,
+   "Set the integration time step", NULL},
+  {"tmax", (getter)PyOscillators_get_tmax, (setter)PyOscillators_set_tmax,
+   "Set the max time of each simulation", NULL},
+  {"timestamp_method", (getter)PyOscillators_get_timestamp_method, (setter)PyOscillators_set_timestamp_method,
+   "Timestamp method used in event calculations (can be 'phase' or 'amplitude')", NULL},
+  {"inter_event_times_list", (getter)PyOscillators_get_inter_event_times, NULL,  
+   "Inter event times for all oscillators as list of lists", NULL},
+  {"simulation_results_dict", (getter)PyOscillators_get_simulation_results, NULL,  
+   "Simulation resulst as a dictionary", NULL},
   {NULL}
 };
 

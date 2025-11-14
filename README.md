@@ -12,7 +12,7 @@ slight edit
   │ 
   ├── include/                # C++ headers
   │   ├── oscillators.h
-  │   └── py\_oscillators.h   # Python headers
+  │   └── py\_wrappers.h   # Python headers
   │ 
   ├── src/                    # C++ source code
   │   ├── core/
@@ -23,7 +23,7 @@ slight edit
   │   │   ├── py\_oscillators.cpp
   │   │   └── py\_wrappers.cpp
   │   │
-  │   └── main.cpp            # C++ test executable
+  │   └── main.cpp            # C++ test executable compiled into test.
   │
   ├── obj/                    # object files
   │
@@ -40,6 +40,8 @@ slight edit
   │   └── oscillators.so      # C++ extension (what is imported to Python)
   │
   ├── Makefile
+  │
+  ├── test/                   # location of main test executable
   │ 
   └── README.md
   
