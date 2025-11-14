@@ -12,6 +12,8 @@
 //
 using namespace std;
 
+extern bool OSC_VERBOSE;
+
 const double PI = 3.1415926536;
 
 class Oscillators{
@@ -50,8 +52,8 @@ private:
   
   vector<int> lags; // unsure
 
-  int nSimulations; //needs get/set
-
+  int nSimulations = 1; //needs get/set
+  map<int, vector<vector<double>>> simulationResults;
 public:
   //comments are source files in which function is written, function description comments go 
   //in source files. Uncomment functions as they are written
@@ -63,7 +65,7 @@ public:
   //int N; //number of oscillators
   
   //--------------------------------------------------------------------------------------------------------------------
-  // system initialisation functions - sys_initialisation.cpp
+  // system initialisation functions - osc_initialisation.cpp
   //--------------------------------------------------------------------------------------------------------------------
   
   void set_noise_distribution(string dist); //unexposed
@@ -125,15 +127,24 @@ public:
   void initialise_custom_system(); 
   
   void re_initialise_system(string method); //exposed
+  
+  int get_n_simulations();
+  
+  void set_n_simulations(int n);
+  
   //--------------------------------------------------------------------------------------------------------------------
-  // integration functions sys_integration.cpp
+  // integration functions osc_integration.cpp
   //--------------------------------------------------------------------------------------------------------------------
   
   void set_time_step(double t); //to be exposed
-
-  void set_max_time(double t); //to be exposed
   
-  vector<double> dtheta_dt(); //unexposed
+  double get_time_step(); //exposed
+
+  void set_max_time(double t); //exposed
+  
+  double get_max_time(); //exposed
+  
+  vector<double> dtheta_dt(); 
 
   void eulers_method(); //to be exposed
   
@@ -142,9 +153,8 @@ public:
   double interpolate_phase(double x1, double y1, double x2, double y2); //unexposed
 
   //--------------------------------------------------------------------------------------------------------------------
-  // time series construction functions sys_time_series.cpp
+  // time series construction functions osc_time_series.cpp
   //--------------------------------------------------------------------------------------------------------------------
-
 
   void construct_timestamps(); //unexposed
   
@@ -154,18 +164,18 @@ public:
 
   void construct_timestamps_from_phases(); //unexposed
   
-  void set_timestamp_method(string method); //to be exposed
+  void set_timestamp_method(string method); //exposed
   
-  void set_timestamp_method(); //unexposed
+  string get_timestamp_method(); //exposed
   
   void construct_event_times(); //unexposed
 
   void construct_inter_event_times(); //unexposed
 
-  //--------------------------------------------------------------------------------------------------------------------
-  //getter methods sys_getter_methods.cpp
-  //--------------------------------------------------------------------------------------------------------------------
   vector<vector<double>> get_inter_event_times(); //to be exposed/just give intereventTimes a getset
+
+  map<int, vector<vector<double>>> get_simulation_results();
+  //--------------------------------------------------------------------------------------------------------------------
   //--------------------------------------------------------------------------------------------------------------------
 
   //void set_lags(); //analysis
@@ -177,10 +187,10 @@ public:
   //vector<double> get_correlations(); //analysis
 
   //--------------------------------------------------------------------------------------------------------------------
-  
-  //void set_n_simulations();
-  
-  //void set_n_simulations(int n);
+  //running simulations - kuramoto - osc_kuramoto.cpp 
+  void kuramoto_model();
+
+  void kuramoto_simulations(int n, string output);
 
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -195,6 +205,8 @@ public:
 //--------------------------------------------------------------------------------------------------------------------
 // important non-member functions
 //--------------------------------------------------------------------------------------------------------------------
+void set_verbose(bool flag);
+
 vector<vector<double>> kuramoto_model(int N, string settings, vector<int> actionOscillaoros, vector<vector<double>> K);
 
 

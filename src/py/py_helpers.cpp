@@ -39,3 +39,36 @@ bool py_to_matrix(PyObject* obj, vector<vector<double>>& mat) {
     return true;
 }
 
+PyObject* map_to_pydict(const map<int, vector<vector<double>>>& m) {
+  PyObject* dict = PyDict_New();
+  if (!dict) {
+    return nullptr;
+  }
+
+  for (const auto& pair : m) {
+    int key = pair.first;
+    const vector<vector<double>>& mat = pair.second;
+
+    PyObject* py_key = PyLong_FromLong(key);
+    PyObject* py_val = matrix_to_pylist(mat);
+
+    if (!py_key || !py_val) {
+      Py_XDECREF(py_key);
+      Py_XDECREF(py_val);
+      Py_DECREF(dict);
+      return nullptr;
+    }
+
+    if (PyDict_SetItem(dict, py_key, py_val) < 0) {
+      Py_DECREF(py_key);
+      Py_DECREF(py_val);
+      Py_DECREF(dict);
+      return nullptr;
+    }
+
+    Py_DECREF(py_key);
+    Py_DECREF(py_val);
+  }
+
+  return dict;
+}

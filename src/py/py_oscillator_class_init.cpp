@@ -1,6 +1,9 @@
 #include <Python.h>
 #include "py_wrappers.h"
 #include "oscillators.h"
+
+extern bool OSC_VERBOSE;
+
 //--------------------------------------------------------------------------------------------------------------------
 // Constructor
 //--------------------------------------------------------------------------------------------------------------------
@@ -35,7 +38,7 @@ PyTypeObject PyOscillatorsType = {
     .tp_name = "oscillators.Oscillators",
     .tp_basicsize = sizeof(PyOscillators),
     .tp_itemsize = 0,
-    .tp_flags = Py_TPFLAGS_DEFAULT,
+    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
     .tp_new = PyOscillators_new,
     .tp_dealloc = (destructor)PyOscillators_dealloc,
     .tp_methods = PyOscillatorsMethods,
@@ -60,6 +63,8 @@ static PyModuleDef oscillatorsModule = { //removed struct from this line after s
 //--------------------------------------------------------------------------------------------------------------------
 
 PyMODINIT_FUNC PyInit_oscillators(void) {
+  OSC_VERBOSE = false;
+
   if (PyType_Ready(&PyOscillatorsType) < 0){
     return NULL;
   }

@@ -3,12 +3,15 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import oscillators as osc
 import numpy as np
-
+import pandas as pd
 if __name__ == "__main__":
     S = osc.Oscillators(4)
     S.action_oscillators = [0,2]
-    print(S.action_oscillators)
-
+    S.initialise_system("default")
+    S.kuramoto_simulations(10, "interEventTimes")
+    print(S.simulation_results())
+    df = S.simulation_results()
+    print(df.shape)
     #x1 = np.random.normal(10, 2, 100)
     #x2 = np.random.normal(10, 2, 100)
     #x3 = np.random.uniform(0,20,100)

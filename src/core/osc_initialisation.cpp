@@ -106,6 +106,10 @@ void Oscillators::set_timestamp_method(string method){
   }
 }
 
+string Oscillators::get_timestamp_method(){
+  return timestampMethod;
+}
+
 double Oscillators::draw_noise_value(){
   double x = 0;
   if(noiseDist == "normal"){
@@ -150,11 +154,9 @@ double Oscillators::draw_uniform_rnd_value(vector<double> params){
 
 void Oscillators::initialise_omega(){
   double sample;
-  cout << "N is " << N << endl;
   while(omega.size() < N){
     sample = draw_omega_value();
     omega.push_back(sample);
-    cout << "omega has size " << omega.size() << endl;
   }
 }
 
@@ -164,7 +166,6 @@ void Oscillators::initialise_theta(){
     double sample = 1;//draw_theta_value();
     vector<double> theta0 = {sample};
     theta.push_back(theta0);
-    cout << "theta has size " << theta.size();
   }
 }
 
@@ -208,11 +209,10 @@ void Oscillators::initialise_custom_system(){
 }
 
 void Oscillators::initialise_default_system(){
-  cout << "N is " << N << endl;
   set_default_distributions();
   initialise_omega();
   initialise_theta();
-  cout << "theta has size " << theta.size();
+  set_coupling({{1,1,1,1},{1,1,1,1},{1,1,1,1},{1,1,1,1}});
   set_timestamp_method("amplitude");
   set_max_time(20);
   set_time_step(0.001);

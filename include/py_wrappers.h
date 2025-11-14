@@ -1,6 +1,7 @@
 #pragma once
 #include <Python.h>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -39,7 +40,7 @@ extern PyMethodDef PyOscillatorsMethods[];
 extern PyMemberDef PyOscillatorsMembers[];
 extern PyGetSetDef PyOscillatorsGetSet[];
 //----------------------------------------------------------------------------------------------------------------------
-// module initialisation
+// module initialisation functions
 //----------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -47,3 +48,4 @@ extern PyGetSetDef PyOscillatorsGetSet[];
 //----------------------------------------------------------------------------------------------------------------------
 PyObject* matrix_to_pylist(const vector<vector<double>> &mat);
 bool py_to_matrix(PyObject* obj, vector<vector<double>> &mat);
+PyObject* map_to_pydict(const map<int, vector<vector<double>>>& m);
