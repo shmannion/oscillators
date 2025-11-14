@@ -12,6 +12,12 @@ if __name__ == "__main__":
     print(S.simulation_results())
     df = S.simulation_results()
     print(df.shape)
+    S.reset("default")
+    S.kuramoto_simulations(20, "interEventTimes")
+    print(S.simulation_results())
+    df = S.simulation_results()
+    print(df.shape)
+
     #x1 = np.random.normal(10, 2, 100)
     #x2 = np.random.normal(10, 2, 100)
     #x3 = np.random.uniform(0,20,100)
