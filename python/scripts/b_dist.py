@@ -22,7 +22,7 @@ if __name__ == "__main__":
     S.action_oscillators = [0,2]
     S.initialise_system("default")
     S.omega = [11.9, 12.0, 12.4, 12.6]
-    fig, axs = plt.subplots(3, 2, figsize=(12,8), sharey=True)
+    fig, axs = plt.subplots(3, 2, figsize=(12,4), sharey=True)
     axis_co_ords = []
     for i in range(0,3):
         for j in range(0,2):

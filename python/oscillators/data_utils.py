@@ -44,4 +44,10 @@ def get_inter_event_times(tapTimes):
     return interEventTimes
  
  
-
+def get_inter_event_times_from_file(midi_file_path):
+    """
+    merging of the two functions above
+    """
+    tapTimes = midi_to_tap_times(midi_file_path)
+    inter_event_times = get_inter_event_times(tapTimes)
+    return inter_event_times
