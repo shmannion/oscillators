@@ -6,6 +6,14 @@ def get_participant_distribution(condition:str, participant:tuple, freq:int=120)
     """
     For a given condition and participant (tuple of pair (1-16 inclusive) and candidate (1 or 2)), returns a list
     of the relevant inter-event times
+    args:
+        condition: one of {'comp', 'leader_follower_1', 'leader_follower_2', 'self', 'other'}
+
+        participant: tuple(int) first element: Candidate pair number. Second element: Candidate number
+
+    returns:
+        list of inter event times for the participant in the condition
+
     """
 
     inter_event_times = []
@@ -104,7 +112,6 @@ def get_condition_distribution(condition:str, freq:int=120):
             if "c1" in file:
                 filepaths.append(f'{path}/{file}')
 
-    print(filepaths)
     for file in filepaths:
         trial_inter_event_times = get_inter_event_times_from_file(file)
         for time in trial_inter_event_times:
@@ -138,10 +145,5 @@ def get_distribution_per_participant(condition:str, frequency:int=120):
 
     df = pd.DataFrame(inter_event_times)
     return df
-
-
-
-
-
 
 
