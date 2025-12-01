@@ -280,6 +280,41 @@ static int PyOscillators_set_action_oscillators(PyOscillators* self, PyObject* v
   return 0;
 }
 
+//---------------------------------------------------------------------------------------------------------------------
+//metronomes
+static PyObject* PyOscillators_get_metronomes(PyOscillators* self, void*) {
+  const vector<int>& a = self->cpp_obj->get_metronomes();
+
+  PyObject* list = PyList_New(a.size());
+  for (size_t i = 0; i < a.size(); ++i) {
+    PyList_SetItem(list, i, PyLong_FromLong(a[i]));
+  }
+
+  return list;
+}
+
+static int PyOscillators_set_metronomes(PyOscillators* self, PyObject* value, void*) {
+  if (!PyList_Check(value)) {
+    PyErr_SetString(PyExc_TypeError, "metronomes must be a list of integers");
+    return -1;
+  }
+
+  vector<int> a;
+  Py_ssize_t size = PyList_Size(value);
+  a.reserve(size);
+
+  for (Py_ssize_t i = 0; i < size; ++i) {
+    PyObject* item = PyList_GetItem(value, i);
+    if (!PyLong_Check(item)) {
+      PyErr_SetString(PyExc_TypeError, "All elements must be integers");
+      return -1;
+    }
+    a.push_back((int)PyLong_AsLong(item));
+  }
+
+  self->cpp_obj->set_metronomes(a);
+  return 0;
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 //amplitude start stamp
@@ -435,6 +470,8 @@ PyGetSetDef PyOscillatorsGetSet[] = {
    "Coupling matrix (list of lists of floats)", NULL},
   {"action_oscillators", (getter)PyOscillators_get_action_oscillators, (setter)PyOscillators_set_action_oscillators,
    "List of active oscillator indices", NULL},
+  {"metronomes", (getter)PyOscillators_get_metronomes, (setter)PyOscillators_set_metronomes,
+   "List of metronome indices", NULL},
   {"amplitude_timestamp_start", (getter)PyOscillators_get_amplitude_stamp_start, (setter)PyOscillators_set_amplitude_stamp_start,
    "Set the x-axis crossing that represents the first tapping event (int)", NULL},
   {"dt", (getter)PyOscillators_get_time_step, (setter)PyOscillators_set_time_step,

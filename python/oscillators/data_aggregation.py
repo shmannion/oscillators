@@ -128,6 +128,9 @@ def get_distribution_per_participant(condition:str, frequency:int=120):
         condition: string. The experiment we are dealing with
 
         frequency: int. The frequency
+    returns:
+        df: Pandas dataframe of candidate times
+    
     """
     
     inter_event_times = {}

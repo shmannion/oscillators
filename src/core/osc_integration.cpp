@@ -22,7 +22,11 @@ vector<double> Oscillators::dtheta_dt(){
   double dtheta;
   double noise;
   for(int i = 0; i != N; ++i){
-    noise = draw_noise_value();
+    if(metronomes[i] == 1){
+      noise = 0;
+    }else{
+      noise = draw_noise_value();
+    }
     dtheta = omega[i] + noise;
     for(int j = 0; j != N; ++j){
       dtheta += K[i][j] * sin(theta[j].back() - theta[i].back());

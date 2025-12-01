@@ -206,6 +206,25 @@ vector<int> Oscillators::get_action_oscillators(){
   return labels;
 }
 
+void Oscillators::set_metronomes(vector<int> labels){
+  for(int i = 0; i != N; ++i){
+    metronomes.push_back(0);
+  }
+  for(int i = 0; i != labels.size(); ++i){
+    metronomes[labels[i]] = 1;
+  }
+}
+
+vector<int> Oscillators::get_metronomes(){
+  vector<int> returnList = {};
+  for(int i = 0; i != N; ++i){
+    if(metronomes[i] == 1){
+      returnList.push_back(i);
+    }
+  }
+  return returnList;
+}
+
 void Oscillators::initialise_system(string method){
   if(method == "default"){
     initialise_default_system();

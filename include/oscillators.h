@@ -46,6 +46,7 @@ private:
   int amplitudeStampStart = 1; //needs get/set
 
   vector<int> actionOscillators; 
+  vector<int> metronomes; //if metronomes[i] == 1, oscillator i is a metronome
   vector<vector<double>> eventTimes; //needs get/set 
   vector<vector<double>> interEventTimes; //needs get/set (has c get)
 
@@ -109,6 +110,10 @@ public:
   void set_action_oscillators(vector<int>); //exposed 
   
   vector<int> get_action_oscillators(); //exposed 
+  
+  void set_metronomes(vector<int>); //exposed 
+  
+  vector<int> get_metronomes(); //exposed 
   
   void initialise_omega(); //unexposed         
 

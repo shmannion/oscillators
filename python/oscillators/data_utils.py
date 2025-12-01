@@ -4,7 +4,7 @@ import pandas as pd
 #sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 #import oscillators as osc
 from scipy.stats import shapiro, normaltest
-
+import math
 
 def midi_to_tap_times(midi_file_path):
     """
@@ -121,3 +121,42 @@ def remove_outliers_from_list(data, bounds):
                 keep.append(i)
     
     return keep
+
+def frequencies_from_times(data):
+    if(type(data) == pd.DataFrame):
+        freq_data = frequencies_from_list(data)
+    if(type(data) == dict):
+        freq_data = frequencies_from_dict(data) 
+    if(type(data) == list):
+        freq_data = frequencies_from_df(data)
+    return freq_data
+
+
+def frequencies_from_list(data):
+    freq_data = [(1/i)*2*math.pi for i in data]
+    return freq_data
+
+def frequencies_from_dict(data):
+    freq_data = {}
+    for i in data:
+        freq_data[i] = [(1/j)*2*math.pi for j in data[i]]
+    return freq_data
+
+def frequencies_from_df(data):
+    freq_data = data.apply(lambda x: (1/x)*2*math.pi)  
+    return freq_data
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -75,3 +75,4 @@ if __name__ == "__main__":
     for cond in keep:
         print(f'For condition {cond}, the mean is {np.mean(keep[cond])}, and the standard dev is {np.std(keep[cond])}')
     osc.distribution_subplots(keep, share=True)
+    

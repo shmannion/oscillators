@@ -5,7 +5,9 @@ def check_shape(n_plots):
     """
     Takes the number of plots needed, returns the best size to display that number of plots
     """
-    if n_plots % 4 == 0: #4 rows
+    if n_plots == 2:
+        return [1, int(n_plots)]
+    elif n_plots % 4 == 0: #4 rows
         return [4, int(n_plots/4)]
     elif n_plots % 3 == 0: #3 rows
         return [3, int(n_plots/3)]
@@ -51,6 +53,7 @@ def distribution_subplots_dict(data:pd.DataFrame, title:str="Distributions", sha
         n_plots = len(data)
 
     axis_dimensions = check_shape(n_plots)
+    print(axis_dimensions)
     if axis_dimensions[0] == 1: #if there is only one row, the default shape stretches them too much
         size = (9,5)
     else:
