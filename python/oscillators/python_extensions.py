@@ -1,9 +1,13 @@
 import pandas as pd
+import numpy as np
 
 class OscillatorsPythonAddons:
     """
     Extra Python utilities for Oscillators objects.
     """
+    
+    _cached_results_df = None
+    _results_dirty = True
 
     def inter_event_times(self):
         """
@@ -20,51 +24,11 @@ class OscillatorsPythonAddons:
 
         return df
     
-    #def simulation_results(self):
-    #    """
-    #    Convert self.results (a dict[int -> 2D list]) into a single wide DataFrame.
-
-    #    Column names become:
-    #        simulation_i_oscillator_j
-    #    """
-
-    #    results = self.simulation_results_dict   # uses your Python getter
-
-    #    # Determine max number of time points and oscillators
-    #    max_rows = max(len(mat) for mat in results.values())
-    #    max_cols = max(len(row) for mat in results.values() for row in mat)
-
-    #    # Build a dataframe dict of columns
-    #    df_dict = {}
-
-    #    for sim, mat in results.items():
-    #        # Ensure rectangular (pad short rows if needed)
-    #        padded = []
-    #        for row in mat:
-    #            if len(row) < max_cols:
-    #                row = row + [None] * (max_cols - len(row))
-    #            padded.append(row)
-
-    #        if len(padded) < max_rows:
-    #            blank = [None] * max_cols
-    #            padded += [blank] * (max_rows - len(padded))
-
-    #        # Now padded is max_rows × max_cols
-    #        # Convert to DataFrame to help transpose
-    #        tmp = pd.DataFrame(padded).T
-
-    #        # tmp is oscillators × timepoints
-    #        for osc_index, col in tmp.iterrows():
-    #            colname = f"simulation_{sim}_oscillator_{osc_index+1}"
-    #            df_dict[colname] = col.values
-
-    #    return pd.DataFrame(df_dict)
-    _cached_results_df = None
-    _results_dirty = True
 
     def mark_results_dirty(self):
         self._results_dirty = True
 
+    
     def simulation_results(self, force=False):
         if force or self._results_dirty or self._cached_results_df is None:
             results = self.simulation_results_dict   # uses your Python getter
@@ -108,3 +72,25 @@ class OscillatorsPythonAddons:
         df.index = range(T)
 
         return df
+
+    
+    def one_dimensional_coupling_search(self, indices, bounds, step=1):
+        mu    = {}    
+        sigma = {}
+        coupling_matrix = self.coupling
+        
+        for i in range(bounds[0], bounds[1] + step, step):
+            coupling_matrix[indices[0]][indices[1]] = float(i) 
+            self.coupling = coupling_matrix
+            self.kuramoto_simulations(100, "interEventTimes")
+            df = self.simulation_results()
+            model_ie_times = df.values.flatten()
+            mean = np.mean(model_ie_times)
+            std_dev = np.std(model_ie_times)
+            mu[i] = mean
+            sigma[i] = std_dev
+            self.reset()
+
+        return mu, sigma
+
+

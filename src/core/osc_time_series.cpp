@@ -35,6 +35,10 @@ void Oscillators::construct_timestamps(string method){
 }
 
 void Oscillators::construct_timestamps_from_phases(){
+  if (OSC_VERBOSE == true){
+    cout << "constructing time stamps" << endl;
+  }
+  
   for(int i = 0; i != N; ++i){
     timestamps.push_back({});
     for(int j = 0; j != theta[i].size() - 1; ++j){
@@ -91,7 +95,7 @@ void Oscillators::construct_inter_event_times(){
     for(int j = 1; j != eventTimes[i].size(); ++j){
       interEventTimes[i].push_back(eventTimes[i][j] - eventTimes[i][j-1]);
       if (OSC_VERBOSE == true){
-        cout << interEventTimes[i].back() << ", ieTimes" << i << endl;
+        cout << j << " , " << interEventTimes[i].back() << ", ieTimes" << i << ", K" << K[0][1] << endl;
       }
     }//endfor
   }//endfor

@@ -41,10 +41,14 @@ void Oscillators::eulers_method(){
   while(currentTime < tMax){
     vector<double> dthetaDt = dtheta_dt();
     for(int i = 0; i != theta.size(); ++i){
-      if (OSC_VERBOSE == true){
-        cout << currentTime << ", " << dthetaDt[i] << ", dt" << i << endl; 
+      if(metronomes[i] == 1){
+        theta[i].push_back(theta[i][0] + (currentTime * omega[i]));
+      }else{
+        theta[i].push_back(theta[i].back() + (dthetaDt[i] * dt));
       }
-      theta[i].push_back(theta[i].back() + (dthetaDt[i] * dt));
+      if (OSC_VERBOSE == true){
+        cout << currentTime << ", " << sin(theta[i].back()) << ", theta" << i << endl; 
+      }
     }
     currentTime += dt;
   }
