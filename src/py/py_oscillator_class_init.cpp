@@ -38,12 +38,12 @@ PyTypeObject PyOscillatorsType = {
     .tp_name = "oscillators.Oscillators",
     .tp_basicsize = sizeof(PyOscillators),
     .tp_itemsize = 0,
-    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
-    .tp_new = PyOscillators_new,
     .tp_dealloc = (destructor)PyOscillators_dealloc,
+    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
     .tp_methods = PyOscillatorsMethods,
     .tp_members = PyOscillatorsMembers,
     .tp_getset  = PyOscillatorsGetSet,
+    .tp_new = PyOscillators_new,
 };
 
 //--------------------------------------------------------------------------------------------------------------------
