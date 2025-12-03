@@ -78,8 +78,9 @@ class OscillatorsPythonAddons:
         mu    = {}    
         sigma = {}
         coupling_matrix = self.coupling
-        
-        for i in range(bounds[0], bounds[1] + step, step):
+        i = bounds[0]
+
+        while i < bounds[1] + step:
             coupling_matrix[indices[0]][indices[1]] = float(i) 
             self.coupling = coupling_matrix
             self.kuramoto_simulations(100, "interEventTimes")
@@ -90,6 +91,7 @@ class OscillatorsPythonAddons:
             mu[i] = mean
             sigma[i] = std_dev
             self.reset()
+            i += step
 
         return mu, sigma
 
