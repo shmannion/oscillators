@@ -21,9 +21,9 @@ if __name__ == "__main__":
     K = [[0.0, coupling], [0.0, 0.0]]
     mu = {}
     sigma = {}
-    for i in range(0,200):
+    for i in range(0,2):
         S.noise_distribution = ("normal", [0.0, 0.0+(i*0.1)])
-        mu_k, sigma_k = S.one_dimensional_coupling_search([0,1], [1,20], 0.1)
+        mu_k, sigma_k = S.one_dimensional_coupling_search([0,1], [1,2], 0.1)
         mu[i] = mu_k
         sigma[i] = sigma_k
         

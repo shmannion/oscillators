@@ -65,9 +65,13 @@ class OscillatorsPythonAddons:
         for sim_i, osc_list in results.items():
             for osc_j, series in enumerate(osc_list, start=1):
                 data[f"simulation_{sim_i}_oscillator_{osc_j}"] = series[0:T]
+                
+        try:
+            df = pd.DataFrame.from_dict(data)
+        except ValueError:
+            df = pd.DataFrame.from_dict(data, orient='index')
+            df = df.transpose()
 
-        df = pd.DataFrame.from_dict(data)
-        
         # Ensure rows correspond to time steps exactly
         df.index = range(T)
 
