@@ -71,7 +71,11 @@ here is that we should first find ranges of coupling coefficient and noise value
 distributions of inter-event times. Once we have that, we can start fine-tuning the parameter values to look at the
 actual time series data, and correlations between inter-event times. Another piece of the puzzle that I have been 
 looking at is the lack of use of the order parameter in the model used in the paper. I want to start looking at
-incorporating this to see if it improves model performance.
+incorporating this to see if it improves model performance. 
+
+- Experiments: set running on HPC an experiment (exp\_01) to search the parameter space of 0-20 in steps of 0.1 both 
+  for the coupling coefficient (0,1) for the action Oscillator to metronome (comp data), and for the standard deviation
+  of noise.
 
 
 
