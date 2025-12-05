@@ -46,21 +46,55 @@ slight edit
   └── README.md
   
 # LATERBASE (To-do, or for now, a list of desired features)
-- [ ] Should take the number of coupled oscillators into a system object. There is a wrinkle here regarding the fact
+- [x] Should take the number of coupled oscillators into a system object. There is a wrinkle here regarding the fact
   that I will have a population of dyads. Some information I will want from the global system (natural frequencies, 
   for example). The advantage of doing this is in that it will avoid the passing of large vectors/matrices.
 - [ ] Depending on whether or not an order parameter is needed, variables need to have capability of being complex.
 - [ ] Different methods of numerical integration should be implemented.
-- [ ] The outputs will change, for example to recreate Heggli et al. 2019, I need to output the phases to generate
-  the time series.
-- [ ] I will need a wider variety of distributions that needed for the CIC project, give a seperate header file for 
-  these. Incorrect - since the CDFs will need to be accessed throughout, keeping them within the system object is
-  necessary to again stop them being passed around.
 - [ ] Kuramoto models to start, but more should be added as time goes on. For example, th HKB model (Zhang et al.)
   I should also ask Sam, James, for more on these. Binary state dynamics useful?
 - [ ] Should be simple to do but just to note that we should have the capability of including a network (adjacency 
   matrix of coupling coefficients?) in the models.
-- [ ] In addition to the C++ code for running the models, will need a Python component for analysing the data and
+- [x] In addition to the C++ code for running the models, will need a Python component for analysing the data and
   extracting the information (for example, the natural frequencies).
-- [ ] To bypass the continuous distribution issue with maps, use built-in normal distribution etc.
+- [x] To bypass the continuous distribution issue with maps, use built-in normal distribution etc.
 - [ ] How to handle the complex/non-complex issue?
+
+# Diary
+Here on is a diary-like list of updates regarding the experiments and development of the package. Most recent entry first. 
+Started on 5 December 2025.
+
+## 2025-12-05
+Currently writing/using parameter searching functions in C++. Initially, these experiments will search the parameter
+space and only report the mean and standard deviation of the inter event times of the action oscillators. The logic
+here is that we should first find ranges of coupling coefficient and noise values that give rise to realistic 
+distributions of inter-event times. Once we have that, we can start fine-tuning the parameter values to look at the
+actual time series data, and correlations between inter-event times. Another piece of the puzzle that I have been 
+looking at is the lack of use of the order parameter in the model used in the paper. I want to start looking at
+incorporating this to see if it improves model performance.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

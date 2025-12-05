@@ -90,7 +90,7 @@ void Oscillators::construct_event_times(){
 }
 
 void Oscillators::construct_inter_event_times(){
-  for(int i = 0; i != eventTimes.size(); ++i){
+  for(int i = 0; i != actionOscillators.size(); ++i){
     interEventTimes.push_back({});
     for(int j = 1; j != eventTimes[i].size(); ++j){
       interEventTimes[i].push_back(eventTimes[i][j] - eventTimes[i][j-1]);

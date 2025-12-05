@@ -1,5 +1,47 @@
 #include "oscillators.h"
+#include <numeric>
+#include <cmath>
 
+double vector_mean(vector<double> x){
+  double sum = accumulate(x.begin(), x.end(), 0.0);
+  double mean = sum/x.size();
+  return mean;
+}
+
+double vector_mean_2d(vector<vector<double>> x){
+  double sum = 0;
+  double n = 0;
+  for(int i = 0; i != x.size(); ++i){
+    sum += accumulate(x[i].begin(), x[i].end(), 0.0);
+    n += x[i].size();
+  }
+  double mean = sum/n;
+  return mean;
+}
+
+double standard_deviation(vector<double> x){
+  double m = vector_mean(x);
+  double sum = 0;
+  for(int i = 0; i != x.size(); ++i){
+    sum += (x[i] - m) * (x[i] - m);
+  }
+  sum /= (x.size() - 1);
+  return sqrt(sum);
+}
+
+double standard_deviation_2d(vector<vector<double>> x){
+  double m = vector_mean_2d(x);
+  double n = 0;
+  double sum = 0;
+  for(int i = 0; i != x.size(); ++i){
+    for(int j = 0; j != x[i].size(); ++j){
+      sum += (x[i][j] - m) * (x[i][j] - m);
+      n += 1;
+    }
+  }
+  sum /= n - 1;
+  return sqrt(sum);
+}
 //vector<double> Oscillators::construct_time_stamps(vector<double> theta, double maxTime, double dt, int neglectTransient){
 //  vector<double> timePoints;
 //  int start = 0;

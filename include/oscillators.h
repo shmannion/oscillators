@@ -55,6 +55,8 @@ private:
 
   int nSimulations = 1; //needs get/set
   map<int, vector<vector<double>>> simulationResults;
+  map<int, vector<double>> configLabels;
+
 public:
   //comments are source files in which function is written, function description comments go 
   //in source files. Uncomment functions as they are written
@@ -201,7 +203,9 @@ public:
 
   void kuramoto_simulations(int n, string output);
 
+  vector<vector<double>> coupling_parameter_search_1d(vector<vector<int>> varyingIndices, vector<double> bounds, double step);
 
+  map<int, vector<vector<double>>> parameter_search();
   //--------------------------------------------------------------------------------------------------------------------
   //--------------------------------------------------------------------------------------------------------------------
   //--------------------------------------------------------------------------------------------------------------------
@@ -218,9 +222,13 @@ void set_verbose(bool flag);
 
 vector<vector<double>> kuramoto_model(int N, string settings, vector<int> actionOscillaoros, vector<vector<double>> K);
 
+double vector_mean(vector<double> x);
 
+double vector_mean_2d(vector<vector<double>> x);
 
+double standard_deviation(vector<double> x);
 
+double standard_deviation_2d(vector<vector<double>> x);
 
 
 

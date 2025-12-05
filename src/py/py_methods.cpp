@@ -71,6 +71,54 @@ static PyObject* PyOscillators_kuramoto_simulations(PyOscillators* self, PyObjec
   Py_RETURN_NONE;
 }
 
+
+static PyObject* PyOscillators_coupling_parameter_search_1d(PyOscillators* self, PyObject* args) {
+  PyObject* py_indices = nullptr;
+  PyObject* py_bounds = nullptr;
+  double step;
+
+  // Expect: varyingIndices (list-of-lists), bounds (sequence), step (float)
+  if (!PyArg_ParseTuple(args, "OOd", &py_indices, &py_bounds, &step)) {
+    return nullptr;
+  }
+
+  vector<vector<int>> varyingIndices;
+  vector<double> bounds;
+
+  if (!py_to_int_matrix(py_indices, varyingIndices)) {
+    return nullptr;
+  }
+  if (!py_to_double_list(py_bounds, bounds)) {
+    return nullptr;
+  }
+
+  try {
+    vector<vector<double>> summaryValues =
+      self->cpp_obj->coupling_parameter_search_1d(varyingIndices, bounds, step);
+
+    // Use your existing vv_to_dict to convert summaryValues -> Python dict
+    return vv_to_pydict(summaryValues);
+  }
+  catch (const exception& e) {
+    PyErr_SetString(PyExc_RuntimeError, e.what());
+    return nullptr;
+  }
+}
+
+static PyObject* PyOscillators_parameter_search(PyOscillators* self){
+  try {
+    map<int, vector<vector<double>>> results = self->cpp_obj->parameter_search();
+
+    // Use your existing vv_to_dict to convert summaryValues -> Python dict
+    return map_to_pydict(results);
+  }
+  catch (const exception& e) {
+    PyErr_SetString(PyExc_RuntimeError, e.what());
+    return nullptr;
+  }
+
+}
+
 PyMethodDef PyOscillatorsMethods[] = {
   {"initialise_system", (PyCFunction)PyOscillators_initialise_system, METH_VARARGS | METH_KEYWORDS,
    "Initialise the oscillator system (method='default' or 'custom')"},
@@ -80,5 +128,9 @@ PyMethodDef PyOscillatorsMethods[] = {
    "Initialise system with default settings"},
   {"kuramoto_simulations", (PyCFunction)PyOscillators_kuramoto_simulations, METH_VARARGS | METH_KEYWORDS,
    "Run n Kuramoto simulations and return a dict of results"},
+  {"coupling_parameter_search_1d", (PyCFunction)PyOscillators_coupling_parameter_search_1d, METH_VARARGS,
+   "1D coupling parameter search; returns dict[index] -> list[summary values]"},
+  {"parameter_search", (PyCFunction)PyOscillators_parameter_search, METH_NOARGS,
+   "1D coupling parameter search; returns dict[index] -> list[summary values]"},
   {NULL, NULL, 0, NULL}  // Sentinel
 };

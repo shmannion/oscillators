@@ -49,3 +49,6 @@ extern PyGetSetDef PyOscillatorsGetSet[];
 PyObject* matrix_to_pylist(const vector<vector<double>> &mat);
 bool py_to_matrix(PyObject* obj, vector<vector<double>> &mat);
 PyObject* map_to_pydict(const map<int, vector<vector<double>>>& m);
+PyObject* vv_to_pydict(const vector<vector<double>> &v);
+bool py_to_int_matrix(PyObject* obj, vector<vector<int>>& out);
+bool py_to_double_list(PyObject* obj, vector<double>& out);

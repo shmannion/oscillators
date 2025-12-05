@@ -21,15 +21,26 @@ if __name__ == "__main__":
     K = [[0.0, coupling], [0.0, 0.0]]
     mu = {}
     sigma = {}
-    for i in range(0,200):
-        S.noise_distribution = ("normal", [0.0, 0.0+(i*0.1)])
-        mu_k, sigma_k = S.one_dimensional_coupling_search([0,1], [1,20], 0.1)
-        mu[i] = mu_k
-        sigma[i] = sigma_k
-        
+    mu_list = []
+    sigma_list = []
+    res = S.parameter_search()
+    for k in res:
+        mu[k] = [i[0] for i in res[k]]
+        sigma[k] = [i[0] for i in res[k]]
+        mu_list.extend(mu[k])
+        sigma_list.extend(sigma[k])
     df = pd.DataFrame.from_dict(mu, orient='index')
-    df = df.sort_index().sort_index(axis=1)
+    n_cols = df.shape[1]
+    n_rows = df.shape[0]
+    df.columns = [round(i*0.1, 1) for i in range(0,n_cols)]
+    df.index = [round(i*0.1, 1) for i in range(0,n_rows)]
+    df.index.name = 'noise std'
     df.to_csv('param_search_mu.csv')
+    
     df = pd.DataFrame.from_dict(sigma, orient='index')
-    df = df.sort_index().sort_index(axis=1)
+    n_cols = df.shape[1]
+    n_rows = df.shape[0]
+    df.columns = [round(i*0.1, 1) for i in range(0,n_cols)]
+    df.index = [round(i*0.1, 1) for i in range(0,n_rows)]
+    df.index.name = 'noise std'
     df.to_csv('param_search_sigma.csv')
