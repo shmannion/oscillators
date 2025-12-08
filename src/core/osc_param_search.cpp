@@ -23,7 +23,7 @@ map<int, vector<vector<double>>> Oscillators::parameter_search(){
   vector<double> searchedValues = {};
   vector<double> currentSummary = {};
   map<int, vector<vector<double>>> summaryValues;
-  for(int sig = 0; sig != 200; ++sig){
+  for(int sig = 0; sig != 100; ++sig){
     summaryValues[sig] = {};
     double k = bounds[0];
     while(k <= bounds[1]){
@@ -46,6 +46,7 @@ map<int, vector<vector<double>>> Oscillators::parameter_search(){
       k += step;
       reinitialise_system("default");
     }
+    cout << "noise of " << sig << " and coupling " << k << " done." << endl;
   }
   return summaryValues;
 }

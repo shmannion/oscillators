@@ -8,6 +8,7 @@ model being run, desired method of numerical integration, and available data.
 When created, an overleaf document containing a write up of this work will be added here.
 slight edit
 # Directory Structure
+```text
   project\_root/
   │ 
   ├── include/                # C++ headers
@@ -44,6 +45,7 @@ slight edit
   ├── test/                   # location of main test executable
   │ 
   └── README.md
+```
   
 # LATERBASE (To-do, or for now, a list of desired features)
 - [x] Should take the number of coupled oscillators into a system object. There is a wrinkle here regarding the fact
@@ -76,29 +78,4 @@ incorporating this to see if it improves model performance.
 - Experiments: set running on HPC an experiment (exp\_01) to search the parameter space of 0-20 in steps of 0.1 both 
   for the coupling coefficient (0,1) for the action Oscillator to metronome (comp data), and for the standard deviation
   of noise.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
