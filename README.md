@@ -66,6 +66,27 @@ slight edit
 Here on is a diary-like list of updates regarding the experiments and development of the package. Most recent entry first. 
 Started on 5 December 2025.
 
+
+
+
+
+## Monday — 2025-12-08
+
+### Notes
+I have been giving some thought to what the experiments should output. I think the best thing particularly for things 
+like parameter space searching is to output the phase values, in however many columns that takes. This way, a change in 
+the analysis doesn't require the experiments to be run again. I will need to look at how the results are printed - the
+dataframe columns must be the same length.
+
+
+- Experiments finished: N/A
+- Experiments failed: exp\_01 from entry 2025-12-05 (reached time limit). 
+- Experiments run: resubmitted exp\_01 from entry 2025-12-05.
+- Code changes made:
+
+---
+
+
 ## 2025-12-05
 Currently writing/using parameter searching functions in C++. Initially, these experiments will search the parameter
 space and only report the mean and standard deviation of the inter event times of the action oscillators. The logic
@@ -78,4 +99,12 @@ incorporating this to see if it improves model performance.
 - Experiments: set running on HPC an experiment (exp\_01) to search the parameter space of 0-20 in steps of 0.1 both 
   for the coupling coefficient (0,1) for the action Oscillator to metronome (comp data), and for the standard deviation
   of noise.
+
+
+
+
+
+
+
+
 

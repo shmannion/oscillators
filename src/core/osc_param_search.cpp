@@ -9,8 +9,8 @@
 //}
 
 map<int, vector<vector<double>>> Oscillators::parameter_search(){
-  vector<double> bounds = {0,20};
-  double step = 0.1;
+  vector<double> bounds = {0,10};
+  double step = 1;
   vector<int> couplingIndex = {0,1};
   vector<vector<double>> coupling = {};
   for(int i = 0; i != N; ++i){
@@ -23,7 +23,8 @@ map<int, vector<vector<double>>> Oscillators::parameter_search(){
   vector<double> searchedValues = {};
   vector<double> currentSummary = {};
   map<int, vector<vector<double>>> summaryValues;
-  for(int sig = 0; sig != 100; ++sig){
+  for(int sig = 0; sig != 10; ++sig){
+    cout << "sig is " << sig << endl; 
     summaryValues[sig] = {};
     double k = bounds[0];
     while(k <= bounds[1]){
@@ -33,7 +34,8 @@ map<int, vector<vector<double>>> Oscillators::parameter_search(){
       currentSummary = {};
       coupling[couplingIndex[0]][couplingIndex[1]] = k;
       K = coupling;
-      kuramoto_simulations(100, "interEventTimes");
+      kuramoto_simulations(10, "interEventTimes");
+      cout << "checkpoint" << endl;
       for(int i = 0; i != actionOscillators.size(); ++i){
         for(auto itr = simulationResults.begin(); itr != simulationResults.end(); ++itr){
           singleResult = itr->second[i];

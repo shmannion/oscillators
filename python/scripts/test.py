@@ -10,5 +10,5 @@ np.set_printoptions(legacy='1.25')
 PLOT = True
 
 if __name__ == "__main__":
-   x = np.min([2, 10])
-   print(x)
+    for i in range(0,100):
+        print(round(0.1 * i, 1))
