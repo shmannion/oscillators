@@ -34,9 +34,11 @@ slight edit
   │   │   ├── core.py         # Python-side helpers / logic
   │   │   └── ... 
   │   │
-  │   ├── scripts/            # Detailed Python scripts
+  │   ├── scripts/            # Python scripts for running experiments
   │   │   ├── analysis.py
   │   │   └── simulation.py
+  │   │
+  │   ├── analysis/           # Python scripts for analysis of experiment output
   │   │
   │   └── oscillators.so      # C++ extension (what is imported to Python)
   │

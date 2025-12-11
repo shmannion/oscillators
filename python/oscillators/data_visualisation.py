@@ -125,6 +125,9 @@ def heatmap_from_df(data:pd.DataFrame, target:str="min", small_vals=False, title
     if n_y < 10:
         n_y = 1
     x_unique = list(data.columns)
+    if type(x_unique[0] == str):
+        x_unique = [float(i) for i in x_unique]
+
     y_unique = list(data.index)
     if small_vals == True:
         data = data.apply(np.log)
