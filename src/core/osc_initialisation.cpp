@@ -213,8 +213,10 @@ void Oscillators::set_metronomes(vector<int> labels){
   for(int i = 0; i != labels.size(); ++i){
     metronomes[labels[i]] = 1;
   }
-  for(int i = 0; i != N; ++i){
-    cout << "for " << i << "the metronome value is " << metronomes[i] << endl;
+  if(OSC_VERBOSE == true){
+    for(int i = 0; i != N; ++i){
+      cout << "for " << i << "the metronome value is " << metronomes[i] << endl;
+    }
   }
 }
 

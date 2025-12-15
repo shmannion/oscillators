@@ -217,3 +217,75 @@ def heatmap_from_lists(data:list, target:str="min", small_vals=False, title:str=
     plt.title(title)
                                                              
     plt.show()                                               
+
+
+def correlation_plots(data:dict):
+    # lags = list(data.keys())
+    # plt.figure(figsize)
+    lags = sorted(data.keys())
+    means = []
+    stderr = []
+
+    for lag in lags:
+        values = np.array(data[lag])
+        means.append(values.mean())
+        stderr.append(values.std(ddof=1) / np.sqrt(len(values)))
+
+    plt.bar(lags, means, yerr=stderr, capsize=5)
+    plt.xlabel("lag")
+    plt.ylabel("Mean value")
+    plt.title("Experiment results (mean ± SE)")
+    plt.show()
+
+def plot_correlation_comparison(results_a, results_b, label_a="empirical", label_b="model", saveloc=""):
+    # Ensure both dictionaries share the same experiment numbers
+    lags = sorted(set(results_a.keys()))
+    x = np.arange(len(lags))
+    width = 0.35
+
+    means_a = []
+    stderr_a = []
+    means_b = []
+    stderr_b = []
+
+    for lag in lags:
+        a_vals = np.array(results_a[lag])
+        b_vals = np.array(results_b[lag])
+
+        means_a.append(a_vals.mean())
+        stderr_a.append(a_vals.std(ddof=1) / np.sqrt(len(a_vals)))
+
+        means_b.append(b_vals.mean())
+        stderr_b.append(b_vals.std(ddof=1) / np.sqrt(len(b_vals)))
+
+    plt.figure(figsize=(7, 4))
+
+    plt.bar(
+        x - width / 2,
+        means_a,
+        width,
+        yerr=stderr_a,
+        capsize=5,
+        label=label_a
+    )
+
+    plt.bar(
+        x + width / 2,
+        means_b,
+        width,
+        yerr=stderr_b,
+        capsize=5,
+        label=label_b
+    )
+
+    plt.xticks(x, lags)
+    plt.xlabel("lag")
+    plt.ylabel("Mean value")
+    plt.title("Empirical vs model")
+    plt.legend()
+    plt.tight_layout()
+    if saveloc != "":
+        plt.savefig(saveloc)
+    else:
+        plt.show()
+

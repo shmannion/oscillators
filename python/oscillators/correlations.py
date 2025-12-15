@@ -123,5 +123,18 @@ def get_correlation_means(data:dict):
     return summary
 
 
+def get_condition_correlations(cond:str, freq:int=120):
+    corrDict = {-1: [],
+                0: [],
+                1: []}
+
+    for i in range(1,17):
+        pairDict = get_pair_correlations(cond, i)
+        for lag in [-1, 0, 1]:
+            corrDict[lag].append(np.mean(pairDict[lag]))
+
+
+    return corrDict
+
 
 

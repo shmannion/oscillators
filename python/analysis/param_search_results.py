@@ -24,11 +24,16 @@ if __name__ == "__main__":
         print(f'For condition {cond}, the mean is {np.mean(keep[cond])}, and the standard dev is {np.std(keep[cond])}')
  
     targets = [np.mean(keep['comp']), np.std(keep['comp'])]
+    print(df_mean)
+    print(df_sigma.shape)
+    # df_mean = df_mean.iloc[40:60,20:80]
+    # df_sigma = df_sigma.iloc[40:60,20:80]
     relative_pct_mean = (df_mean - targets[0]).abs() / abs(targets[0])
+    print(relative_pct_mean)
     relative_pct_sigma = (df_sigma - targets[1]).abs() / abs(targets[1])
-    osc.heatmap(relative_pct_mean, small_vals = True)
-    osc.heatmap(relative_pct_sigma, small_vals = True)
-    row_means = df_mean[df_mean.index > 9].mean(axis=1)
+    osc.heatmap(relative_pct_mean, small_vals = True, title="distance from target mean")
+    osc.heatmap(relative_pct_sigma, small_vals = True, title="distance from target std")
+    row_means = df_mean[(df_mean.index >= 4) & (df_mean.index <= 6)].mean(axis=1)
     print(row_means)
     row_means = df_sigma[(df_sigma.index >= 4) & (df_sigma.index <= 6)].mean(axis=1)
     print(row_means)
