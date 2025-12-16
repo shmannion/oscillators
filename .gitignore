@@ -10,3 +10,5 @@ __pycache__/
 *.png
 test/
 python/data/
+python/out/
+!python/out/README.md 
