@@ -31,6 +31,8 @@ if __name__ == "__main__":
     relative_pct_mean = (df_mean - targets[0]).abs() / abs(targets[0])
     print(relative_pct_mean)
     relative_pct_sigma = (df_sigma - targets[1]).abs() / abs(targets[1])
+    df_both = np.sqrt(relative_pct_mean**2 + relative_pct_mean**2)
+    osc.heatmap(df_both, small_vals = True, title="distance from target mean")
     osc.heatmap(relative_pct_mean, small_vals = True, title="distance from target mean")
     osc.heatmap(relative_pct_sigma, small_vals = True, title="distance from target std")
     row_means = df_mean[(df_mean.index >= 4) & (df_mean.index <= 6)].mean(axis=1)

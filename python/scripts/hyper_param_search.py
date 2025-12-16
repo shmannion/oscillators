@@ -28,7 +28,7 @@ def hyper_param_search(tMax, innerloops, outerloops):
     for i in range(outerloops):
         S.kuramoto_simulations(innerloops, "interEventTimes")
         df = S.simulation_results()
-        df = df.iloc[20:, :]
+        # df = df.iloc[20:, :]
         S.reset()
         o1_cols = [col for col in df.columns if 'oscillator_1' in col]
         o2_cols = [col for col in df.columns if 'oscillator_2' in col]
@@ -53,9 +53,9 @@ def hyper_param_search(tMax, innerloops, outerloops):
     return means, stderr
 
 if __name__ == "__main__":
-    inVal = 50.0
+    inVal = 5.0
     print(f'tVal, mean_neg1, mean_0, mean_1, stderr_neg1, stderr_0, stderr_1')
-    while(inVal < 210):
+    while(inVal < 300):
         means, stderrs = hyper_param_search(inVal, 100, 100) 
-        inVal += 10
+        inVal += 5
         print(f'{inVal}, {means[0]}, {means[1]}, {means[2]}, {stderrs[0]}, {stderrs[1]}, {stderrs[2]}')

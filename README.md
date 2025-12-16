@@ -69,6 +69,18 @@ Here on is a diary-like list of updates regarding the experiments and developmen
 Started on 5 December 2025.
 
 
+## Tuesday — 2025-12-16
+
+### Notes:
+
+### Experiment Notes:
+- Experiments finished: exp 2-4 finished. I want to now run experiment
+- Experiments failed:
+- Experiments run:
+- Code changes made:
+
+---
+
 
 
 
