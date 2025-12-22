@@ -32,3 +32,17 @@ This is the output directory for the experiments I run for the oscillator projec
 
 - exp\_08: Using the results of 2-4 (seeing how much these things vary with the hyper params), run a parameter search 
            of the "good" areas from exp\_01, looking this time at the lagged correlations. (Horizontal area)
+
+- exp\_09-11: Having searched the parameter space, we are now going to vary three things over the next three experiments.
+              Note here that I am looking at how the mean and std dev of inter event times varies. Output is the mean
+              and standard deviation of inter event times, output should then be compared in the same way as is done 
+              for the heatmaps
+              They are:
+              - time per experiment (exp\_09)
+              - number of simulations in the inner loop (here, omega values stay the same between simulation runs) (exp\_10)
+              - number of outer loops (equivalent to changing candidates, omega values will change) (exp\_11)
+              The baseline for this is: 
+              100s per experiment (neglect 20 rows from dataframe (~10 seconds)).
+              100 inner loops 
+              100 outer loops
+              coupling = 0.45, noise standard deviation = 0.1
