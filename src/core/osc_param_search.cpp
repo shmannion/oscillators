@@ -9,8 +9,8 @@
 //}
 
 map<int, vector<vector<double>>> Oscillators::parameter_search(){
-  vector<double> bounds = {0,20};
-  double step = 0.1;
+  vector<double> bounds = {0.2,0.5};
+  double step = 0.02; 
   vector<int> couplingIndex = {0,1};
   vector<vector<double>> coupling = {};
   for(int i = 0; i != N; ++i){
@@ -23,7 +23,7 @@ map<int, vector<vector<double>>> Oscillators::parameter_search(){
   vector<double> searchedValues = {};
   vector<double> currentSummary = {};
   map<int, vector<vector<double>>> summaryValues;
-  for(int sig = 0; sig != 100; ++sig){
+  for(int sig = 0; sig != 50; ++sig){
     cout << "sig is " << sig << endl; 
     summaryValues[sig] = {};
     double k = bounds[0];

@@ -10,8 +10,9 @@ np.set_printoptions(legacy='1.25')
 PLOT = True
 
 if __name__ == "__main__":
-    for i in range (2,5):
+    for i in range (2,7):
         df = pd.read_csv(f'../out/exp_0{i}/res.dat', index_col=0)
         df.plot()  
+        plt.title(f'exp {i}')
         plt.show()     
     

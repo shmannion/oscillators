@@ -9,6 +9,8 @@ This is the output directory for the experiments I run for the oscillator projec
           is close to that observed in empirical data.
 
 - exp\_02-04: Having searched the parameter space, we are now going to vary three things over the next three experiments.
+              Note here that I am looking at how the correlations vary with these parameters, not the mean and std dev
+              of inter event times. Maybe that metric would make more sense for these experiments.
               They are:
               - time per experiment (exp\_02)
               - number of simulations in the inner loop (here, omega values stay the same between simulation runs) (exp\_03)
@@ -20,10 +22,10 @@ This is the output directory for the experiments I run for the oscillator projec
               coupling = 0.45, noise standard deviation = 0.1
 
 - exp\_05: From 2-4, we see that the only one that seems to have an effect is increasing the maximum time. I will 
-           run another experiment varying it from 20s to 300s in steps of 5, while neglecting the transient.
+           run another experiment varying it from 20s to 300s in steps of 5, without neglecting the transient.
 
 - exp\_06: From 2-4, we see that the only one that seems to have an effect is increasing the maximum time. I will 
-           run another experiment varying it from 20s to 300s in steps of 5, without neglecting the transient.
+           run another experiment varying it from 20s to 300s in steps of 5, while neglecting the transient.
 
 - exp\_07: Using the results of 2-4 (seeing how much these things vary with the hyper params), run a parameter search 
            of the "good" areas from exp\_01, looking this time at the lagged correlations. (Vertical area)
