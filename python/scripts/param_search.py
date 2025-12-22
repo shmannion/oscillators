@@ -35,7 +35,7 @@ if __name__ == "__main__":
     df.columns = [round(i*0.1, 1) for i in range(0,n_cols)]
     df.index = [round(i*0.1, 1) for i in range(0,n_rows)]
     df.index.name = 'noise std'
-    df.to_csv('../out/exp_07/param_search_mu_test.csv')
+    df.to_csv('../out/exp_08/param_search_mu_test.csv')
     
     df = pd.DataFrame.from_dict(sigma, orient='index')
     n_cols = df.shape[1]
@@ -43,4 +43,4 @@ if __name__ == "__main__":
     df.columns = [round(i*0.1, 1) for i in range(0,n_cols)]
     df.index = [round(i*0.1, 1) for i in range(0,n_rows)]
     df.index.name = 'noise std'
-    df.to_csv('../out/exp_07/param_search_sigma.csv')
+    df.to_csv('../out/exp_08/param_search_sigma.csv')
