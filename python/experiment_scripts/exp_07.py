@@ -23,7 +23,7 @@ if __name__ == "__main__":
     sigma = {}
     mu_list = []
     sigma_list = []
-    res = S.parameter_search()
+    res = S.parameter_search_e7()
     for k in res:
         mu[k] = [i[0] for i in res[k]]
         sigma[k] = [i[1] for i in res[k]]

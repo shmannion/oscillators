@@ -205,7 +205,9 @@ public:
 
   vector<vector<double>> coupling_parameter_search_1d(vector<vector<int>> varyingIndices, vector<double> bounds, double step);
 
-  map<int, vector<vector<double>>> parameter_search();
+  map<int, vector<vector<double>>> parameter_search_e7();
+  
+  map<int, vector<vector<double>>> parameter_search_e8();
   //--------------------------------------------------------------------------------------------------------------------
   //--------------------------------------------------------------------------------------------------------------------
   //--------------------------------------------------------------------------------------------------------------------
