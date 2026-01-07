@@ -8,20 +8,20 @@ double Oscillators::rk4(double y, double t, function<double(double, double)> f){
   double k4 = f(t + dt, y + dt*k3);
   return y + (dt/6)*(k1 + 2*k2 + 2*k3 + k4);
 
-// void Oscillators::set_pulse_width(double m){
+void Oscillators::set_pulse_width(double m){
+  pulseWidth = m;
+}
 
-// }
-
-// void Oscillators::set_pulse_amp(double p){
-
-// }
+void Oscillators::set_pulse_amp(double a){
+  pulseAmp = a;
+}
 
 double Oscillators::pulse(int n){
  //take an oscillator index, return the pulse value
  //pulse amp and pulse width need to be defined
  double p = 0.5 + 0.5 * cos(theta[n].back());
- p = pow(p, pulse_width);
- p += pulse_amp;
+ p = pow(p, pulseWidth);
+ p += pulseAmp;
  return p;
 }
 

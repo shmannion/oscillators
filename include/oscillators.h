@@ -32,13 +32,20 @@ private:
   vector<double> omegaParams; //The parameters for the distribution of natural frequencies 
   vector<double> thetaParams; 
 
+  //coupling coefficient, oscillator phases and frequencies
   vector<vector<double>> K; //The coupling coefficients for the model 
 
   vector<vector<double>> theta; //Vector of vectors - phases over time, one for each oscillator /needs get/set
   vector<double> omega; 
 
-  double tMax; //needs get/set
-  double dt = 0.001; //needs get/set
+  //simulation variables - global
+  
+  double tMax; 
+  double dt = 0.001; 
+
+  //simulation variables - weakly coupled oscillators
+  double pulseWidth = 0;
+  double pulseAmp = 0;
 
   vector<vector<double>> timestamps; //needs get/set /
   set<string> validTimestampMethods = {"default", "amplitude", "phase"};
@@ -205,9 +212,19 @@ public:
 
   vector<vector<double>> coupling_parameter_search_1d(vector<vector<int>> varyingIndices, vector<double> bounds, double step);
 
-  map<int, vector<vector<double>>> parameter_search();
+  map<int, vector<vector<double>>> parameter_search_e7();
+  
+  map<int, vector<vector<double>>> parameter_search_e8();
   //--------------------------------------------------------------------------------------------------------------------
+  //weakly coupled oscillators model
   //--------------------------------------------------------------------------------------------------------------------
+  void set_pulse_width(double m);
+
+  void set_pulse_amp(double a);
+
+  double rk4();
+
+
   //--------------------------------------------------------------------------------------------------------------------
   
   

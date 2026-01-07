@@ -8,7 +8,51 @@
 //  
 //}
 
-map<int, vector<vector<double>>> Oscillators::parameter_search(){
+map<int, vector<vector<double>>> Oscillators::parameter_search_e7(){
+  vector<double> bounds = {0.2,0.7};
+  double step = 0.01; 
+  vector<int> couplingIndex = {0,1};
+  vector<vector<double>> coupling = {};
+  for(int i = 0; i != N; ++i){
+    coupling.push_back({});
+    for(int j = 0; j != N; ++j){
+      coupling[i].push_back(0);
+    }
+  }
+  vector<double> singleResult = {};
+  vector<double> searchedValues = {};
+  vector<double> currentSummary = {};
+  map<int, vector<vector<double>>> summaryValues;
+  for(int sig = 0; sig != 300; ++sig){
+    cout << "sig is " << sig << endl; 
+    summaryValues[sig] = {};
+    double k = bounds[0];
+    while(k <= bounds[1]){
+      vector<vector<double>> simResults = {};
+      set_noise_distribution("normal", {0,0.0 +  double(sig) * 0.02});
+      searchedValues.push_back(k);
+      currentSummary = {};
+      coupling[couplingIndex[0]][couplingIndex[1]] = k;
+      K = coupling;
+      kuramoto_simulations(100, "interEventTimes");
+      for(int i = 0; i != actionOscillators.size(); ++i){
+        for(auto itr = simulationResults.begin(); itr != simulationResults.end(); ++itr){
+          singleResult = itr->second[i];
+          simResults.push_back(singleResult);
+        }
+      }
+      currentSummary.push_back(vector_mean_2d(simResults));
+      currentSummary.push_back(standard_deviation_2d(simResults));
+      summaryValues[sig].push_back(currentSummary);
+      k += step;
+      reinitialise_system("default");
+    }
+    cout << "noise of " << sig << " and coupling " << k << " done." << endl;
+  }
+  return summaryValues;
+}
+
+map<int, vector<vector<double>>> Oscillators::parameter_search_e8(){
   vector<double> bounds = {0,20};
   double step = 0.1; 
   vector<int> couplingIndex = {0,1};

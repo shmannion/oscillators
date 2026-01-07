@@ -67,6 +67,18 @@ slight edit
 # Diary
 Here on is a diary-like list of updates regarding the experiments and development of the package. Most recent entry first. 
 Started on 5 December 2025.
+## Wednesday — 2026-01-07
+
+### Notes:
+Changing convention of experiment scripts. Every experiment gets its own Python script now.
+### Experiment Notes:
+- Experiments finished:
+- Experiments failed: 7 and 8
+- Experiments run:
+- Code changes made:
+
+---
+
 
 ## Tuesday — 2025-12-23
 Adding rk-4 code for weakly coupled oscillators, no functions added to header yet, only in osc\_weakly\_coupled.cpp.
@@ -79,8 +91,6 @@ Adding rk-4 code for weakly coupled oscillators, no functions added to header ye
 - Code changes made:
 
 ---
-
-
 
 ## Tuesday — 2025-12-16
 

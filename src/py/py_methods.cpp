@@ -105,9 +105,23 @@ static PyObject* PyOscillators_coupling_parameter_search_1d(PyOscillators* self,
   }
 }
 
-static PyObject* PyOscillators_parameter_search(PyOscillators* self){
+static PyObject* PyOscillators_parameter_search_e7(PyOscillators* self){
   try {
-    map<int, vector<vector<double>>> results = self->cpp_obj->parameter_search();
+    map<int, vector<vector<double>>> results = self->cpp_obj->parameter_search_e7();
+
+    // Use your existing vv_to_dict to convert summaryValues -> Python dict
+    return map_to_pydict(results);
+  }
+  catch (const exception& e) {
+    PyErr_SetString(PyExc_RuntimeError, e.what());
+    return nullptr;
+  }
+
+}
+
+static PyObject* PyOscillators_parameter_search_e8(PyOscillators* self){
+  try {
+    map<int, vector<vector<double>>> results = self->cpp_obj->parameter_search_e8();
 
     // Use your existing vv_to_dict to convert summaryValues -> Python dict
     return map_to_pydict(results);
@@ -130,7 +144,9 @@ PyMethodDef PyOscillatorsMethods[] = {
    "Run n Kuramoto simulations and return a dict of results"},
   {"coupling_parameter_search_1d", (PyCFunction)PyOscillators_coupling_parameter_search_1d, METH_VARARGS,
    "1D coupling parameter search; returns dict[index] -> list[summary values]"},
-  {"parameter_search", (PyCFunction)PyOscillators_parameter_search, METH_NOARGS,
+  {"parameter_search_e7", (PyCFunction)PyOscillators_parameter_search_e7, METH_NOARGS,
+   "1D coupling parameter search; returns dict[index] -> list[summary values]"},
+  {"parameter_search_e8", (PyCFunction)PyOscillators_parameter_search_e8, METH_NOARGS,
    "1D coupling parameter search; returns dict[index] -> list[summary values]"},
   {NULL, NULL, 0, NULL}  // Sentinel
 };
