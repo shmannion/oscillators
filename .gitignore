@@ -9,6 +9,7 @@ __pycache__/
 *.DS_Store
 *.png
 test/
+experiments.log
 python/data/
 python/out/
 !python/out/README.md 
