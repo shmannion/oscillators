@@ -67,7 +67,7 @@ slight edit
 # Diary
 Here on is a diary-like list of updates regarding the experiments and development of the package. Most recent entry first. 
 Started on 5 December 2025.
-
+Most diary entries are in the general diary outside of this directory.
 
 ## Tuesday — 2025-12-16
 
