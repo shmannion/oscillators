@@ -1,7 +1,7 @@
 #include "oscillators.h"
 #include "py_wrappers.h"
 
-static double rk4(double y, double t, function<double(double, double)> f){
+double Oscillators::rk4(double y, double t, function<double(double, double)> f){
   double k1 = f(t, y);
   double k2 = f(t + dt/2, y + dt*k1/2);
   double k3 = f(t + dt/2, y + dt*k2/2);
