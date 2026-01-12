@@ -17,24 +17,6 @@ double Oscillators::get_time_step(){
   return dt;
 }
 
-vector<double> Oscillators::dtheta_dt(){
-  vector<double> dthetaDt;
-  double dtheta;
-  double noise;
-  for(int i = 0; i != N; ++i){
-    if(metronomes[i] == 1){
-      noise = 0;
-    }else{
-      noise = draw_noise_value();
-    }
-    dtheta = omega[i] + noise;
-    for(int j = 0; j != N; ++j){
-      dtheta += K[i][j] * sin(theta[j].back() - theta[i].back());
-    }
-    dthetaDt.push_back(dtheta);
-  }
-  return dthetaDt;
-}
 
 void Oscillators::eulers_method(){
   double currentTime = 0;
@@ -42,7 +24,7 @@ void Oscillators::eulers_method(){
     vector<double> dthetaDt = dtheta_dt();
     for(int i = 0; i != theta.size(); ++i){
       if(metronomes[i] == 1){
-        theta[i].push_back(theta[i][0] + (currentTime * omega[i]));
+        theta[i].push_back(theta[i][0] + (currentTime * naturalFrequencies[i]));
       }else{
         theta[i].push_back(theta[i].back() + (dthetaDt[i] * dt));
       }
@@ -54,3 +36,10 @@ void Oscillators::eulers_method(){
   }
 }
 
+double Oscillators::rk4(double y, double t, function<double(double, double)> f){
+  double k1 = f(t, y);
+  double k2 = f(t + dt/2, y + dt*k1/2);
+  double k3 = f(t + dt/2, y + dt*k2/2);
+  double k4 = f(t + dt, y + dt*k3);
+  return y + (dt/6)*(k1 + 2*k2 + 2*k3 + k4);
+}

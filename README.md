@@ -67,6 +67,22 @@ slight edit
 # Diary
 Here on is a diary-like list of updates regarding the experiments and development of the package. Most recent entry first. 
 Started on 5 December 2025.
+## Friday — 2026-01-09
+
+### Notes:
+Working on the wekaly coupled oscillators code. Ideally, it will be in a shape where I just call rk4. This would need
+lambdas defined for d\omega/dt and d\theta/dt, because then they can easily be passed into rk4. Unless I need a step
+function that does the appending to omega and theta? And then rk4 just does this again and again?
+### Experiment Notes:
+- Experiments finished:
+- Experiments failed:
+- Experiments run:
+- Code changes made:
+
+---
+
+
+
 ## Wednesday — 2026-01-07
 
 ### Notes:

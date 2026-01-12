@@ -151,24 +151,34 @@ double Oscillators::draw_uniform_rnd_value(vector<double> params){
   return sample;
 }
 
+void Oscillators::initialise_natural_frequencies(){
+  naturalFrequencies = {};
+  double sample;
+  while(naturalFrequencies.size() < N){
+    sample = draw_omega_value();
+    naturalFrequencies.push_back(sample);
+  }
+  initialise_omega();
+}
 
 void Oscillators::initialise_omega(){
-  double sample;
-  while(omega.size() < N){
-    sample = draw_omega_value();
-    omega.push_back(sample);
+  omega = {};
+  for(int i = 0; i != naturalFrequencies.size(); ++i){
+    omega.push_back({naturalFrequencies[i]});
   }
 }
 
 void Oscillators::set_omega(vector<double> g){
   omega = {};
+  naturalFrequencies = {};
   for(int i = 0; i != g.size(); ++i){
-    omega.push_back(g[i]);
+    omega.push_back({g[i]});
+    naturalFrequencies.push_back(g[i]);
   }
 }
 
 vector<double> Oscillators::get_omega(){
-  return omega;
+  return naturalFrequencies;
 }
 
 void Oscillators::initialise_theta(){
@@ -177,6 +187,14 @@ void Oscillators::initialise_theta(){
     double sample = 1;//draw_theta_value();
     vector<double> theta0 = {sample};
     theta.push_back(theta0);
+  }
+}
+
+void Oscillators::set_model(string s){
+  if(validModels.find(s) == validModels.end()){
+    cerr << "Selected model is not defined" << endl;
+  }else{
+    model = s;
   }
 }
 
@@ -259,8 +277,10 @@ void Oscillators::reinitialise_system(string method){
   eventTimes = {};
   interEventTimes = {};
   initialise_theta();
+  initialise_omega();
   if(method == "full"){
+    naturalFrequencies = {};
     omega = {};
-    initialise_omega();
+    initialise_natural_frequencies();
   }
 }
