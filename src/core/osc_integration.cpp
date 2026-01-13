@@ -35,11 +35,22 @@ double Oscillators::get_time_step(){
 
 void Oscillators::integrate(double t){
   set_max_time(t);
+  set_time_step(0.001);
   double currentTime = 0;
+  cout << "checkpoint integrate 1" << endl;
   if(model == "weakly_coupled"){
     while(currentTime < tMax){
+      cout << "checkpoint integrate 2" << endl;
       for(int i = 0; i != N; ++i){
+
+        cout << "checkpoint integrate 3" << endl;
         rk4_step(i);
+        if(OSC_VERBOSE == true){
+          cout << currentTime << ", " << theta[i].back() << ", theta" << i << "\n";
+          cout << currentTime << ", " << omega[i].back() << ", omega" << i << "\n";
+          // cout << currentTime << ", " << test[i].back() << ", xrk" << i << "\n";
+          // cout << currentTime << ", " << 3 * exp(-2*currentTime) << ", yrk" << i << "\n";
+        }
       }
       currentTime += dt;
     }

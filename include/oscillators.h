@@ -56,6 +56,7 @@ private:
   vector<int> drivers = {};
   vector<double> phaseCoupling = {};
   vector<double> frequencyCoupling = {};
+  // vector<vector<double>> test = {{3}, {3}};
 
   vector<vector<double>> timestamps; //needs get/set /
   set<string> validTimestampMethods = {"default", "amplitude", "phase"};
@@ -116,6 +117,8 @@ public:
 
   void set_theta_distribution(string dist, vector<double> params); //exposed
   
+  void set_theta_values(vector<double> params); //exposed
+  
   double draw_noise_value(); //unexposed 
 
   double draw_omega_value(); //unexposed                                       
@@ -167,6 +170,8 @@ public:
   //--------------------------------------------------------------------------------------------------------------------
   
   void set_model(string s);
+
+  string get_model();
 
   void set_time_step(double t); //to be exposed
   
@@ -246,8 +251,12 @@ public:
   void set_drivers(vector<int> d);
 
   void set_pulse_width(double m);
+  
+  double get_pulse_width();
 
   void set_pulse_amp(double a);
+  
+  double get_pulse_amp();
 
   void set_phase_coupling(vector<double> C);
   

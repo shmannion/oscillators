@@ -3,19 +3,29 @@
 using namespace std;
 
 int main(){
-  for(int i = 1; i != 11; ++i){
-    double coupling = double(i);
-    vector<vector<double>> K = {{0, coupling}, {0,0}};
-    Oscillators s(2);
-    s.initialise_system("default");
-    s.set_metronomes({1});
-    s.set_action_oscillators({0, 1});
-    s.set_coupling(K);
-    s.set_omega({8, 12.567});
-    s.set_noise_distribution("normal", {0, 0.01});
-    s.set_timestamp_method("amplitude");
-    s.set_time_step(0.001);
-    s.set_max_time(100);
-    s.kuramoto_simulations(1, "interEventTimes");
-  }
+  Oscillators s(2);
+  s.initialise_system("default");
+  s.set_model("weakly_coupled");
+  string m = s.get_model();
+  s.set_pulse_amp(0.5);
+  double a = s.get_pulse_amp();
+  s.set_pulse_width(2);
+  double w = s.get_pulse_width();
+  s.set_phase_coupling({1,2});
+  s.set_frequency_coupling({1,2});
+  double p = s.driving_pulse(0);
+  cout << "pulse val for 0 is " << p << "\n";
+  p = s.driving_pulse(1);
+  cout << "pulse val for 1 is " << p << "\n";
+  double r = s.phase_response(0);
+  cout << "phase response for 0 is " << r << "\n";
+  r = s.phase_response(1);
+  cout << "phase response for 1 is " << r << "\n";
+  double dt = s.dtheta_weakly_coupled({12, 1.0, 0.5, 1.5});
+  cout << "dtheta is " << dt << "\n"; 
+  double dw = s.domega_weakly_coupled({12, 0.5, 1.2, 2});
+  cout << "domega is " << dw << "\n"; 
+  s.set_omega({12, 12.5});
+  s.set_theta_values({0, 0.5});
+  s.integrate(10);
 }

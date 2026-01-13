@@ -77,6 +77,13 @@ void Oscillators::set_theta_distribution(string dist, vector<double> params){
   }
 }
 
+void Oscillators::set_theta_values(vector<double> x){
+  theta = {};
+  for(int i = 0; i != x.size(); ++i){
+    theta.push_back({x[i]});
+  }
+}
+
 string Oscillators::get_theta_distribution(){
   string dist = thetaDist;
   return dist;
@@ -196,6 +203,13 @@ void Oscillators::set_model(string s){
   }else{
     model = s;
   }
+}
+
+string Oscillators::get_model(){
+  if(OSC_VERBOSE == true){
+    cout << "model type is " << model << endl;
+  }
+  return model;
 }
 
 void Oscillators::set_coupling(vector<vector<double>> coupling){
