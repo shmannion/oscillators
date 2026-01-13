@@ -46,6 +46,9 @@ private:
   double tMax; 
   double dt = 0.001; 
 
+  //simulation variables - kuramoto
+  vector<complex<double>> orderParam;
+
   //simulation variables - weakly coupled oscillators
   double pulseWidth = 0;
   double pulseAmp = 0;
@@ -220,6 +223,7 @@ public:
 
   //--------------------------------------------------------------------------------------------------------------------
   //running simulations - kuramoto - osc_kuramoto.cpp 
+
   vector<double> dtheta_kuramoto();
 
   void kuramoto_model();
