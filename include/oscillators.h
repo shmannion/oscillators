@@ -8,6 +8,7 @@
 #include <set>
 #include <string>
 #include <complex>
+#include <functional>
 //File for a system of oscillators/individuals
 //
 using namespace std;
@@ -181,11 +182,15 @@ public:
 
   double interpolate_phase(double x1, double y1, double x2, double y2); //unexposed
   
-  double rk4(double y, double t, function<double(double, double)> f);
+  double rk4(vector<double> y, int index, function<double(vector<double>)> f);
 
-  vector<double> dtheta_dt();
+  void rk4_step(int index);
 
-  vector<double> domega_dt();
+  void integrate(double t);
+
+  // vector<double> dtheta_dt();
+
+  // vector<double> domega_dt();
 
   //--------------------------------------------------------------------------------------------------------------------
   // time series construction functions osc_time_series.cpp
@@ -248,13 +253,13 @@ public:
   
   void set_frequency_coupling(vector<double> C);
 
-  double phase_response(int n);
+  double phase_response(double phase);
 
-  double driving_pulse(int n);
+  double driving_pulse(double phase);
 
-  vector<double> dtheta_weakly_coupled();
+  double dtheta_weakly_coupled(vector<double> params);
 
-  vector<double> domega_weakly_coupled();
+  double domega_weakly_coupled(vector<double> params);
   //--------------------------------------------------------------------------------------------------------------------
   
   

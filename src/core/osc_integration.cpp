@@ -17,11 +17,41 @@ double Oscillators::get_time_step(){
   return dt;
 }
 
+// vector<double> Oscillators::dtheta_dt(){
+//   vector<double> dtheta = {};
+//   if(model == "kuramoto"){
+//     dtheta = dtheta_kuramoto();
+//   }else{
+//     dtheta = dtheta_weakly_coupled();
+//   }
+//   return dtheta;
+// }
 
+// vector<double> Oscillators::domega_dt(){
+//   vector<double> domega = {};
+//   domega = domega_weakly_coupled();
+//   return domega;
+// }
+
+void Oscillators::integrate(double t){
+  set_max_time(t);
+  double currentTime = 0;
+  if(model == "weakly_coupled"){
+    while(currentTime < tMax){
+      for(int i = 0; i != N; ++i){
+        rk4_step(i);
+      }
+      currentTime += dt;
+    }
+  }
+  else{
+    eulers_method();
+  }
+}
 void Oscillators::eulers_method(){
   double currentTime = 0;
   while(currentTime < tMax){
-    vector<double> dthetaDt = dtheta_dt();
+    vector<double> dthetaDt = dtheta_kuramoto();
     for(int i = 0; i != theta.size(); ++i){
       if(metronomes[i] == 1){
         theta[i].push_back(theta[i][0] + (currentTime * naturalFrequencies[i]));
@@ -36,10 +66,15 @@ void Oscillators::eulers_method(){
   }
 }
 
-double Oscillators::rk4(double y, double t, function<double(double, double)> f){
-  double k1 = f(t, y);
-  double k2 = f(t + dt/2, y + dt*k1/2);
-  double k3 = f(t + dt/2, y + dt*k2/2);
-  double k4 = f(t + dt, y + dt*k3);
-  return y + (dt/6)*(k1 + 2*k2 + 2*k3 + k4);
+double Oscillators::rk4(vector<double> y, int index, function<double(vector<double>)> f){
+  vector<double> ytemp = y;
+  double yn = y[index];
+  double k1 = f(ytemp);
+  ytemp[index] = yn + dt*k1/2;
+  double k2 = f(ytemp);
+  ytemp[index] = yn + dt*k2/2;
+  double k3 = f(ytemp);
+  ytemp[index] = yn + dt*k3;
+  double k4 = f(ytemp);
+  return yn + (dt/6)*(k1 + 2*k2 + 2*k3 + k4);
 }
