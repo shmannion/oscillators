@@ -22,6 +22,10 @@ vector<double> Oscillators::dtheta_kuramoto(){
 
 void Oscillators::kuramoto_model(){
   eulers_method();
+  calculate_order_parameter();
+  if(OSC_VERBOSE == true){
+    print_order_parameter();
+  }
   construct_timestamps();
   construct_event_times();
   construct_inter_event_times();
@@ -63,3 +67,31 @@ void Oscillators::kuramoto_simulations(int n, string output){
     }//end elseif
   }//end else
 }
+
+void Oscillators::calculate_order_parameter(){
+  complex<double> meanTheta;
+  for(int i = 0; i != theta[0].size(); ++i){
+    meanTheta = 0;
+    for(int j = 0; j != theta.size(); ++j){
+      meanTheta += exp(1i*theta[j][i]);
+    }
+    meanTheta /= double(N);
+    meanPhase.push_back(meanTheta);
+  }
+  double r;
+  for(int i = 0; i != meanPhase.size(); ++i){
+    r = 0;
+    r += pow(meanPhase[i].real(),2);
+    r += pow(meanPhase[i].imag(),2);
+    orderParam.push_back(pow(r, 0.5));
+  }
+}
+
+void Oscillators::print_order_parameter(){
+  double t;
+  for(int i=0; i != orderParam.size(); ++i){
+    t = double(i)*dt;
+    cout << t << ", " << orderParam[i] << ", order" << "\n"; 
+  }
+}
+

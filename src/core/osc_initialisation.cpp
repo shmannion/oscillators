@@ -190,6 +190,7 @@ vector<double> Oscillators::get_omega(){
 
 void Oscillators::initialise_theta(){
   //double sample;
+  theta = {};
   while(theta.size() < N){
     double sample = 1;//draw_theta_value();
     vector<double> theta0 = {sample};
@@ -239,6 +240,7 @@ vector<int> Oscillators::get_action_oscillators(){
 }
 
 void Oscillators::set_metronomes(vector<int> labels){
+  metronomes = {};
   for(int i = 0; i != N; ++i){
     metronomes.push_back(0);
   }
@@ -265,28 +267,47 @@ vector<int> Oscillators::get_metronomes(){
 void Oscillators::initialise_system(string method){
   if(method == "default"){
     initialise_default_system();
-  }else if(method == "custom"){
-    initialise_custom_system();
+  }else{
+    initialise_system();
   }
 }
 
-void Oscillators::initialise_custom_system(){
-  initialise_omega();
+void Oscillators::initialise_system(){
   initialise_theta();
+  initialise_natural_frequencies();
+  set_timestamp_method("amplitude");
+  set_max_time(20);
+  set_time_step(0.001);
 }
 
 void Oscillators::initialise_default_system(){
+  for(int i = 0; i != N; ++i){
+    metronomes.push_back(0);
+  }
   set_default_distributions();
-  initialise_omega();
+  initialise_natural_frequencies();
   initialise_theta();
-  set_coupling({{1,1,1,1},{1,1,1,1},{1,1,1,1},{1,1,1,1}});
+  vector<vector<double>> couplingMatrix = {};
+  // cout << "init checkpoint 0" << "\n";
+  int i = 0;
+  while(i < N){
+    couplingMatrix.push_back({});
+    int j = 0;
+    while(j < N){
+      couplingMatrix[i].push_back(1);
+      j += 1;
+    }
+    i += 1;
+  }
+  // cout << "init checkpoint 1" << "\n";
+  set_coupling(couplingMatrix);
+  // cout << "init checkpoint 2" << "\n";
   set_timestamp_method("amplitude");
   set_max_time(20);
   set_time_step(0.001);
 }
 
 void Oscillators::reinitialise_system(string method){
-  theta = {};
   timestamps = {};
   eventTimes = {};
   interEventTimes = {};

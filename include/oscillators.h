@@ -39,6 +39,7 @@ private:
   vector<vector<double>> K; //The coupling coefficients for the model 
 
   vector<vector<double>> theta; //Vector of vectors - phases over time, one for each oscillator /needs get/set
+  vector<complex<double>> meanPhase;                              
   vector<vector<double>> omega;
   vector<double> naturalFrequencies; 
 
@@ -48,7 +49,9 @@ private:
   double dt = 0.001; 
 
   //simulation variables - kuramoto
-  vector<complex<double>> orderParam;
+  vector<complex<double>> orderLhs;
+  vector<complex<double>> orderRhs;
+  vector<double> orderParam;
 
   //simulation variables - weakly coupled oscillators
   double pulseWidth = 0;
@@ -155,9 +158,9 @@ public:
 
   void initialise_system(string method); //exposed
 
+  void initialise_system(); //exposed
+
   void initialise_default_system(); 
-  
-  void initialise_custom_system(); 
   
   void reinitialise_system(string method); //exposed
   
@@ -237,6 +240,10 @@ public:
   vector<double> dtheta_kuramoto();
 
   void kuramoto_model();
+
+  void calculate_order_parameter();
+
+  void print_order_parameter();
 
   void kuramoto_simulations(int n, string output);
 

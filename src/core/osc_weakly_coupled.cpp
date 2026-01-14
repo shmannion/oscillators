@@ -83,11 +83,9 @@ void Oscillators::rk4_step(int index){
   params.push_back(theta[index].back()); //phase of responding oscillator
   params.push_back(theta[1-index].back()); //phase of driving oscillator
   params.push_back(0); //constant
-  cout << "checkpoint 1" << endl;
                        
   double cPhase = phaseCoupling[index];
   double cFreq = frequencyCoupling[index];
-  cout << "checkpoint 2" << endl;
   
   auto fTheta = [this](vector<double> params){
     return dtheta_weakly_coupled(params);
@@ -96,22 +94,22 @@ void Oscillators::rk4_step(int index){
   auto fOmega = [this](vector<double> params){
     return domega_weakly_coupled(params);
   };
-  
+
+  // test function for rk4:
   // auto fxcubed = [this](vector<double> params){
   //   return -2 * params[0];
   // };
 
   params.back() = cPhase;
-  cout << "checkpoint 3" << endl;
   double thetaNew = rk4(params, 1, fTheta);
   
   params.back() = cFreq;
-  cout << "checkpoint 4" << endl;
   double omegaNew = rk4(params, 0, fOmega);
   
+  // using the test function for rk4
   // double xnew = rk4({test[index].back()}, 0, fxcubed);
-  // cout << "checkpoint 5" << endl;
   // test[index].push_back(xnew);
+
   omega[index].push_back(omegaNew);
   theta[index].push_back(thetaNew);
 }
