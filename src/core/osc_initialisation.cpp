@@ -77,6 +77,13 @@ void Oscillators::set_theta_distribution(string dist, vector<double> params){
   }
 }
 
+void Oscillators::set_theta_values(vector<double> x){
+  theta = {};
+  for(int i = 0; i != x.size(); ++i){
+    theta.push_back({x[i]});
+  }
+}
+
 string Oscillators::get_theta_distribution(){
   string dist = thetaDist;
   return dist;
@@ -151,24 +158,34 @@ double Oscillators::draw_uniform_rnd_value(vector<double> params){
   return sample;
 }
 
+void Oscillators::initialise_natural_frequencies(){
+  naturalFrequencies = {};
+  double sample;
+  while(naturalFrequencies.size() < N){
+    sample = draw_omega_value();
+    naturalFrequencies.push_back(sample);
+  }
+  initialise_omega();
+}
 
 void Oscillators::initialise_omega(){
-  double sample;
-  while(omega.size() < N){
-    sample = draw_omega_value();
-    omega.push_back(sample);
+  omega = {};
+  for(int i = 0; i != naturalFrequencies.size(); ++i){
+    omega.push_back({naturalFrequencies[i]});
   }
 }
 
 void Oscillators::set_omega(vector<double> g){
   omega = {};
+  naturalFrequencies = {};
   for(int i = 0; i != g.size(); ++i){
-    omega.push_back(g[i]);
+    omega.push_back({g[i]});
+    naturalFrequencies.push_back(g[i]);
   }
 }
 
 vector<double> Oscillators::get_omega(){
-  return omega;
+  return naturalFrequencies;
 }
 
 void Oscillators::initialise_theta(){
@@ -178,6 +195,21 @@ void Oscillators::initialise_theta(){
     vector<double> theta0 = {sample};
     theta.push_back(theta0);
   }
+}
+
+void Oscillators::set_model(string s){
+  if(validModels.find(s) == validModels.end()){
+    cerr << "Selected model is not defined" << endl;
+  }else{
+    model = s;
+  }
+}
+
+string Oscillators::get_model(){
+  if(OSC_VERBOSE == true){
+    cout << "model type is " << model << endl;
+  }
+  return model;
 }
 
 void Oscillators::set_coupling(vector<vector<double>> coupling){
@@ -259,8 +291,10 @@ void Oscillators::reinitialise_system(string method){
   eventTimes = {};
   interEventTimes = {};
   initialise_theta();
+  initialise_omega();
   if(method == "full"){
+    naturalFrequencies = {};
     omega = {};
-    initialise_omega();
+    initialise_natural_frequencies();
   }
 }

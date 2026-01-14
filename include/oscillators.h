@@ -8,6 +8,7 @@
 #include <set>
 #include <string>
 #include <complex>
+#include <functional>
 //File for a system of oscillators/individuals
 //
 using namespace std;
@@ -23,22 +24,39 @@ private:
   string noiseDist = "normal"; //default noise distribution 
   string omegaDist = "normal"; //default natural frequency distribution 
   string thetaDist = "uniform"; //default distribution of initial phases 
+  string model = "kuramoto";
   
   set<string> validNoiseDistributions = {"default", "normal", "uniform"};
   set<string> validOmegaDistributions = {"default", "normal", "uniform"};
   set<string> validThetaDistributions = {"default", "normal", "uniform"};
+  set<string> validModels = {"kuramoto", "weakly_coupled"};
 
   vector<double> noiseParams; //The parameters for the distribution of noise 
   vector<double> omegaParams; //The parameters for the distribution of natural frequencies 
   vector<double> thetaParams; 
 
+  //coupling coefficient, oscillator phases and frequencies
   vector<vector<double>> K; //The coupling coefficients for the model 
 
   vector<vector<double>> theta; //Vector of vectors - phases over time, one for each oscillator /needs get/set
-  vector<double> omega; 
+  vector<vector<double>> omega;
+  vector<double> naturalFrequencies; 
 
-  double tMax; //needs get/set
-  double dt = 0.001; //needs get/set
+  //simulation variables - global
+  
+  double tMax; 
+  double dt = 0.001; 
+
+  //simulation variables - kuramoto
+  vector<complex<double>> orderParam;
+
+  //simulation variables - weakly coupled oscillators
+  double pulseWidth = 0;
+  double pulseAmp = 0;
+  vector<int> drivers = {};
+  vector<double> phaseCoupling = {};
+  vector<double> frequencyCoupling = {};
+  // vector<vector<double>> test = {{3}, {3}};
 
   vector<vector<double>> timestamps; //needs get/set /
   set<string> validTimestampMethods = {"default", "amplitude", "phase"};
@@ -99,6 +117,8 @@ public:
 
   void set_theta_distribution(string dist, vector<double> params); //exposed
   
+  void set_theta_values(vector<double> params); //exposed
+  
   double draw_noise_value(); //unexposed 
 
   double draw_omega_value(); //unexposed                                       
@@ -117,6 +137,8 @@ public:
   
   vector<int> get_metronomes(); //exposed 
   
+  void initialise_natural_frequencies(); //unexposed         
+                           
   void initialise_omega(); //unexposed         
 
   void initialise_theta(); //unexposed                              
@@ -147,6 +169,10 @@ public:
   // integration functions osc_integration.cpp
   //--------------------------------------------------------------------------------------------------------------------
   
+  void set_model(string s);
+
+  string get_model();
+
   void set_time_step(double t); //to be exposed
   
   double get_time_step(); //exposed
@@ -155,13 +181,21 @@ public:
   
   double get_max_time(); //exposed
   
-  vector<double> dtheta_dt(); 
-
   void eulers_method(); //to be exposed
   
   double interpolate(double x1, double y1, double x2, double y2); //unexposed
 
   double interpolate_phase(double x1, double y1, double x2, double y2); //unexposed
+  
+  double rk4(vector<double> y, int index, function<double(vector<double>)> f);
+
+  void rk4_step(int index);
+
+  void integrate(double t);
+
+  // vector<double> dtheta_dt();
+
+  // vector<double> domega_dt();
 
   //--------------------------------------------------------------------------------------------------------------------
   // time series construction functions osc_time_series.cpp
@@ -199,6 +233,9 @@ public:
 
   //--------------------------------------------------------------------------------------------------------------------
   //running simulations - kuramoto - osc_kuramoto.cpp 
+
+  vector<double> dtheta_kuramoto();
+
   void kuramoto_model();
 
   void kuramoto_simulations(int n, string output);
@@ -209,7 +246,29 @@ public:
   
   map<int, vector<vector<double>>> parameter_search_e8();
   //--------------------------------------------------------------------------------------------------------------------
+  //weakly coupled oscillators model
   //--------------------------------------------------------------------------------------------------------------------
+  void set_drivers(vector<int> d);
+
+  void set_pulse_width(double m);
+  
+  double get_pulse_width();
+
+  void set_pulse_amp(double a);
+  
+  double get_pulse_amp();
+
+  void set_phase_coupling(vector<double> C);
+  
+  void set_frequency_coupling(vector<double> C);
+
+  double phase_response(double phase);
+
+  double driving_pulse(double phase);
+
+  double dtheta_weakly_coupled(vector<double> params);
+
+  double domega_weakly_coupled(vector<double> params);
   //--------------------------------------------------------------------------------------------------------------------
   
   
