@@ -195,6 +195,8 @@ vector<double> Oscillators::get_omega(){
 void Oscillators::initialise_theta(){
   //double sample;
   theta = {};
+  meanPhase = {};
+  orderParam = {};
   while(theta.size() < N){
     double sample = 1;//draw_theta_value();
     vector<double> theta0 = {sample};

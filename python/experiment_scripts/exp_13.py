@@ -10,7 +10,6 @@ np.set_printoptions(legacy='1.25')
 PLOT = True
 
 if __name__ == "__main__":
-    outdir = sys.argv[1]    
     S = osc.Oscillators(2)
     S.omega = [12.826, 12.567]
     S.initialise_system()
