@@ -10,7 +10,7 @@ np.set_printoptions(legacy='1.25')
 PLOT = True
 
 if __name__ == "__main__":
-    
+    outdir = sys.argv[1]    
     S = osc.Oscillators(2)
     S.action_oscillators = [0]
     S.metronomes = [1]
@@ -35,7 +35,7 @@ if __name__ == "__main__":
     df.columns = [round(i*0.1, 1) for i in range(0,n_cols)]
     df.index = [round(i*0.1, 1) for i in range(0,n_rows)]
     df.index.name = 'noise std'
-    df.to_csv('../out/exp_12/param_search_mu.csv')
+    df.to_csv(f'{outdir}/param_search_mu.csv')
     
     df = pd.DataFrame.from_dict(sigma, orient='index')
     n_cols = df.shape[1]
@@ -43,4 +43,4 @@ if __name__ == "__main__":
     df.columns = [round(i*0.1, 1) for i in range(0,n_cols)]
     df.index = [round(i*0.1, 1) for i in range(0,n_rows)]
     df.index.name = 'noise std'
-    df.to_csv('../out/exp_12/param_search_sigma.csv')
+    df.to_csv(f'{outdir}/param_search_mu_sigma.csv')
