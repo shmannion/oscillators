@@ -46,3 +46,7 @@ This is the output directory for the experiments I run for the oscillator projec
               100 inner loops 
               100 outer loops
               coupling = 0.45, noise standard deviation = 0.1
+
+- exp\_12: Repeat of experiment 8, with fixed version of kuramoto dt (correct noise updating).
+
+- exp\_13: Repeat of experiment 9, with fixed version of kuramoto dt (correct noise updating).
