@@ -12,11 +12,11 @@ PLOT = True
 if __name__ == "__main__":
     outdir = sys.argv[1]    
     S = osc.Oscillators(2)
+    S.omega = [12.826, 12.567]
+    S.initialise_system()
     S.action_oscillators = [0]
     S.metronomes = [1]
     S.tmax = 100.0
-    S.initialise_system("default")
-    S.omega = [12.826, 12.567]
     coupling = 0.415
     K = [[0.0, coupling], [0.0, 0.0]]
     mu = {}
@@ -43,4 +43,4 @@ if __name__ == "__main__":
     df.columns = [round(i*0.1, 1) for i in range(0,n_cols)]
     df.index = [round(i*0.1, 1) for i in range(0,n_rows)]
     df.index.name = 'noise std'
-    df.to_csv(f'{outdir}/param_search_mu_sigma.csv')
+    df.to_csv(f'{outdir}/param_search_sigma.csv')

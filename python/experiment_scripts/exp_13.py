@@ -12,11 +12,11 @@ PLOT = True
 if __name__ == "__main__":
     outdir = sys.argv[1]    
     S = osc.Oscillators(2)
+    S.omega = [12.826, 12.567]
+    S.initialise_system()
     S.action_oscillators = [0]
     S.metronomes = [1]
     S.tmax = 100.0
-    S.initialise_system("default")
-    S.omega = [12.826, 12.567]
     coupling = 0.415
     K = [[0.0, coupling], [0.0, 0.0]]
     mu = {}
