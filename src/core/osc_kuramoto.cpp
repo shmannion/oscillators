@@ -10,6 +10,7 @@ vector<double> Oscillators::dtheta_kuramoto(){
       noise = 0;
     }else{
       noise = draw_noise_value();
+      noise /= pow(dt, 0.5);
     }
     dtheta = naturalFrequencies[i] + noise;
     for(int j = 0; j != N; ++j){

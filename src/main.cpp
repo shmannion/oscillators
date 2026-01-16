@@ -2,16 +2,23 @@
 #include "py_wrappers.h"
 using namespace std;
 
-int main(){
+int main(int argc, char* argv[]){
+  double k = 0; 
+  if(argc == 2){
+    k = stod(argv[1]); 
+  }
   set_verbose(true);
   Oscillators s(2);
-  s.set_noise_distribution("normal", {0, 5.0});
+  s.set_noise_distribution("none");
   s.set_omega_distribution("default");
   s.initialise_system();
+  s.set_theta_values({0, 1.5707});
+  s.set_omega({12.2,12.7});
   s.set_model("kuramoto");
-  s.set_coupling({{0,0.45},{0.45,0}});
+  s.set_coupling({{0,k},{k,0}});
+  s.set_time_step(0.01);
   s.set_action_oscillators({0,1});
-  s.set_max_time(100);
+  s.set_max_time(10);
   s.kuramoto_model();
   // s.integrate(10);
 }

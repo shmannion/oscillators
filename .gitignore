@@ -2,7 +2,9 @@ obj/
 *.o
 makefile
 *.so
+*.sh
 __pycache__/
+bashscripts/
 *.pyc
 *.pyo
 *.swp

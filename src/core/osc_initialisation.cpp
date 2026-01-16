@@ -7,6 +7,8 @@ void Oscillators::set_noise_distribution(string dist){
   }else if(dist == "normal"){
     noiseDist = "normal";
     noiseParams = {0,0.4335};
+  }else if(dist == "none"){
+    noiseDist = "none";
   }
 }
 
@@ -121,7 +123,9 @@ double Oscillators::draw_noise_value(){
   double x = 0;
   if(noiseDist == "normal"){
     x = draw_normal_rnd_value(noiseParams);
-  }//else if another
+  }else if(noiseDist == "none"){
+    return x;
+  }  //else if another
   return x;
 }
 
@@ -273,6 +277,10 @@ void Oscillators::initialise_system(string method){
 }
 
 void Oscillators::initialise_system(){
+  metronomes = {};
+  for(int i = 0; i != N; ++i){
+    metronomes.push_back(0);
+  }
   initialise_theta();
   initialise_natural_frequencies();
   set_timestamp_method("amplitude");
@@ -281,6 +289,7 @@ void Oscillators::initialise_system(){
 }
 
 void Oscillators::initialise_default_system(){
+  metronomes = {};
   for(int i = 0; i != N; ++i){
     metronomes.push_back(0);
   }
