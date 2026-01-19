@@ -20,28 +20,29 @@ const double PI = 3.1415926536;
 class Oscillators{
   
 private:
+  int N;
   //distribution variables  
   string noiseDist = "normal"; //default noise distribution 
-  string omegaDist = "normal"; //default natural frequency distribution 
-  string thetaDist = "uniform"; //default distribution of initial phases 
+  string frequencyDist = "normal"; //default natural frequency distribution 
+  string phaseDist = "uniform"; //default distribution of initial phases 
   string model = "kuramoto";
   
   set<string> validNoiseDistributions = {"default", "normal", "uniform"};
   set<string> validOmegaDistributions = {"default", "normal", "uniform"};
-  set<string> validThetaDistributions = {"default", "normal", "uniform"};
+  set<string> validThetaDistributions = {"default", "normal", "uniform", "fixed"};
   set<string> validModels = {"kuramoto", "weakly_coupled"};
 
   vector<double> noiseParams; //The parameters for the distribution of noise 
-  vector<double> omegaParams; //The parameters for the distribution of natural frequencies 
-  vector<double> thetaParams; 
+  vector<double> frequencyParams; //The parameters for the distribution of natural frequencies 
+  vector<double> phaseParams; 
 
   //coupling coefficient, oscillator phases and frequencies
-  vector<vector<double>> K; //The coupling coefficients for the model 
+  vector<vector<double>> kuramotoCoupling; //The coupling coefficients for the model 
 
-  vector<vector<double>> theta; //Vector of vectors - phases over time, one for each oscillator /needs get/set
-  vector<complex<double>> meanPhase;                              
-  vector<vector<double>> omega;
+  vector<vector<double>> phase; //Vector of vectors - phases over time, one for each oscillator /needs get/set
+  vector<vector<double>> frequency;
   vector<double> naturalFrequencies; 
+  vector<complex<double>> meanPhase = {};                              
 
   //simulation variables - global
   
@@ -49,16 +50,14 @@ private:
   double dt = 0.001; 
 
   //simulation variables - kuramoto
-  vector<complex<double>> orderLhs;
-  vector<complex<double>> orderRhs;
-  vector<double> orderParam;
+  vector<double> orderParam = {};
 
   //simulation variables - weakly coupled oscillators
   double pulseWidth = 0;
   double pulseAmp = 0;
-  vector<int> drivers = {};
-  vector<double> phaseCoupling = {};
-  vector<double> frequencyCoupling = {};
+  vector<int> drivers;
+  vector<double> phaseCoupling;
+  vector<double> frequencyCoupling;
   // vector<vector<double>> test = {{3}, {3}};
 
   vector<vector<double>> timestamps; //needs get/set /
@@ -81,9 +80,8 @@ private:
 public:
   //comments are source files in which function is written, function description comments go 
   //in source files. Uncomment functions as they are written
-  int N;
 
-  Oscillators(int N) : N(N) {}
+  Oscillators(int N);
   //Oscillators(int N) {}
   
   //int N; //number of oscillators
@@ -91,6 +89,7 @@ public:
   //--------------------------------------------------------------------------------------------------------------------
   // system initialisation functions - osc_initialisation.cpp
   //--------------------------------------------------------------------------------------------------------------------
+  int get_N();
   
   void set_noise_distribution(string dist); //unexposed
   
@@ -98,35 +97,35 @@ public:
 
   vector<double> get_noise_params(); //unexposed
   
-  void set_omega_distribution(string dist); //unexposed
+  void set_frequency_distribution(string dist); //unexposed
 
-  string get_omega_distribution(); //unexposed
+  string get_frequency_distribution(); //unexposed
   
-  vector<double> get_omega_params(); //unexposed
+  vector<double> get_frequency_params(); //unexposed
   
-  void set_theta_distribution(string dist); //unexposed
+  void set_phase_distribution(string dist); //unexposed
   
-  string get_theta_distribution(); //unexposed
+  string get_phase_distribution(); //unexposed
   
-  vector<double> get_theta_params(); //unexposed
+  vector<double> get_phase_params(); //unexposed
 
   void set_noise_distribution(string dist, vector<double> params); //exposed      
   
-  void set_omega_distribution(string dist, vector<double> params); //exposed
+  void set_frequency_distribution(string dist, vector<double> params); //exposed
 
-  void set_omega(vector<double> g);
+  void set_frequency(vector<double> g);
   
-  vector<double> get_omega();
+  vector<double> get_frequency();
 
-  void set_theta_distribution(string dist, vector<double> params); //exposed
+  void set_phase_distribution(string dist, vector<double> params); //exposed
   
-  void set_theta_values(vector<double> params); //exposed
+  void set_phase_values(vector<double> params); //exposed
   
   double draw_noise_value(); //unexposed 
 
-  double draw_omega_value(); //unexposed                                       
+  double draw_frequency_value(); //unexposed                                       
   
-  double draw_theta_value(); //unexposed                            
+  double draw_phase_value(); //unexposed                            
 
   double draw_normal_rnd_value(vector<double> params); //unexposed             
 
@@ -142,13 +141,13 @@ public:
   
   void initialise_natural_frequencies(); //unexposed         
                            
-  void initialise_omega(); //unexposed         
+  void initialise_frequency(); //unexposed         
 
-  void initialise_theta(); //unexposed                              
+  void initialise_phase(); //unexposed                              
 
-  void set_coupling(vector<vector<double>>);  //exposed                       
+  void set_kuramoto_coupling(vector<vector<double>>);  //exposed                       
 
-  vector<vector<double>> get_coupling();
+  vector<vector<double>> get_kuramoto_coupling();
 
   void set_amplitude_stamp_start(int s); //exposed
 
@@ -160,8 +159,6 @@ public:
 
   void initialise_system(); //exposed
 
-  void initialise_default_system(); 
-  
   void reinitialise_system(string method); //exposed
   
   int get_n_simulations();
@@ -196,9 +193,9 @@ public:
 
   void integrate(double t);
 
-  // vector<double> dtheta_dt();
+  // vector<double> dphase_dt();
 
-  // vector<double> domega_dt();
+  // vector<double> dfrequency_dt();
 
   //--------------------------------------------------------------------------------------------------------------------
   // time series construction functions osc_time_series.cpp
@@ -237,7 +234,7 @@ public:
   //--------------------------------------------------------------------------------------------------------------------
   //running simulations - kuramoto - osc_kuramoto.cpp 
 
-  vector<double> dtheta_kuramoto();
+  vector<double> dphase_kuramoto();
 
   void kuramoto_model();
 
@@ -273,9 +270,9 @@ public:
 
   double driving_pulse(double phase);
 
-  double dtheta_weakly_coupled(vector<double> params);
+  double dphase_weakly_coupled(vector<double> params);
 
-  double domega_weakly_coupled(vector<double> params);
+  double dfrequency_weakly_coupled(vector<double> params);
   //--------------------------------------------------------------------------------------------------------------------
   
   

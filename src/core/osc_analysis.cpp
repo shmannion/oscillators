@@ -42,13 +42,13 @@ double standard_deviation_2d(vector<vector<double>> x){
   sum /= n - 1;
   return sqrt(sum);
 }
-//vector<double> Oscillators::construct_time_stamps(vector<double> theta, double maxTime, double dt, int neglectTransient){
+//vector<double> Oscillators::construct_time_stamps(vector<double> phase, double maxTime, double dt, int neglectTransient){
 //  vector<double> timePoints;
 //  int start = 0;
 //  if(neglectTransient != 0){
 //    start = 2000;
 //  }
-//  for(int i = 0; i != theta.size(); ++i){
+//  for(int i = 0; i != phase.size(); ++i){
 //    timePoints.push_back(0.001*double(i));
 //  }
 //  vector<double> timeStamps;
@@ -59,13 +59,13 @@ double standard_deviation_2d(vector<vector<double>> x){
 //  double y2;
 //  double m;
 //  double intercept;
-//  for(int i = start; i != theta.size()-1; ++i){
-//    product = theta[i]*theta[i+1];
+//  for(int i = start; i != phase.size()-1; ++i){
+//    product = phase[i]*phase[i+1];
 //    if(product < 0){ //there is a zero between i and i + 1
 //      x1 = timePoints[i];
 //      x2 = timePoints[i+1];
-//      y1 = theta[i];
-//      y2 = theta[i+1];
+//      y1 = phase[i];
+//      y2 = phase[i+1];
 //      m = (y2 - y1) / (x2 - x1);
 //      intercept = (m*x1 - y1)/m;
 //      timeStamps.push_back(intercept);

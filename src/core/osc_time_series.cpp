@@ -41,10 +41,10 @@ void Oscillators::construct_timestamps_from_phases(){
   
   for(int i = 0; i != N; ++i){
     timestamps.push_back({});
-    for(int j = 0; j != theta[i].size() - 1; ++j){
-      double diff = abs(theta[i][j] - theta[i][j+1]);
+    for(int j = 0; j != phase[i].size() - 1; ++j){
+      double diff = abs(phase[i][j] - phase[i][j+1]);
       if(diff > 6){ //the difference between two consecutive values is greater than 6 >
-        double intercept = interpolate_phase(double(j), theta[i][j], double(j+1), theta[i][j+1]);  //the oscillator's phase has gone from 2pi to 0
+        double intercept = interpolate_phase(double(j), phase[i][j], double(j+1), phase[i][j+1]);  //the oscillator's phase has gone from 2pi to 0
         timestamps[i].push_back(intercept);
       }
     }
@@ -58,9 +58,9 @@ void Oscillators::construct_timestamps_from_amplitudes(){
     double intercept;
     double amp1; 
     double amp2;
-    for(int j = 0; j != theta[i].size() - 1; ++j){
-      amp1 = sin(theta[i][j]);
-      amp2 = sin(theta[i][j+1]);
+    for(int j = 0; j != phase[i].size() - 1; ++j){
+      amp1 = sin(phase[i][j]);
+      amp2 = sin(phase[i][j+1]);
       product = amp1 * amp2;
       if(product < 0){ //negative product in the amplitude implies the oscillators amp 
         intercept = interpolate(double(j), amp1, double(j+1), amp2); //has crossed the x axis.
@@ -95,7 +95,7 @@ void Oscillators::construct_inter_event_times(){
     for(int j = 1; j != eventTimes[i].size(); ++j){
       interEventTimes[i].push_back(eventTimes[i][j] - eventTimes[i][j-1]);
       if (OSC_VERBOSE == true){
-        cout << j << " , " << interEventTimes[i].back() << ", ieTimes" << i << ", K" << K[0][1] << endl;
+        cout << j << " , " << interEventTimes[i].back() << ", ieTimes" << i << ", K" << kuramotoCoupling[0][1] << endl;
       }
     }//endfor
   }//endfor

@@ -31,75 +31,79 @@ vector<double> Oscillators::get_noise_params(){
   return params;
 }
 
-void Oscillators::set_omega_distribution(string dist){
+void Oscillators::set_frequency_distribution(string dist){
   if(dist == "default"){
-    omegaDist = "normal";
-    omegaParams = {12.57, 1.26};
+    frequencyDist = "normal";
+    frequencyParams = {12.57, 1.26};
   }else if(dist == "normal"){
-    omegaDist = "normal";
-    omegaParams = {12.57, 1.26};
+    frequencyDist = "normal";
+    frequencyParams = {12.57, 1.26};
   }
 }
 
-void Oscillators::set_omega_distribution(string dist, vector<double> params){
+void Oscillators::set_frequency_distribution(string dist, vector<double> params){
   if(validOmegaDistributions.find(dist) == validOmegaDistributions.end()){
-    cerr << "Selected omega distribution is not defined" << endl;
+    cerr << "Selected frequency distribution is not defined" << endl;
   }else{
-    omegaDist = dist;
-    omegaParams = params;
+    frequencyDist = dist;
+    frequencyParams = params;
   }
 }
 
-string Oscillators::get_omega_distribution(){
-  string dist = omegaDist;
+string Oscillators::get_frequency_distribution(){
+  string dist = frequencyDist;
   return dist;
 }
 
-vector<double> Oscillators::get_omega_params(){
-  vector<double> params = omegaParams;
+vector<double> Oscillators::get_frequency_params(){
+  vector<double> params = frequencyParams;
   return params;
 }
 
-void Oscillators::set_theta_distribution(string dist){
+void Oscillators::set_phase_distribution(string dist){
   if(dist == "default"){
-    thetaDist = "uniform";
-    thetaParams = {0, 2*PI};
+    phaseDist = "uniform";
+    phaseParams = {0, 2*PI};
   }else if(dist == "uniform"){
-    thetaDist = "uniform";
-    thetaParams = {0, 2*PI};
+    phaseDist = "uniform";
+    phaseParams = {0, 2*PI};
   }
 }
 
-void Oscillators::set_theta_distribution(string dist, vector<double> params){
+void Oscillators::set_phase_distribution(string dist, vector<double> params){
   if(validThetaDistributions.find(dist) == validThetaDistributions.end()){
-    cerr << "Selected theta distribution is not defined" << endl;
+    cerr << "Selected phase distribution is not defined" << endl;
+  }else if(dist == "fixed"){
+    phaseDist = dist;
+    set_phase_values(params);
   }else{
-    thetaDist = dist;
-    thetaParams = params;
+    phaseDist = dist;
+    phaseParams = params;
   }
 }
 
-void Oscillators::set_theta_values(vector<double> x){
-  theta = {};
+void Oscillators::set_phase_values(vector<double> x){
+  phaseDist = "fixed";
+  phase = {};
   for(int i = 0; i != x.size(); ++i){
-    theta.push_back({x[i]});
+    phase.push_back({x[i]});
   }
 }
 
-string Oscillators::get_theta_distribution(){
-  string dist = thetaDist;
+string Oscillators::get_phase_distribution(){
+  string dist = phaseDist;
   return dist;
 }
 
-vector<double> Oscillators::get_theta_params(){
-  vector<double> params = thetaParams;
+vector<double> Oscillators::get_phase_params(){
+  vector<double> params = phaseParams;
   return params;
 }
 
 void Oscillators::set_default_distributions(){
   set_noise_distribution("default");
-  set_omega_distribution("default");
-  set_theta_distribution("default");
+  set_frequency_distribution("default");
+  set_phase_distribution("default");
 }
 
 void Oscillators::set_timestamp_method(string method){
@@ -129,21 +133,21 @@ double Oscillators::draw_noise_value(){
   return x;
 }
 
-double Oscillators::draw_omega_value(){
+double Oscillators::draw_frequency_value(){
   double x = 0;
   if(noiseDist == "normal"){
-    x = draw_normal_rnd_value(omegaParams);
+    x = draw_normal_rnd_value(frequencyParams);
   }//else if another
   return x;
 
 }
 
-double Oscillators::draw_theta_value(){
+double Oscillators::draw_phase_value(){
   double x = 0;
   if(noiseDist == "normal"){
-    x = draw_normal_rnd_value(thetaParams);
-  }else if(thetaDist == "uniform"){
-    x = draw_uniform_rnd_value(thetaParams);
+    x = draw_normal_rnd_value(phaseParams);
+  }else if(phaseDist == "uniform"){
+    x = draw_uniform_rnd_value(phaseParams);
   }//else if another
   return x;
 }
@@ -166,41 +170,49 @@ void Oscillators::initialise_natural_frequencies(){
   naturalFrequencies = {};
   double sample;
   while(naturalFrequencies.size() < N){
-    sample = draw_omega_value();
+    sample = draw_frequency_value();
     naturalFrequencies.push_back(sample);
   }
-  initialise_omega();
+  initialise_frequency();
 }
 
-void Oscillators::initialise_omega(){
-  omega = {};
+void Oscillators::initialise_frequency(){
+  frequency = {};
   for(int i = 0; i != naturalFrequencies.size(); ++i){
-    omega.push_back({naturalFrequencies[i]});
+    frequency.push_back({naturalFrequencies[i]});
   }
 }
 
-void Oscillators::set_omega(vector<double> g){
-  omega = {};
+void Oscillators::set_frequency(vector<double> g){
+  frequency = {};
   naturalFrequencies = {};
   for(int i = 0; i != g.size(); ++i){
-    omega.push_back({g[i]});
+    frequency.push_back({g[i]});
     naturalFrequencies.push_back(g[i]);
   }
 }
 
-vector<double> Oscillators::get_omega(){
+vector<double> Oscillators::get_frequency(){
   return naturalFrequencies;
 }
 
-void Oscillators::initialise_theta(){
+void Oscillators::initialise_phase(){
   //double sample;
-  theta = {};
   meanPhase = {};
   orderParam = {};
-  while(theta.size() < N){
-    double sample = 1;//draw_theta_value();
-    vector<double> theta0 = {sample};
-    theta.push_back(theta0);
+  if(phaseDist == "fixed"){
+    vector<vector<double>> newPhase = {};
+    for(int i = 0; i != N; ++i){
+      newPhase.push_back({phase[i][0]});
+    }
+    phase = newPhase;
+  }else{
+    phase = {};
+    while(phase.size() < N){
+      double sample = 1;//draw_phase_value();
+      vector<double> phase0 = {sample};
+      phase.push_back(phase0);
+    }
   }
 }
 
@@ -219,12 +231,12 @@ string Oscillators::get_model(){
   return model;
 }
 
-void Oscillators::set_coupling(vector<vector<double>> coupling){
-  K = coupling;
+void Oscillators::set_kuramoto_coupling(vector<vector<double>> coupling){
+  kuramotoCoupling = coupling;
 }
 
-vector<vector<double>> Oscillators::get_coupling(){
-  vector<vector<double>> coupling = K;
+vector<vector<double>> Oscillators::get_kuramoto_coupling(){
+  vector<vector<double>> coupling = kuramotoCoupling;
   return coupling;
 }
 
@@ -270,49 +282,9 @@ vector<int> Oscillators::get_metronomes(){
   return returnList;
 }
 
-void Oscillators::initialise_system(string method){
-  if(method == "default"){
-    initialise_default_system();
-  }else{
-    initialise_system();
-  }
-}
-
 void Oscillators::initialise_system(){
-  metronomes = {};
-  for(int i = 0; i != N; ++i){
-    metronomes.push_back(0);
-  }
-  initialise_theta();
+  initialise_phase();
   initialise_natural_frequencies();
-  set_timestamp_method("amplitude");
-  set_max_time(20);
-  set_time_step(0.001);
-}
-
-void Oscillators::initialise_default_system(){
-  metronomes = {};
-  for(int i = 0; i != N; ++i){
-    metronomes.push_back(0);
-  }
-  set_default_distributions();
-  initialise_natural_frequencies();
-  initialise_theta();
-  vector<vector<double>> couplingMatrix = {};
-  // cout << "init checkpoint 0" << "\n";
-  int i = 0;
-  while(i < N){
-    couplingMatrix.push_back({});
-    int j = 0;
-    while(j < N){
-      couplingMatrix[i].push_back(1);
-      j += 1;
-    }
-    i += 1;
-  }
-  // cout << "init checkpoint 1" << "\n";
-  set_coupling(couplingMatrix);
-  // cout << "init checkpoint 2" << "\n";
   set_timestamp_method("amplitude");
   set_max_time(20);
   set_time_step(0.001);
@@ -322,11 +294,11 @@ void Oscillators::reinitialise_system(string method){
   timestamps = {};
   eventTimes = {};
   interEventTimes = {};
-  initialise_theta();
-  initialise_omega();
+  initialise_phase();
+  initialise_frequency();
   if(method == "full"){
     naturalFrequencies = {};
-    omega = {};
+    frequency = {};
     initialise_natural_frequencies();
   }
 }

@@ -33,7 +33,7 @@ map<int, vector<vector<double>>> Oscillators::parameter_search_e7(){
       searchedValues.push_back(k);
       currentSummary = {};
       coupling[couplingIndex[0]][couplingIndex[1]] = k;
-      K = coupling;
+      kuramotoCoupling = coupling;
       kuramoto_simulations(100, "interEventTimes");
       for(int i = 0; i != actionOscillators.size(); ++i){
         for(auto itr = simulationResults.begin(); itr != simulationResults.end(); ++itr){
@@ -77,7 +77,7 @@ map<int, vector<vector<double>>> Oscillators::parameter_search_e8(){
       searchedValues.push_back(k);
       currentSummary = {};
       coupling[couplingIndex[0]][couplingIndex[1]] = k;
-      K = coupling;
+      kuramotoCoupling = coupling;
       kuramoto_simulations(100, "interEventTimes");
       for(int i = 0; i != actionOscillators.size(); ++i){
         for(auto itr = simulationResults.begin(); itr != simulationResults.end(); ++itr){
@@ -114,7 +114,7 @@ vector<vector<double>> Oscillators::coupling_parameter_search_1d(vector<vector<i
     searchedValues.push_back(k);
     currentSummary = {};
     coupling[varyingIndices[0][0]][varyingIndices[0][1]] = k;
-    K = coupling;
+    kuramotoCoupling = coupling;
     kuramoto_simulations(100, "interEventTimes");
     for(int i = 0; i != actionOscillators.size(); ++i){
       for(auto itr = simulationResults.begin(); itr != simulationResults.end(); ++itr){

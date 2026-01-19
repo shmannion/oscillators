@@ -6,17 +6,18 @@
 //---------------------------------------------------------------------------------------------------------------------
 //noise dist
 static PyObject* PyOscillators_get_N(PyOscillators* self, void*) {
-  return PyLong_FromLong(self->cpp_obj->N);
+  const int& n = self->cpp_obj->get_N();
+  return PyLong_FromLong(n);
 }
 
-static int PyOscillators_set_N(PyOscillators* self, PyObject* value, void*) {
-  if (!PyLong_Check(value)) {
-    PyErr_SetString(PyExc_TypeError, "N must be an integer");
-    return -1;
-  }
-  self->cpp_obj->N = PyLong_AsLong(value);
-  return 0;
-}
+// static int PyOscillators_set_N(PyOscillators* self, PyObject* value, void*) {
+//   if (!PyLong_Check(value)) {
+//     PyErr_SetString(PyExc_TypeError, "N must be an integer");
+//     return -1;
+//   }
+//   self->cpp_obj->N = PyLong_AsLong(value);
+//   return 0;
+// }
 
 //---------------------------------------------------------------------------------------------------------------------
 //distribution get set
@@ -40,7 +41,7 @@ static int PyOscillators_set_noise_distribution(PyOscillators* self, PyObject* v
 
   // Expect a tuple: (str, list)
   if (!PyArg_ParseTuple(value, "sO", &dist, &paramsObj)) {
-    PyErr_SetString(PyExc_TypeError, "omega_distribution must be (str, list[float])");
+    PyErr_SetString(PyExc_TypeError, "frequency_distribution must be (str, list[float])");
     return -1;
   }
 
@@ -66,10 +67,10 @@ static int PyOscillators_set_noise_distribution(PyOscillators* self, PyObject* v
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-//omega dist
-static PyObject* PyOscillators_get_omega_distribution(PyOscillators* self, void*) {
-  const string& dist = self->cpp_obj->get_omega_distribution();
-  const vector<double>& params = self->cpp_obj->get_omega_params();
+//frequency dist
+static PyObject* PyOscillators_get_frequency_distribution(PyOscillators* self, void*) {
+  const string& dist = self->cpp_obj->get_frequency_distribution();
+  const vector<double>& params = self->cpp_obj->get_frequency_params();
 
   PyObject* py_params = PyList_New(params.size());
   for (size_t i = 0; i < params.size(); ++i) {
@@ -79,13 +80,13 @@ static PyObject* PyOscillators_get_omega_distribution(PyOscillators* self, void*
   return Py_BuildValue("(sO)", dist.c_str(), py_params);
 }
 
-static int PyOscillators_set_omega_distribution(PyOscillators* self, PyObject* value, void*) {
+static int PyOscillators_set_frequency_distribution(PyOscillators* self, PyObject* value, void*) {
   const char* dist;
   PyObject* paramsObj;
 
   // Expect a tuple: (str, list)
   if (!PyArg_ParseTuple(value, "sO", &dist, &paramsObj)) {
-    PyErr_SetString(PyExc_TypeError, "omega_distribution must be (str, list[float])");
+    PyErr_SetString(PyExc_TypeError, "frequency_distribution must be (str, list[float])");
     return -1;
   }
 
@@ -105,12 +106,12 @@ static int PyOscillators_set_omega_distribution(PyOscillators* self, PyObject* v
     }
     params.push_back(PyFloat_AsDouble(item));
   }
-  self->cpp_obj->set_omega_distribution(string(dist), params);
+  self->cpp_obj->set_frequency_distribution(string(dist), params);
   return 0;
 }
 
-static PyObject* PyOscillators_get_omega(PyOscillators* self, void*) {
-  const vector<double>& params = self->cpp_obj->get_omega();
+static PyObject* PyOscillators_get_frequency(PyOscillators* self, void*) {
+  const vector<double>& params = self->cpp_obj->get_frequency();
 
   PyObject* py_params = PyList_New(params.size());
   for (size_t i = 0; i < params.size(); ++i) {
@@ -120,9 +121,9 @@ static PyObject* PyOscillators_get_omega(PyOscillators* self, void*) {
   return py_params;
 }
 
-static int PyOscillators_set_omega(PyOscillators* self, PyObject* value, void*) {
+static int PyOscillators_set_frequency(PyOscillators* self, PyObject* value, void*) {
   if (!PyList_Check(value)){
-    PyErr_SetString(PyExc_TypeError, "omega values must be list of floats");
+    PyErr_SetString(PyExc_TypeError, "frequency values must be list of floats");
     return -1;
   }
 
@@ -137,15 +138,15 @@ static int PyOscillators_set_omega(PyOscillators* self, PyObject* value, void*) 
     }
     params.push_back(PyFloat_AsDouble(item));
   }
-  self->cpp_obj->set_omega(params);
+  self->cpp_obj->set_frequency(params);
   return 0;
 }
 //---------------------------------------------------------------------------------------------------------------------
-//theta dist
+//phase dist
 
-static PyObject* PyOscillators_get_theta_distribution(PyOscillators* self, void*) {
-  const string& dist = self->cpp_obj->get_theta_distribution();
-  const vector<double>& params = self->cpp_obj->get_theta_params();
+static PyObject* PyOscillators_get_phase_distribution(PyOscillators* self, void*) {
+  const string& dist = self->cpp_obj->get_phase_distribution();
+  const vector<double>& params = self->cpp_obj->get_phase_params();
 
   PyObject* py_params = PyList_New(params.size());
   for (size_t i = 0; i < params.size(); ++i) {
@@ -155,13 +156,13 @@ static PyObject* PyOscillators_get_theta_distribution(PyOscillators* self, void*
   return Py_BuildValue("(sO)", dist.c_str(), py_params);
 }
 
-static int PyOscillators_set_theta_distribution(PyOscillators* self, PyObject* value, void*) {
+static int PyOscillators_set_phase_distribution(PyOscillators* self, PyObject* value, void*) {
   const char* dist;
   PyObject* paramsObj;
 
   // Expect a tuple: (str, list)
   if (!PyArg_ParseTuple(value, "sO", &dist, &paramsObj)) {
-    PyErr_SetString(PyExc_TypeError, "theta_distribution must be (str, list[float])");
+    PyErr_SetString(PyExc_TypeError, "phase_distribution must be (str, list[float])");
     return -1;
   }
 
@@ -182,7 +183,7 @@ static int PyOscillators_set_theta_distribution(PyOscillators* self, PyObject* v
     params.push_back(PyFloat_AsDouble(item));
   }
 
-  self->cpp_obj->set_theta_distribution(string(dist), params);
+  self->cpp_obj->set_phase_distribution(string(dist), params);
   return 0;
 }
 
@@ -192,8 +193,8 @@ static int PyOscillators_set_theta_distribution(PyOscillators* self, PyObject* v
 //---------------------------------------------------------------------------------------------------------------------
 //coupling
 
-static PyObject* PyOscillators_get_coupling(PyOscillators* self, void*) {
-  const vector<vector<double>>& K = self->cpp_obj->get_coupling();
+static PyObject* PyOscillators_get_kuramoto_coupling(PyOscillators* self, void*) {
+  const vector<vector<double>>& K = self->cpp_obj->get_kuramoto_coupling();
 
   PyObject* outer_list = PyList_New(K.size());
   for (size_t i = 0; i < K.size(); ++i) {
@@ -208,7 +209,7 @@ static PyObject* PyOscillators_get_coupling(PyOscillators* self, void*) {
   return outer_list;
 }
 
-static int PyOscillators_set_coupling(PyOscillators* self, PyObject* value, void*) {
+static int PyOscillators_set_kuramoto_coupling(PyOscillators* self, PyObject* value, void*) {
   if (!PyList_Check(value)) {
     PyErr_SetString(PyExc_TypeError, "Coupling must be a list of lists of floats");
     return -1;
@@ -241,7 +242,7 @@ static int PyOscillators_set_coupling(PyOscillators* self, PyObject* value, void
     K.push_back(inner);
   }
 
-  self->cpp_obj->set_coupling(K);
+  self->cpp_obj->set_kuramoto_coupling(K);
   return 0;
 }
 //---------------------------------------------------------------------------------------------------------------------
@@ -457,22 +458,23 @@ static PyObject* PyOscillators_get_simulation_results(PyOscillators* self, void*
 //---------------------------------------------------------------------------------------------------------------------
 
 PyGetSetDef PyOscillatorsGetSet[] = {
-  {"N", (getter)PyOscillators_get_N, (setter)PyOscillators_set_N,"Number of oscillators", NULL},
-  {"noise_distribution", (getter)PyOscillators_get_noise_distribution, (setter)PyOscillators_set_noise_distribution, 
+  {"N", (getter)PyOscillators_get_N, NULL, "Number of oscillators", NULL},
+  {"noise_distribution", (getter)PyOscillators_get_noise_distribution, (setter)PyOscillators_set_noise_distribution,
    "Noise distribution (name, (params))", NULL},
-  {"omega_distribution", (getter)PyOscillators_get_omega_distribution, (setter)PyOscillators_set_omega_distribution, 
-   "Omega distribution (name, (params))", NULL},
-  {"omega", (getter)PyOscillators_get_omega, (setter)PyOscillators_set_omega, 
+  {"frequency_distribution", (getter)PyOscillators_get_frequency_distribution, 
+    (setter)PyOscillators_set_frequency_distribution, "Omega distribution (name, (params))", NULL},
+  {"frequency", (getter)PyOscillators_get_frequency, (setter)PyOscillators_set_frequency, 
    "Omega distribution (hard set values)", NULL},
-  {"theta_distribution", (getter)PyOscillators_get_theta_distribution, (setter)PyOscillators_set_theta_distribution, 
+  {"phase_distribution", (getter)PyOscillators_get_phase_distribution, (setter)PyOscillators_set_phase_distribution, 
    "Theta distribution (name, (params))", NULL},
-  {"coupling", (getter)PyOscillators_get_coupling, (setter)PyOscillators_set_coupling, 
+  {"kuramoto_coupling", (getter)PyOscillators_get_kuramoto_coupling, (setter)PyOscillators_set_kuramoto_coupling, 
    "Coupling matrix (list of lists of floats)", NULL},
   {"action_oscillators", (getter)PyOscillators_get_action_oscillators, (setter)PyOscillators_set_action_oscillators,
    "List of active oscillator indices", NULL},
   {"metronomes", (getter)PyOscillators_get_metronomes, (setter)PyOscillators_set_metronomes,
    "List of metronome indices", NULL},
-  {"amplitude_timestamp_start", (getter)PyOscillators_get_amplitude_stamp_start, (setter)PyOscillators_set_amplitude_stamp_start,
+  {"amplitude_timestamp_start", (getter)PyOscillators_get_amplitude_stamp_start, 
+   (setter)PyOscillators_set_amplitude_stamp_start,
    "Set the x-axis crossing that represents the first tapping event (int)", NULL},
   {"dt", (getter)PyOscillators_get_time_step, (setter)PyOscillators_set_time_step,
    "Set the integration time step", NULL},

@@ -1,26 +1,26 @@
 #include "oscillators.h"
 #include "py_wrappers.h"
 
-double Oscillators::dtheta_weakly_coupled(vector<double> params){
-  double dtheta = params[0];
+double Oscillators::dphase_weakly_coupled(vector<double> params){
+  double dphase = params[0];
   double phase1 = params[1];
   double phase2 = params[2];
   double c = params.back();
   double pulse = driving_pulse(phase2);
   double phaseResponse = phase_response(phase1);
-  dtheta += c*pulse*phaseResponse;
-  return dtheta;
+  dphase += c*pulse*phaseResponse;
+  return dphase;
 }
 
-double Oscillators::domega_weakly_coupled(vector<double> params){
+double Oscillators::dfrequency_weakly_coupled(vector<double> params){
   double phase1 = params[1];
   double phase2 = params[2];
   double c = params.back();
-  double domega = 0;
+  double dfrequency = 0;
   double pulse = driving_pulse(phase2);
   double phaseResponse = phase_response(phase1);
-  domega += c*pulse*phaseResponse;
-  return domega;
+  dfrequency += c*pulse*phaseResponse;
+  return dfrequency;
 }
 
 void Oscillators::set_pulse_width(double m){
@@ -79,20 +79,20 @@ double Oscillators::phase_response(double phase){
 
 void Oscillators::rk4_step(int index){
   vector<double> params = {};
-  params.push_back(omega[index].back()); //frequency
-  params.push_back(theta[index].back()); //phase of responding oscillator
-  params.push_back(theta[1-index].back()); //phase of driving oscillator
+  params.push_back(frequency[index].back()); //frequency
+  params.push_back(phase[index].back()); //phase of responding oscillator
+  params.push_back(phase[1-index].back()); //phase of driving oscillator
   params.push_back(0); //constant
                        
   double cPhase = phaseCoupling[index];
   double cFreq = frequencyCoupling[index];
   
   auto fTheta = [this](vector<double> params){
-    return dtheta_weakly_coupled(params);
+    return dphase_weakly_coupled(params);
   };
   
   auto fOmega = [this](vector<double> params){
-    return domega_weakly_coupled(params);
+    return dfrequency_weakly_coupled(params);
   };
 
   // test function for rk4:
@@ -101,16 +101,16 @@ void Oscillators::rk4_step(int index){
   // };
 
   params.back() = cPhase;
-  double thetaNew = rk4(params, 1, fTheta);
+  double phaseNew = rk4(params, 1, fTheta);
   
   params.back() = cFreq;
-  double omegaNew = rk4(params, 0, fOmega);
+  double frequencyNew = rk4(params, 0, fOmega);
   
   // using the test function for rk4
   // double xnew = rk4({test[index].back()}, 0, fxcubed);
   // test[index].push_back(xnew);
 
-  omega[index].push_back(omegaNew);
-  theta[index].push_back(thetaNew);
+  frequency[index].push_back(frequencyNew);
+  phase[index].push_back(phaseNew);
 }
 

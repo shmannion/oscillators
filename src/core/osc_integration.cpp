@@ -17,22 +17,6 @@ double Oscillators::get_time_step(){
   return dt;
 }
 
-// vector<double> Oscillators::dtheta_dt(){
-//   vector<double> dtheta = {};
-//   if(model == "kuramoto"){
-//     dtheta = dtheta_kuramoto();
-//   }else{
-//     dtheta = dtheta_weakly_coupled();
-//   }
-//   return dtheta;
-// }
-
-// vector<double> Oscillators::domega_dt(){
-//   vector<double> domega = {};
-//   domega = domega_weakly_coupled();
-//   return domega;
-// }
-
 void Oscillators::integrate(double t){
   set_max_time(t);
   set_time_step(0.001);
@@ -42,8 +26,8 @@ void Oscillators::integrate(double t){
       for(int i = 0; i != N; ++i){
         rk4_step(i);
         if(OSC_VERBOSE == true){
-          cout << currentTime << ", " << theta[i].back() << ", theta" << i << "\n";
-          cout << currentTime << ", " << omega[i].back() << ", omega" << i << "\n";
+          cout << currentTime << ", " << phase[i].back() << ", phase" << i << "\n";
+          cout << currentTime << ", " << frequency[i].back() << ", freq" << i << "\n";
           // cout << currentTime << ", " << test[i].back() << ", xrk" << i << "\n";
           // cout << currentTime << ", " << 3 * exp(-2*currentTime) << ", yrk" << i << "\n";
         }
@@ -58,15 +42,15 @@ void Oscillators::integrate(double t){
 void Oscillators::eulers_method(){
   double currentTime = 0;
   while(currentTime < tMax){
-    vector<double> dthetaDt = dtheta_kuramoto();
-    for(int i = 0; i != theta.size(); ++i){
+    vector<double> dphaseDt = dphase_kuramoto();
+    for(int i = 0; i != phase.size(); ++i){
       if(metronomes[i] == 1){
-        theta[i].push_back(theta[i][0] + (currentTime * naturalFrequencies[i]));
+        phase[i].push_back(phase[i][0] + (currentTime * naturalFrequencies[i]));
       }else{
-        theta[i].push_back(theta[i].back() + (dthetaDt[i] * dt));
+        phase[i].push_back(phase[i].back() + (dphaseDt[i] * dt));
       }
       if (OSC_VERBOSE == true){
-        cout << currentTime << ", " << sin(theta[i].back()) << ", theta" << i << endl; 
+        cout << currentTime << ", " << sin(phase[i].back()) << ", phase" << i << endl; 
       }
     }
     currentTime += dt;
