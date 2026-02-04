@@ -12,6 +12,10 @@ void Oscillators::set_noise_distribution(string dist){
   }
 }
 
+void Oscillators::set_phase_noise(double s){
+  phaseNoise = s;
+}
+
 void Oscillators::set_noise_distribution(string dist, vector<double> params){
   if(validNoiseDistributions.find(dist) == validNoiseDistributions.end()){
     cerr << "Selected noise distribution is not defined" << endl;

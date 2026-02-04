@@ -17,6 +17,9 @@ double Oscillators::get_time_step(){
   return dt;
 }
 
+void Oscillators::integrate(){
+  integrate(tMax);
+}
 void Oscillators::integrate(double t){
   set_max_time(t);
   set_time_step(0.001);
@@ -26,9 +29,14 @@ void Oscillators::integrate(double t){
       for(int i = 0; i != N; ++i){
         rk4_step(i);
         if(OSC_VERBOSE == true){
-          cout << currentTime << ", " << phase[i].back() << ", phase" << i << "\n";
-          cout << currentTime << ", " << frequency[i].back() << ", freq" << i << "\n";
-          // cout << currentTime << ", " << test[i].back() << ", xrk" << i << "\n";
+          if(i % 100 == 0){
+            cout << currentTime << ", " << phase[i].back() << ", phase" << i << endl;
+            cout << currentTime << ", " << frequency[i].back() << ", freq" << i << endl; 
+          }else{
+            cout << currentTime << ", " << phase[i].back() << ", phase" << i << "\n";
+            cout << currentTime << ", " << frequency[i].back() << ", freq" << i << "\n";
+          }
+            // cout << currentTime << ", " << test[i].back() << ", xrk" << i << "\n";
           // cout << currentTime << ", " << 3 * exp(-2*currentTime) << ", yrk" << i << "\n";
         }
       }

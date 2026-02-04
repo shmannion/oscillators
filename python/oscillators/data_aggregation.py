@@ -2,6 +2,37 @@ from .data_utils import get_inter_event_times_from_file
 import pandas as pd
 from os import listdir
 
+def get_pair_times_by_trial(condition:str, pair:int, trial='all', freq:int=120):
+    """
+    For a given pair and condition, return a dictionary of dictionaries, keys = participant, trial. Values = list of ie
+    times. E.g.,
+    {1: {1: [v1,v2,...,vn], 2: [v1,v2,...,vn]}, <- participant 1, trial 1 inter event times, trial 2 inter event times
+     2: {1: [v1,v2,...,vn], 2: [v1,v2,...,vn]}, <- participant 2, trial 1 inter event times, trial 2 inter event times
+    """
+
+    inter_event_times = {1: {}, 2: {}} # outer dictionary
+    if pair < 10:
+        pair = f'0{pair}'
+    if trial == 'all':
+        trials = [1,2,3,4]
+    else:
+        trials = trial
+
+    for tnum in trials:
+        for candidate in [1,2]:
+            try:
+                path = f'../data/{freq}/{condition}/pair_{pair}_c{candidate}_t{tnum}.mid'
+                trial_inter_event_times = get_inter_event_times_from_file(path)
+        
+            except FileNotFoundError:
+                print(f'for pair {pair} there is no trial {tnum}')
+                trial_inter_event_times = []
+            
+            inter_event_times[candidate][tnum] = trial_inter_event_times
+        
+    return inter_event_times
+
+
 def get_participant_distribution(condition:str, participant:tuple, freq:int=120):
     """
     For a given condition and participant (tuple of pair (1-16 inclusive) and candidate (1 or 2)), returns a list

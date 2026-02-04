@@ -79,6 +79,7 @@ double Oscillators::phase_response(double phase){
 
 void Oscillators::rk4_step(int index){
   vector<double> params = {};
+  double noise = 0;
   params.push_back(frequency[index].back()); //frequency
   params.push_back(phase[index].back()); //phase of responding oscillator
   params.push_back(phase[1-index].back()); //phase of driving oscillator
@@ -94,7 +95,7 @@ void Oscillators::rk4_step(int index){
   auto fOmega = [this](vector<double> params){
     return dfrequency_weakly_coupled(params);
   };
-
+  
   // test function for rk4:
   // auto fxcubed = [this](vector<double> params){
   //   return -2 * params[0];
@@ -102,10 +103,14 @@ void Oscillators::rk4_step(int index){
 
   params.back() = cPhase;
   double phaseNew = rk4(params, 1, fTheta);
-  
+  noise = N01(gen);
+  phaseNew += pow(dt, 0.5) * phaseNoise * noise;
+
   params.back() = cFreq;
   double frequencyNew = rk4(params, 0, fOmega);
-  
+  noise = N01(gen);
+  frequencyNew += pow(dt, 0.5) * freqNoise * noise;
+   
   // using the test function for rk4
   // double xnew = rk4({test[index].back()}, 0, fxcubed);
   // test[index].push_back(xnew);

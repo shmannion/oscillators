@@ -33,8 +33,13 @@ private:
   set<string> validModels = {"kuramoto", "weakly_coupled"};
 
   vector<double> noiseParams; //The parameters for the distribution of noise 
+  double phaseNoise = 0.4335;                              
+  double freqNoise = 0.4335;                              
   vector<double> frequencyParams; //The parameters for the distribution of natural frequencies 
   vector<double> phaseParams; 
+    
+  mt19937 gen{random_device{}()};
+  normal_distribution<double> N01{0, 1};
 
   //coupling coefficient, oscillator phases and frequencies
   vector<vector<double>> kuramotoCoupling; //The coupling coefficients for the model 
@@ -70,7 +75,6 @@ private:
   vector<vector<double>> eventTimes; //needs get/set 
   vector<vector<double>> interEventTimes; //needs get/set (has c get)
 
-  
   vector<int> lags; // unsure
 
   int nSimulations = 1; //needs get/set
@@ -92,6 +96,8 @@ public:
   int get_N();
   
   void set_noise_distribution(string dist); //unexposed
+
+  void set_phase_noise(double s);
   
   string get_noise_distribution(); //unexposed
 
@@ -190,6 +196,8 @@ public:
   double rk4(vector<double> y, int index, function<double(vector<double>)> f);
 
   void rk4_step(int index);
+
+  void integrate();
 
   void integrate(double t);
 

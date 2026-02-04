@@ -95,7 +95,7 @@ void Oscillators::construct_inter_event_times(){
     for(int j = 1; j != eventTimes[i].size(); ++j){
       interEventTimes[i].push_back(eventTimes[i][j] - eventTimes[i][j-1]);
       if (OSC_VERBOSE == true){
-        cout << j << " , " << interEventTimes[i].back() << ", ieTimes" << i << ", K" << kuramotoCoupling[0][1] << endl;
+        cout << j << " , " << interEventTimes[i].back() << ", ieTimes" << i << endl;
       }
     }//endfor
   }//endfor
