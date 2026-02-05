@@ -192,7 +192,7 @@ static int PyOscillators_set_phase_distribution(PyOscillators* self, PyObject* v
 //other initialisation get set
 //---------------------------------------------------------------------------------------------------------------------
 //coupling
-
+//kuramoto coupling
 static PyObject* PyOscillators_get_kuramoto_coupling(PyOscillators* self, void*) {
   const vector<vector<double>>& K = self->cpp_obj->get_kuramoto_coupling();
 
@@ -245,6 +245,74 @@ static int PyOscillators_set_kuramoto_coupling(PyOscillators* self, PyObject* va
   self->cpp_obj->set_kuramoto_coupling(K);
   return 0;
 }
+//weakly coupled oscillator coupling
+
+static PyObject* PyOscillators_get_phase_coupling(PyOscillators* self, void*) {
+  const vector<double>& K = self->cpp_obj->get_phase_coupling();
+
+  PyObject* list = PyList_New(K.size());
+  for (size_t i = 0; i < K.size(); ++i) {
+    PyList_SetItem(list, i, PyFloat_FromDouble(K[i]));
+  }
+  return list;
+}
+
+static int PyOscillators_set_phase_coupling(PyOscillators* self, PyObject* value, void*) {
+  if (!PyList_Check(value)) {
+    PyErr_SetString(PyExc_TypeError, "Coupling must be a list of lists of floats");
+    return -1;
+  }
+
+  vector<double> K;
+  Py_ssize_t size = PyList_Size(value);
+  K.reserve(size);
+  for (Py_ssize_t i = 0; i < size; ++i) {
+    PyObject* item = PyList_GetItem(value, i);
+    if (!PyFloat_Check(item)) {
+      PyErr_SetString(PyExc_TypeError, "All elements must be floats");
+      return -1;
+    }
+    K.push_back(PyFloat_AsDouble(item));
+  }
+
+  self->cpp_obj->set_phase_coupling(K);
+
+  return 0;
+}
+
+static PyObject* PyOscillators_get_frequency_coupling(PyOscillators* self, void*) {
+  const vector<double>& K = self->cpp_obj->get_frequency_coupling();
+
+  PyObject* list = PyList_New(K.size());
+  for (size_t i = 0; i < K.size(); ++i) {
+    PyList_SetItem(list, i, PyFloat_FromDouble(K[i]));
+  }
+  return list;
+}
+
+static int PyOscillators_set_frequency_coupling(PyOscillators* self, PyObject* value, void*) {
+  if (!PyList_Check(value)) {
+    PyErr_SetString(PyExc_TypeError, "Coupling must be a list of lists of floats");
+    return -1;
+  }
+
+  vector<double> K;
+  Py_ssize_t size = PyList_Size(value);
+  K.reserve(size);
+  for (Py_ssize_t i = 0; i < size; ++i) {
+    PyObject* item = PyList_GetItem(value, i);
+    if (!PyFloat_Check(item)) {
+      PyErr_SetString(PyExc_TypeError, "All elements must be floats");
+      return -1;
+    }
+    K.push_back(PyFloat_AsDouble(item));
+  }
+
+  self->cpp_obj->set_frequency_coupling(K);
+
+  return 0;
+}
+
 //---------------------------------------------------------------------------------------------------------------------
 //action oscillators
 static PyObject* PyOscillators_get_action_oscillators(PyOscillators* self, void*) {
@@ -468,6 +536,10 @@ PyGetSetDef PyOscillatorsGetSet[] = {
   {"phase_distribution", (getter)PyOscillators_get_phase_distribution, (setter)PyOscillators_set_phase_distribution, 
    "Theta distribution (name, (params))", NULL},
   {"kuramoto_coupling", (getter)PyOscillators_get_kuramoto_coupling, (setter)PyOscillators_set_kuramoto_coupling, 
+   "Coupling matrix (list of lists of floats)", NULL},
+  {"phase_coupling", (getter)PyOscillators_get_phase_coupling, (setter)PyOscillators_set_phase_coupling, 
+   "Coupling matrix (list of lists of floats)", NULL},
+  {"frequency_coupling", (getter)PyOscillators_get_frequency_coupling, (setter)PyOscillators_set_frequency_coupling, 
    "Coupling matrix (list of lists of floats)", NULL},
   {"action_oscillators", (getter)PyOscillators_get_action_oscillators, (setter)PyOscillators_set_action_oscillators,
    "List of active oscillator indices", NULL},

@@ -4,15 +4,8 @@
 vector<double> Oscillators::dphase_kuramoto(){
   vector<double> dphaseDt;
   double dphase;
-  double noise;
   for(int i = 0; i != N; ++i){
-    if(metronomes[i] == 1){
-      noise = 0;
-    }else{
-      noise = draw_noise_value();
-      // noise /= pow(dt, 0.5);
-    }
-    dphase = naturalFrequencies[i] + noise;
+    dphase = naturalFrequencies[i];
     for(int j = 0; j != N; ++j){
       dphase += kuramotoCoupling[i][j] * sin(phase[j].back() - phase[i].back());
     }

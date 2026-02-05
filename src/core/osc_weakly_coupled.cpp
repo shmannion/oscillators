@@ -47,12 +47,20 @@ double Oscillators::get_pulse_amp(){
   return a;
 }
 
+vector<double> Oscillators::get_frequency_coupling(){
+  return frequencyCoupling;
+}
+
 void Oscillators::set_frequency_coupling(vector<double> C){
   if(C.size() != N){
     cerr << " number of constants must match number of oscillators" << endl;
   }else{
     frequencyCoupling = C;
   }
+}
+
+vector<double> Oscillators::get_phase_coupling(){
+  return phaseCoupling;
 }
 
 void Oscillators::set_phase_coupling(vector<double> C){
@@ -109,7 +117,7 @@ void Oscillators::rk4_step(int index){
   params.back() = cFreq;
   double frequencyNew = rk4(params, 0, fOmega);
   noise = N01(gen);
-  frequencyNew += pow(dt, 0.5) * freqNoise * noise;
+  frequencyNew += pow(dt, 0.5) * frequencyNoise * noise;
    
   // using the test function for rk4
   // double xnew = rk4({test[index].back()}, 0, fxcubed);

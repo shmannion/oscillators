@@ -49,13 +49,17 @@ void Oscillators::integrate(double t){
 }
 void Oscillators::eulers_method(){
   double currentTime = 0;
+  double noise;
   while(currentTime < tMax){
     vector<double> dphaseDt = dphase_kuramoto();
     for(int i = 0; i != phase.size(); ++i){
       if(metronomes[i] == 1){
         phase[i].push_back(phase[i][0] + (currentTime * naturalFrequencies[i]));
       }else{
-        phase[i].push_back(phase[i].back() + (dphaseDt[i] * dt));
+        noise = N01(gen);
+        noise *= pow(dt, 0.5);
+        noise *= phaseNoise;
+        phase[i].push_back(phase[i].back() + (dphaseDt[i] * dt) + noise);
       }
       if (OSC_VERBOSE == true){
         cout << currentTime << ", " << sin(phase[i].back()) << ", phase" << i << endl; 

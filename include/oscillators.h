@@ -34,7 +34,7 @@ private:
 
   vector<double> noiseParams; //The parameters for the distribution of noise 
   double phaseNoise = 0.4335;                              
-  double freqNoise = 0.4335;                              
+  double frequencyNoise = 0.4335;                              
   vector<double> frequencyParams; //The parameters for the distribution of natural frequencies 
   vector<double> phaseParams; 
     
@@ -98,6 +98,8 @@ public:
   void set_noise_distribution(string dist); //unexposed
 
   void set_phase_noise(double s);
+  
+  void set_frequency_noise(double s);
   
   string get_noise_distribution(); //unexposed
 
@@ -270,8 +272,12 @@ public:
   
   double get_pulse_amp();
 
-  void set_phase_coupling(vector<double> C);
+  vector<double> get_frequency_coupling(); //unexposed
   
+  vector<double> get_phase_coupling(); //unexposed
+                                         //
+  void set_phase_coupling(vector<double> C);
+
   void set_frequency_coupling(vector<double> C);
 
   double phase_response(double phase);
