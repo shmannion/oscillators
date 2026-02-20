@@ -16,8 +16,16 @@ void Oscillators::set_phase_noise(double s){
   phaseNoise = s;
 }
 
+double Oscillators::get_phase_noise(){
+  return phaseNoise;
+}
+
 void Oscillators::set_frequency_noise(double s){
   frequencyNoise = s;
+}
+
+double Oscillators::get_frequency_noise(){
+  return frequencyNoise;
 }
 
 void Oscillators::set_noise_distribution(string dist, vector<double> params){
@@ -42,10 +50,10 @@ vector<double> Oscillators::get_noise_params(){
 void Oscillators::set_frequency_distribution(string dist){
   if(dist == "default"){
     frequencyDist = "normal";
-    frequencyParams = {12.57, 1.26};
+    frequencyParams = {12.8, 1.26};
   }else if(dist == "normal"){
     frequencyDist = "normal";
-    frequencyParams = {12.57, 1.26};
+    frequencyParams = {12.8, 1.26};
   }
 }
 

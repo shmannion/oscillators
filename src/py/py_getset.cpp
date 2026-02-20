@@ -191,6 +191,29 @@ static int PyOscillators_set_phase_distribution(PyOscillators* self, PyObject* v
 //---------------------------------------------------------------------------------------------------------------------
 //other initialisation get set
 //---------------------------------------------------------------------------------------------------------------------
+//modelling
+//---------------------------------------------------------------------------------------------------------------------
+static PyObject* PyOscillators_get_model(PyOscillators* self, void*) {
+  return PyUnicode_FromString(self->cpp_obj->get_model().c_str());
+}
+
+static int PyOscillators_set_model(PyOscillators* self, PyObject* value, void*) {
+  if (!PyUnicode_Check(value)) {
+    PyErr_SetString(PyExc_TypeError, "model type must be a string");
+    return -1;
+  }
+
+  PyObject* temp_bytes = PyUnicode_AsEncodedString(value, "utf-8", "strict");
+  if (!temp_bytes) {
+    return -1;
+  }
+
+  const char* cstr = PyBytes_AS_STRING(temp_bytes);
+  self->cpp_obj->set_model(string(cstr));
+  Py_DECREF(temp_bytes);
+
+  return 0;
+}
 //coupling
 //kuramoto coupling
 static PyObject* PyOscillators_get_kuramoto_coupling(PyOscillators* self, void*) {
@@ -309,6 +332,95 @@ static int PyOscillators_set_frequency_coupling(PyOscillators* self, PyObject* v
   }
 
   self->cpp_obj->set_frequency_coupling(K);
+
+  return 0;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+//pulse amplitude stuff
+static int PyOscillators_set_pulse_amp(PyOscillators* self, PyObject* value, void*) {
+  if (!PyFloat_Check(value)) {
+    PyErr_SetString(PyExc_TypeError, "pulse amp must be a float");
+    return -1;
+  }
+
+  double t = PyFloat_AsDouble(value);
+
+  try {
+    self->cpp_obj->set_pulse_amp(t);
+  } catch (const exception& e) {
+    PyErr_SetString(PyExc_RuntimeError, e.what());
+    return -1;
+  }
+
+  return 0;
+}
+
+static int PyOscillators_set_pulse_width(PyOscillators* self, PyObject* value, void*) {
+  if (!PyFloat_Check(value)) {
+    PyErr_SetString(PyExc_TypeError, "pulse width must be a float");
+    return -1;
+  }
+
+  double t = PyFloat_AsDouble(value);
+
+  try {
+    self->cpp_obj->set_pulse_width(t);
+  } catch (const exception& e) {
+    PyErr_SetString(PyExc_RuntimeError, e.what());
+    return -1;
+  }
+
+  return 0;
+}
+
+static PyObject* PyOscillators_get_frequency_noise(PyOscillators* self, void*) {
+  return PyFloat_FromDouble(self->cpp_obj->get_frequency_noise());
+}
+
+// Setter: validates Python int, then calls C++ setter
+//---------------------------------------------------------------------------------------------------------------------
+
+//noise
+
+static PyObject* PyOscillators_get_phase_noise(PyOscillators* self, void*) {
+  return PyFloat_FromDouble(self->cpp_obj->get_phase_noise());
+}
+
+// Setter: validates Python int, then calls C++ setter
+static int PyOscillators_set_phase_noise(PyOscillators* self, PyObject* value, void*) {
+  if (!PyFloat_Check(value)) {
+    PyErr_SetString(PyExc_TypeError, "phase noise must be a float");
+    return -1;
+  }
+
+  double t = PyFloat_AsDouble(value);
+
+  try {
+    self->cpp_obj->set_phase_noise(t);
+  } catch (const exception& e) {
+    PyErr_SetString(PyExc_RuntimeError, e.what());
+    return -1;
+  }
+
+  return 0;
+}
+
+// Setter: validates Python int, then calls C++ setter
+static int PyOscillators_set_frequency_noise(PyOscillators* self, PyObject* value, void*) {
+  if (!PyFloat_Check(value)) {
+    PyErr_SetString(PyExc_TypeError, "phase noise must be a float");
+    return -1;
+  }
+
+  double t = PyFloat_AsDouble(value);
+
+  try {
+    self->cpp_obj->set_frequency_noise(t);
+  } catch (const exception& e) {
+    PyErr_SetString(PyExc_RuntimeError, e.what());
+    return -1;
+  }
 
   return 0;
 }
@@ -491,6 +603,10 @@ static int PyOscillators_set_timestamp_method(PyOscillators* self, PyObject* val
 //---------------------------------------------------------------------------------------------------------------------
 //get inter_event times
 static PyObject* PyOscillators_get_inter_event_times(PyOscillators* self, void*) {
+  self->cpp_obj->construct_timestamps();
+  self->cpp_obj->construct_event_times();
+  self->cpp_obj->construct_inter_event_times();
+
   const vector<vector<double>>& times = self->cpp_obj->get_inter_event_times();
 
   PyObject* outer_list = PyList_New(times.size());
@@ -507,8 +623,19 @@ static PyObject* PyOscillators_get_inter_event_times(PyOscillators* self, void*)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-//get simulation results
+//get frequency and phase results
 
+static PyObject* PyOscillators_get_phase_values(PyOscillators* self, void*) {
+  const auto& r = self->cpp_obj->get_phase_values();
+  return vv_to_pydict(r);
+}
+
+static PyObject* PyOscillators_get_frequency_values(PyOscillators* self, void*) {
+  const auto& r = self->cpp_obj->get_frequency_values();
+  return vv_to_pydict(r);
+}
+
+//get simulation results
 static PyObject* PyOscillators_get_simulation_results(PyOscillators* self, void*) {
   try {
     const auto& r = self->cpp_obj->get_simulation_results();
@@ -539,6 +666,10 @@ PyGetSetDef PyOscillatorsGetSet[] = {
    "Coupling matrix (list of lists of floats)", NULL},
   {"phase_coupling", (getter)PyOscillators_get_phase_coupling, (setter)PyOscillators_set_phase_coupling, 
    "Coupling matrix (list of lists of floats)", NULL},
+  {"pulse_amp", NULL, (setter)PyOscillators_set_pulse_amp, 
+   "set weakly coupled oscillators pulse amplitude", NULL},
+  {"pulse_width", NULL, (setter)PyOscillators_set_pulse_width, 
+   "set weakly coupled oscillators pulse width", NULL},
   {"frequency_coupling", (getter)PyOscillators_get_frequency_coupling, (setter)PyOscillators_set_frequency_coupling, 
    "Coupling matrix (list of lists of floats)", NULL},
   {"action_oscillators", (getter)PyOscillators_get_action_oscillators, (setter)PyOscillators_set_action_oscillators,
@@ -554,6 +685,16 @@ PyGetSetDef PyOscillatorsGetSet[] = {
    "Set the max time of each simulation", NULL},
   {"timestamp_method", (getter)PyOscillators_get_timestamp_method, (setter)PyOscillators_set_timestamp_method,
    "Timestamp method used in event calculations (can be 'phase' or 'amplitude')", NULL},
+  {"frequency_noise", (getter)PyOscillators_get_frequency_noise, (setter)PyOscillators_set_frequency_noise,
+   "amount of noise to be used in the frequency equations", NULL},
+  {"phase_noise", (getter)PyOscillators_get_phase_noise, (setter)PyOscillators_set_phase_noise,
+   "amount of noise to be used in the frequency equations", NULL},
+  {"phase_results", (getter)PyOscillators_get_phase_values, NULL,
+   "return the phase values after integration", NULL},
+  {"frequency_results", (getter)PyOscillators_get_frequency_values, NULL,
+   "return the phase values after integration", NULL},
+  {"model", (getter)PyOscillators_get_model, (setter)PyOscillators_set_model,
+   "Model used", NULL},
   {"inter_event_times_list", (getter)PyOscillators_get_inter_event_times, NULL,  
    "Inter event times for all oscillators as list of lists", NULL},
   {"simulation_results_dict", (getter)PyOscillators_get_simulation_results, NULL,  

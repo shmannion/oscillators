@@ -41,6 +41,17 @@ static PyObject* PyOscillators_reinitialise_system(PyOscillators* self, PyObject
   Py_RETURN_NONE;
 }
 
+static PyObject* PyOscillators_integrate(PyOscillators* self) {
+  try {
+    self->cpp_obj->integrate();
+  } catch (const exception& e) {
+    PyErr_SetString(PyExc_RuntimeError, e.what());
+    return nullptr;
+  }
+
+  Py_RETURN_NONE;
+}
+
 static PyObject* PyOscillators_kuramoto_simulations(PyOscillators* self, PyObject* args, PyObject* kwargs){
   int n;
   const char* output = (char*)"phase";  // default
@@ -141,5 +152,6 @@ PyMethodDef PyOscillatorsMethods[] = {
    "1D coupling parameter search; returns dict[index] -> list[summary values]"},
   {"parameter_search_e8", (PyCFunction)PyOscillators_parameter_search_e8, METH_NOARGS,
    "1D coupling parameter search; returns dict[index] -> list[summary values]"},
+  {"integrate", (PyCFunction)PyOscillators_integrate, METH_NOARGS, "Integrate the selected model."},
   {NULL, NULL, 0, NULL}  // Sentinel
 };

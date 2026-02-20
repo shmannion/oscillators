@@ -20,9 +20,10 @@ double Oscillators::get_time_step(){
 void Oscillators::integrate(){
   integrate(tMax);
 }
+
 void Oscillators::integrate(double t){
   set_max_time(t);
-  set_time_step(0.001);
+  // set_time_step(0.001);
   double currentTime = 0;
   if(model == "weakly_coupled"){
     while(currentTime < tMax){

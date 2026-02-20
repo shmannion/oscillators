@@ -4,6 +4,8 @@ import pandas as pd
 #sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 #import oscillators as osc
 from scipy.stats import shapiro, normaltest
+from scipy.signal import butter, filtfilt, hilbert
+from scipy.ndimage import gaussian_filter1d
 import math
 
 def midi_to_tap_times(midi_file_path):
@@ -147,7 +149,66 @@ def frequencies_from_df(data):
     return freq_data
 
 
+def bandpass(data, fs, low, high, order=3):
+    """
+    band pass filtering helper function to be used with the below.
+    """
+    b, a = butter(order, [low/(0.5*fs), high/(0.5*fs)], btype='band')
+    return filtfilt(b, a, data)
 
+
+def frequency_from_pulses(ie_times):
+    """
+    Function that takes a list of inter event times, transforms into a continuous frequency
+    signal.
+    """
+
+    IEI = np.array(ie_times, dtype=float)
+    # event times from inter event times
+    t_events = np.cumsum(IEI)
+    T_total = t_events[-1]
+
+    #create grid over the time interval
+    mean_period = IEI.mean()
+    f0 = 1.0 / mean_period
+    fs = max(200.0, 50.0 * f0)  # robust default
+    dt = 1.0 / fs
+    t = np.arange(0, T_total, dt)
+
+    x = np.zeros_like(t) # create zeros in same shape as t
+    idx = np.searchsorted(t, t_events) # place t_events in the grid at the correct position
+    idx = idx[idx < len(x)]
+    x[idx] = 1.0 # set the entries of the zero vector to 1 at the time points for taps
+    
+    sigma_time = 0.1 * mean_period # 
+    sigma_samp = max(1.0, sigma_time * fs)
+    x_s = gaussian_filter1d(x, sigma_samp)
+
+    nyq = 0.5 * fs
+    low = max(0.1 * f0, f0 * 0.6)          # don’t go too close to 0
+    high = min(f0 * 1.4, nyq * 0.9)        # stay below Nyquist
+    if not (0 < low < high < nyq):
+        raise ValueError("Invalid band. Increase fs or widen band.")
+
+    x_bp = bandpass(x_s, fs, low, high)
+
+    # Hilbert
+    analytic = hilbert(x_bp)
+    phase = np.unwrap(np.angle(analytic))
+
+    # Smooth phase BEFORE derivative (important)
+    phase_s = gaussian_filter1d(phase, sigma_samp)
+
+    inst_freq = np.gradient(phase_s) / (2*np.pi*dt)
+
+    # 8) Ignore edge transients (filter + smoothing padding)
+    pad = int(3 * sigma_samp)
+    valid = slice(pad, -pad if pad > 0 else None)
+
+    t = t[valid]
+    t_events = t_events
+    inst_freq = inst_freq[valid]
+    return t, t_events, inst_freq  
 
 
 

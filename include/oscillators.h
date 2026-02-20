@@ -67,7 +67,7 @@ private:
 
   vector<vector<double>> timestamps; //needs get/set /
   set<string> validTimestampMethods = {"default", "amplitude", "phase"};
-  string timestampMethod; //needs get/set
+  string timestampMethod = "phase"; //needs get/set
   int amplitudeStampStart = 1; //needs get/set
 
   vector<int> actionOscillators; 
@@ -99,7 +99,11 @@ public:
 
   void set_phase_noise(double s);
   
+  double get_phase_noise();
+  
   void set_frequency_noise(double s);
+  
+  double get_frequency_noise();
   
   string get_noise_distribution(); //unexposed
 
@@ -124,6 +128,10 @@ public:
   void set_frequency(vector<double> g);
   
   vector<double> get_frequency();
+
+  vector<vector<double>> get_frequency_values();
+  
+  vector<vector<double>> get_phase_values();
 
   void set_phase_distribution(string dist, vector<double> params); //exposed
   

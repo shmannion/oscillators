@@ -38,7 +38,9 @@ if __name__ == "__main__":
                     results = results + ri
                     ri = osc.get_participant_distribution(cond, [i,1], freq)
                     results = results + ri
+            frequencies = [1/i for i in results]
+            print(f'for condition {cond} and frequency {freq}, the mean frequency is {2*3.14159*sum(frequencies)/len(frequencies)}')
             # results = osc.remove_outliers(results, [0.3, 0.7])
             dat = pd.DataFrame(results, columns=['times'])
-            dat.to_csv(f'../out/distribution_data/{freq}/{cond}.dat')
+            # dat.to_csv(f'../out/distribution_data/{freq}/{cond}.dat')
             osc.histogram(results, title=cond)
