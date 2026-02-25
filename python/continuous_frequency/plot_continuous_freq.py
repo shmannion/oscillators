@@ -61,13 +61,20 @@ def frequency_from_pulses(ie_times):
     t = t[valid]
     t_events = t_events
     inst_freq = inst_freq[valid]
-    return t, t_events, inst_freq  
+    return t, t_events, inst_freq, phase_s
 
 
 if __name__ == "__main__":
+    """
+    TODO:
+    - trim continuous frequency data to remove the spike at the end.
+    - convert cont freq back into taps by using phase = freq*time, try for all starting freqs for each osc in steps of
+    0.01
+    - 
+    """
     IEI_raw = osc.get_pair_times_by_trial('other', 1, [1])
-    t1, t_events1, freq1 = frequency_from_pulses(IEI_raw[1][1])
-    t2, t_events2, freq2 = frequency_from_pulses(IEI_raw[2][1])
+    t1, t_events1, freq1, phase1 = frequency_from_pulses(IEI_raw[1][1])
+    t2, t_events2, freq2, phase2 = frequency_from_pulses(IEI_raw[2][1])
     
     ie1 = IEI_raw[1][1]
     ie2 = IEI_raw[2][1]
@@ -82,17 +89,20 @@ if __name__ == "__main__":
     plt.figure(figsize=(10,4))
     # plt.plot(x1, ie1)
     # plt.plot(x2, ie2)
-    plt.plot(t1, 2*3.14159*freq1)
+    plt.plot(t1[:3000], 2*3.14159*freq1[:3000])
+    print(f'the freq has length {len(freq1)}')
+    print(f'time resolution is {t1[2] - t1[1]}')
     print(t1)
     print(t_events1)
     print(freq1)
     print(discrete_freq1)
     plt.plot(t_events1, 2*3.14159*discrete_freq1, '--')
-    plt.plot(t2, 2*3.14159*freq2)
-    plt.plot(t_events2, 2*3.14159*discrete_freq2, '--')
-    # plt.axhline(f0, linestyle="--")
+    # plt.plot(t2, 2*3.14159*freq2)
+    # plt.plot(t_events2, 2*3.14159*discrete_freq2, '--')
     plt.xlabel("Time (s)")
     plt.ylabel("Instantaneous frequency (Hz)")
     plt.title("Instantaneous frequency (robust)")
     plt.tight_layout()
     plt.show()
+
+

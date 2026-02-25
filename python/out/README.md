@@ -50,3 +50,5 @@ This is the output directory for the experiments I run for the oscillator projec
 - exp\_12: Repeat of experiment 8, with fixed version of kuramoto dt (correct noise updating).
 
 - exp\_13: Repeat of experiment 9, with fixed version of kuramoto dt (correct noise updating).
+
+wco : directory of weakly coupled oscillator experiment results.

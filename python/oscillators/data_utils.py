@@ -40,6 +40,7 @@ def get_inter_event_times(tapTimes):
         list: List of interevent times
     """
     interEventTimes = []
+    print(f'time to first event={tapTimes[0]}')
     for i in range(1, len(tapTimes)):
         interEventTimes.append(tapTimes[i] - tapTimes[i-1])
  

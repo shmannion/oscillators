@@ -60,9 +60,12 @@ void Oscillators::set_frequency_distribution(string dist){
 void Oscillators::set_frequency_distribution(string dist, vector<double> params){
   if(validOmegaDistributions.find(dist) == validOmegaDistributions.end()){
     cerr << "Selected frequency distribution is not defined" << endl;
-  }else{
+  }else if(dist == "normal"){
     frequencyDist = dist;
     frequencyParams = params;
+  }else if(dist == "fixed"){
+    frequencyDist = dist;
+    naturalFrequencies = params;
   }
 }
 
@@ -151,7 +154,7 @@ double Oscillators::draw_noise_value(){
 
 double Oscillators::draw_frequency_value(){
   double x = 0;
-  if(noiseDist == "normal"){
+  if(frequencyDist == "normal"){
     x = draw_normal_rnd_value(frequencyParams);
   }//else if another
   return x;
@@ -183,11 +186,13 @@ double Oscillators::draw_uniform_rnd_value(vector<double> params){
 }
 
 void Oscillators::initialise_natural_frequencies(){
-  naturalFrequencies = {};
-  double sample;
-  while(naturalFrequencies.size() < N){
-    sample = draw_frequency_value();
-    naturalFrequencies.push_back(sample);
+  if(frequencyDist != "fixed"){
+    naturalFrequencies = {};
+    double sample;
+    while(naturalFrequencies.size() < N){
+      sample = draw_frequency_value();
+      naturalFrequencies.push_back(sample);
+    }
   }
   initialise_frequency();
 }
@@ -313,8 +318,8 @@ void Oscillators::reinitialise_system(string method){
   initialise_phase();
   initialise_frequency();
   if(method == "full"){
-    naturalFrequencies = {};
-    frequency = {};
+    // naturalFrequencies = {};
+    // frequency = {};
     initialise_natural_frequencies();
   }
 }

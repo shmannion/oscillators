@@ -36,11 +36,11 @@ if __name__ == "__main__":
         S.pulse_amp = 1.0 
         S.pulse_width = 64.0 
         S.initialise_system()
-        S.frequency = [12.82,12.3]
+        S.frequency = [12.783,12.797]
         S.phase_distribution = ("fixed", [k, 0.0]) 
 
         S.dt = 0.01
-        S.tmax = 30.0
+        S.tmax = 120.0
         S.integrate()
         theta = S.phase_results
         phi = S.frequency_results
@@ -52,20 +52,20 @@ if __name__ == "__main__":
     for k in param_values:
         S.phase_noise = 0.0
         S.frequency_noise = 0.0
-        S.phase_coupling = [1.0, 1.0]
-        S.frequency_coupling = [1.0, 1.0]
+        S.phase_coupling = [10.0, 10.0]
+        S.frequency_coupling = [10.0, 10.0]
         S.pulse_amp = 1.0 
         S.pulse_width = 64.0 
         S.initialise_system()
-        S.frequency = [12.82,12.3]
-        S.phase_distribution = ("fixed", [0.0, k]) 
+        S.frequency = [12.783,12.797]
+        S.phase_distribution = ("fixed", [k, 0.0]) 
 
         S.dt = 0.01
-        S.tmax = 30.0
+        S.tmax = 120.0
         S.integrate()
         theta = S.phase_results
         phi = S.frequency_results
-        outputs2.append(pd.Series(phi[1]))
+        outputs2.append(pd.Series(phi[0]))
         S.reset()
     fig, axes = plt.subplots(2, 1, figsize=(8, 6))
     for param, y, y2 in zip(param_values, outputs, outputs2):

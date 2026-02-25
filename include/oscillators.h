@@ -28,7 +28,7 @@ private:
   string model = "kuramoto";
   
   set<string> validNoiseDistributions = {"default", "normal", "uniform"};
-  set<string> validOmegaDistributions = {"default", "normal", "uniform"};
+  set<string> validOmegaDistributions = {"default", "normal", "uniform", "fixed"};
   set<string> validThetaDistributions = {"default", "normal", "uniform", "fixed"};
   set<string> validModels = {"kuramoto", "weakly_coupled"};
 
