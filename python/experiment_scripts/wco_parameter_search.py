@@ -44,12 +44,13 @@ if __name__ == "__main__":
     # Vectors of parameters that we are going through
     noise_values = [0.0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5]
     c_values = [0.0 + i/10 for i in range(0,100)]
-    if len(sys.argv) != 2:
+    if len(sys.argv) != 3:
         raise SystemExit("Requires argument for noise value")
 
     noise_ind = int(sys.argv[1])
-    outfile_raw = f'../out/wco/exp_1/exp_1_raw_{noise_ind}.csv'
-    outfile_summ = f'../out/wco/exp_1/exp_1_summ_{noise_ind}.csv'
+    outdir = sys.argv[2]
+    outfile_raw = f'{outdir}/exp_1_raw_{noise_ind}.csv'
+    outfile_summ = f'{outdir}/exp_1_summ_{noise_ind}.csv'
     out_columns = ['f1', 'f2', 'p1', 'p2', 'c1', 'c2', 'c3', 'c4', 'pulse_amp', 
                    'pulse_width', 'sigma_freq', 'sigma_phase', 'lagm1', 'lag0', 'lag1']
     
