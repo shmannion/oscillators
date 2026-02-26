@@ -7,6 +7,7 @@ from .python_extensions import OscillatorsPythonAddons
 from .data_aggregation import *
 from .data_analysis import *
 from .data_visualisation import *
+from .hilbert_transform import *
 
 class Oscillators(_COscillators, OscillatorsPythonAddons):
     """ Merge C++ class with the Python extensions class"""

@@ -89,7 +89,7 @@ if __name__ == "__main__":
     plt.figure(figsize=(10,4))
     # plt.plot(x1, ie1)
     # plt.plot(x2, ie2)
-    plt.plot(t1[:3000], 2*3.14159*freq1[:3000])
+    plt.plot(t1[100:3000], 2*3.14159*freq1[100:3000])
     print(f'the freq has length {len(freq1)}')
     print(f'time resolution is {t1[2] - t1[1]}')
     print(t1)
@@ -101,7 +101,7 @@ if __name__ == "__main__":
     # plt.plot(t_events2, 2*3.14159*discrete_freq2, '--')
     plt.xlabel("Time (s)")
     plt.ylabel("Instantaneous frequency (Hz)")
-    plt.title("Instantaneous frequency (robust)")
+    plt.title("delta_f = 0.6")
     plt.tight_layout()
     plt.show()
 
