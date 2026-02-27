@@ -18,3 +18,6 @@ wco\_exp\_6.py - code for searching the parameter space, varying c values and in
 
 wco\_exp\_7.py - code for searching the parameter space, varying c values and noise values, allowing for two different noise values for phase and freq.
                - 25 cores
+
+wco\_exp\_8.py - code for searching the parameter space, varying c values and initial phase values.
+               - 8 cores

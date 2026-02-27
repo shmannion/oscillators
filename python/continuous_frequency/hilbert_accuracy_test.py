@@ -106,9 +106,9 @@ if __name__ == "__main__":
     p2_vals = [0.1 + (i * 0.01) for i in range(50)]
     for p1 in p1_vals:
         for p2 in p2_vals:
-            error = get_transform_error('comp', p1, p2, False, lag)
+            error = get_transform_error('leader_follower_2', p1, p2, False, lag)
             if error < best_error:
-                error = get_transform_error('comp', p1, p2, True, lag)
+                error = get_transform_error('leader_follower_2', p1, p2, True, lag)
                 best_error = error
                 best_params = (p1, p2)
 

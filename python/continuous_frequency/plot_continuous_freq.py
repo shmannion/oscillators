@@ -33,13 +33,13 @@ def frequency_from_pulses(ie_times):
     idx = idx[idx < len(x)]
     x[idx] = 1.0 # set the entries of the zero vector to 1 at the time points for taps
     
-    sigma_time = 0.1 * mean_period # 
+    sigma_time = 0.14 * mean_period # 
     sigma_samp = max(1.0, sigma_time * fs)
     x_s = gaussian_filter1d(x, sigma_samp)
 
     nyq = 0.5 * fs
-    low = max(0.1 * f0, f0 * 0.6)          # don’t go too close to 0
-    high = min(f0 * 1.4, nyq * 0.9)        # stay below Nyquist
+    low = max(0.1 * f0, f0 * 0.3)          # don’t go too close to 0
+    high = min(f0 * 1.7, nyq * 0.9)        # stay below Nyquist
     if not (0 < low < high < nyq):
         raise ValueError("Invalid band. Increase fs or widen band.")
 
