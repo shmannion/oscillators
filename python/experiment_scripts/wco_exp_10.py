@@ -41,8 +41,8 @@ if __name__ == "__main__":
 
     # Vectors of parameters that we are going through
 
-    outfile_raw = f'{outdir}/exp_4_raw_{ind}.csv'
-    outfile_summ = f'{outdir}/exp_4_summ_{ind}.csv'
+    outfile_raw = f'{outdir}/exp_10_raw_{ind}.csv'
+    outfile_summ = f'{outdir}/exp_10_summ_{ind}.csv'
     out_columns = ['f1', 'f2', 'p1', 'p2', 'c1', 'c2', 'c3', 'c4', 'pulse_amp', 
                    'pulse_width', 'sigma_freq', 'sigma_phase', 'lagm1', 'lag0', 'lag1']
     
