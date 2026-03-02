@@ -44,7 +44,7 @@ if __name__ == "__main__":
     S.model = 'weakly_coupled'
     S.pulse_amp = values[ind][1]
     S.pulse_width = values[ind][0]
-    S.frequency_distribution = ("fixed", [12.783,12.783 - vals[ind][2]])
+    S.frequency_distribution = ("fixed", [12.783,12.783 - values[ind][2]])
     S.phase_distribution = ("fixed", [0.0, 0.0 + values[ind][3]]) 
     S.dt = 0.01
     S.tmax = 30.0

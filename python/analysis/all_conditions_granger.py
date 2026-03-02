@@ -7,4 +7,4 @@ import oscillators as osc
 
 if __name__ == "__main__":
     # for cond in ['self', 'other','comp' ,'leader_follower_1', 'leader_follower_2']:
-    osc.test_granger_causality('leader_follower_2', lag=1)
+    osc.test_granger_causality('comp', lag=1)
