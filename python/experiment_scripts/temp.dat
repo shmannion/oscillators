@@ -1,0 +1,122 @@
+[I 2026-03-03 12:51:33,285] A new study created in memory with name: no-name-47198fe3-e1a4-4f6a-a24a-816dd3e5a6e0
+[I 2026-03-03 12:51:42,247] Trial 0 finished with value: 1.6494200538038701 and parameters: {'c1': 5.6847693851674155, 'c2': 4.602542487376522, 'sigma_freq': 0.024903813827483037, 'sigma_phase': 0.08647239143729586, 'P': 2.884609247874197, 'M': 119.34020137835978}. Best is trial 0 with value: 1.6494200538038701.
+[I 2026-03-03 12:51:51,268] Trial 1 finished with value: 1.3198105203412285 and parameters: {'c1': 9.888122158566379, 'c2': 8.342651880270164, 'sigma_freq': 0.03373747417343044, 'sigma_phase': 0.08356272674352677, 'P': 2.46461838493034, 'M': 118.31473688016686}. Best is trial 1 with value: 1.3198105203412285.
+[I 2026-03-03 12:52:00,314] Trial 2 finished with value: 1.0441862380157265 and parameters: {'c1': 2.102410865153405, 'c2': 4.421057212013589, 'sigma_freq': 0.05196581402596806, 'sigma_phase': 0.06354027929894776, 'P': 1.9816748657435395, 'M': 17.342977805288296}. Best is trial 2 with value: 1.0441862380157265.
+[I 2026-03-03 12:52:09,375] Trial 3 finished with value: 1.0769866990117638 and parameters: {'c1': 9.428848148191728, 'c2': 2.280984219132194, 'sigma_freq': 0.08004689549255384, 'sigma_phase': 0.06106231852011167, 'P': 0.897610334916837, 'M': 90.33738640057356}. Best is trial 2 with value: 1.0441862380157265.
+[I 2026-03-03 12:52:18,504] Trial 4 finished with value: 0.9022630226342828 and parameters: {'c1': 6.6501714636714135, 'c2': 0.9966512575297604, 'sigma_freq': 0.08601859850673159, 'sigma_phase': 0.008200592880832426, 'P': 2.3234240579372947, 'M': 19.98914909999649}. Best is trial 4 with value: 0.9022630226342828.
+[I 2026-03-03 12:52:27,657] Trial 5 finished with value: 1.688926548724416 and parameters: {'c1': 4.052054061842105, 'c2': 8.137918280324945, 'sigma_freq': 0.05526197508050478, 'sigma_phase': 0.019562930152696292, 'P': 0.8903484693633572, 'M': 20.42743570582723}. Best is trial 4 with value: 0.9022630226342828.
+[W 2026-03-03 12:52:33,887] Trial 6 failed with parameters: {'c1': 6.381687579500984, 'c2': 5.231493234335859, 'sigma_freq': 0.05272408640595262, 'sigma_phase': 0.09313927154400269, 'P': 2.229378235068639, 'M': 74.50052876528402} because of the following error: KeyboardInterrupt().
+Traceback (most recent call last):
+  File "/Users/shman/.venv/lib/python3.13/site-packages/optuna/study/_optimize.py", line 206, in _run_trial
+    value_or_values = func(trial)
+  File "/Users/shman/Desktop/postdoc/oscillators/python/experiment_scripts/wco_smart_search_vary_f_p.py", line 70, in objective
+    lagm1, lag0, lag1 = run_simulation(c1, c2, sigma_freq, sigma_phase, P, M)
+                        ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shman/Desktop/postdoc/oscillators/python/experiment_scripts/wco_smart_search_vary_f_p.py", line 42, in run_simulation
+    S.integrate()
+    ~~~~~~~~~~~^^
+KeyboardInterrupt
+[W 2026-03-03 12:52:33,890] Trial 6 failed with value None.
+correlations: -1: -0.597, 0: -0.809, 1: -0.689
+correlations: -1: 0.076, 0: -0.047, 1: 0.033
+correlations: -1: -0.178, 0: -0.479, 1: -0.206
+correlations: -1: 0.080, 0: -0.148, 1: -0.027
+correlations: -1: -0.746, 0: -0.817, 1: -0.556
+correlations: -1: -0.597, 0: -0.788, 1: -0.685
+correlations: -1: -0.443, 0: -0.659, 1: -0.542
+correlations: -1: -0.511, 0: -0.662, 1: -0.523
+correlations: -1: -0.530, 0: -0.673, 1: -0.439
+correlations: -1: 0.082, 0: -0.027, 1: -0.032
+correlations: -1: -0.559, 0: -0.761, 1: -0.725
+correlations: -1: 0.226, 0: 0.076, 1: 0.183
+correlations: -1: -0.005, 0: -0.092, 1: 0.106
+correlations: -1: 0.046, 0: -0.275, 1: -0.173
+correlations: -1: -0.188, 0: -0.812, 1: -0.351
+correlations: -1: 0.209, 0: -0.082, 1: 0.102
+correlations: -1: -0.596, 0: -0.738, 1: -0.663
+correlations: -1: -0.815, 0: -0.850, 1: -0.559
+correlations: -1: 0.059, 0: 0.261, 1: 0.152
+correlations: -1: 0.003, 0: -0.235, 1: -0.237
+correlations: -1: -0.449, 0: -0.656, 1: -0.664
+correlations: -1: -0.517, 0: -0.605, 1: -0.302
+correlations: -1: -0.224, 0: -0.228, 1: 0.042
+correlations: -1: -0.714, 0: -0.739, 1: -0.467
+correlations: -1: -0.114, 0: -0.334, 1: 0.024
+correlations: -1: 0.068, 0: -0.115, 1: 0.245
+correlations: -1: 0.171, 0: -0.052, 1: 0.167
+correlations: -1: 0.063, 0: -0.072, 1: 0.293
+correlations: -1: 0.211, 0: 0.224, 1: 0.312
+correlations: -1: -0.147, 0: -0.150, 1: 0.124
+correlations: -1: -0.284, 0: -0.362, 1: -0.377
+correlations: -1: -0.425, 0: -0.408, 1: -0.365
+correlations: -1: 0.185, 0: 0.045, 1: 0.030
+correlations: -1: 0.438, 0: 0.368, 1: 0.327
+correlations: -1: -0.519, 0: -0.513, 1: -0.449
+correlations: -1: 0.089, 0: -0.002, 1: 0.019
+correlations: -1: 0.437, 0: 0.336, 1: 0.293
+correlations: -1: -0.032, 0: -0.105, 1: -0.058
+correlations: -1: -0.230, 0: -0.297, 1: -0.326
+correlations: -1: 0.497, 0: 0.432, 1: 0.366
+correlations: -1: -0.242, 0: -0.410, 1: -0.335
+correlations: -1: 0.850, 0: 0.629, 1: 0.611
+correlations: -1: 0.203, 0: -0.362, 1: -0.006
+correlations: -1: 0.203, 0: -0.364, 1: -0.102
+correlations: -1: 0.698, 0: 0.197, 1: 0.257
+correlations: -1: 0.076, 0: -0.337, 1: -0.162
+correlations: -1: 0.700, 0: 0.242, 1: 0.323
+correlations: -1: -0.364, 0: -0.360, 1: -0.158
+correlations: -1: 0.393, 0: -0.160, 1: 0.094
+correlations: -1: 0.064, 0: -0.035, 1: 0.129
+correlations: -1: -0.441, 0: -0.698, 1: -0.677
+correlations: -1: -0.675, 0: -0.742, 1: -0.507
+correlations: -1: 0.255, 0: 0.242, 1: 0.351
+correlations: -1: -0.763, 0: -0.802, 1: -0.578
+correlations: -1: 0.476, 0: 0.508, 1: 0.553
+correlations: -1: -0.167, 0: -0.457, 1: -0.330
+correlations: -1: -0.609, 0: -0.761, 1: -0.696
+correlations: -1: 0.295, 0: 0.269, 1: 0.360
+correlations: -1: -0.655, 0: -0.811, 1: -0.805
+correlations: -1: -0.374, 0: -0.441, 1: -0.292
+correlations: -1: -0.529, 0: -0.685, 1: -0.702
+correlations: -1: 0.236, 0: 0.121, 1: 0.134
+correlations: -1: 0.119, 0: 0.043, 1: 0.084
+correlations: -1: 0.238, 0: 0.113, 1: 0.174
+correlations: -1: -0.494, 0: -0.723, 1: -0.613
+correlations: -1: 0.250, 0: 0.179, 1: 0.180
+Traceback (most recent call last):
+  File "/Users/shman/Desktop/postdoc/oscillators/python/experiment_scripts/wco_smart_search_vary_f_p.py", line 81, in <module>
+    study.optimize(objective, n_trials=200)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shman/.venv/lib/python3.13/site-packages/optuna/study/study.py", line 490, in optimize
+    _optimize(
+    ~~~~~~~~~^
+        study=self,
+        ^^^^^^^^^^^
+    ...<7 lines>...
+        show_progress_bar=show_progress_bar,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/shman/.venv/lib/python3.13/site-packages/optuna/study/_optimize.py", line 68, in _optimize
+    _optimize_sequential(
+    ~~~~~~~~~~~~~~~~~~~~^
+        study,
+        ^^^^^^
+    ...<8 lines>...
+        progress_bar=progress_bar,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/shman/.venv/lib/python3.13/site-packages/optuna/study/_optimize.py", line 165, in _optimize_sequential
+    frozen_trial_id = _run_trial(study, func, catch)
+  File "/Users/shman/.venv/lib/python3.13/site-packages/optuna/study/_optimize.py", line 263, in _run_trial
+    raise func_err
+  File "/Users/shman/.venv/lib/python3.13/site-packages/optuna/study/_optimize.py", line 206, in _run_trial
+    value_or_values = func(trial)
+  File "/Users/shman/Desktop/postdoc/oscillators/python/experiment_scripts/wco_smart_search_vary_f_p.py", line 70, in objective
+    lagm1, lag0, lag1 = run_simulation(c1, c2, sigma_freq, sigma_phase, P, M)
+                        ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shman/Desktop/postdoc/oscillators/python/experiment_scripts/wco_smart_search_vary_f_p.py", line 42, in run_simulation
+    S.integrate()
+    ~~~~~~~~~~~^^
+KeyboardInterrupt
