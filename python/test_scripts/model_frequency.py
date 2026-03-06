@@ -67,7 +67,7 @@ if __name__ == "__main__":
     # plt.axhline(f0, linestyle="--")
     plt.xlabel("Time (s)")
     plt.ylabel("Instantaneous frequency (Hz)")
-    plt.title("Instantaneous frequency (robust)")
+    plt.title("Instantaneous frequency and transfromed freq")
     plt.legend()
     plt.tight_layout()
     plt.show()

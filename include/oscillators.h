@@ -51,8 +51,8 @@ private:
 
   //simulation variables - global
   
-  double tMax; 
-  double dt = 0.001; 
+  double tMax = 20; 
+  double dt = 0.01; 
 
   //simulation variables - kuramoto
   vector<double> orderParam = {};

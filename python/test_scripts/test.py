@@ -3,7 +3,6 @@ import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))    
 import oscillators as osc
 from scipy.stats import shapiro, normaltest
 
